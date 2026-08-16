@@ -276,6 +276,72 @@ function feast_sync_original_photos_to_gallery() {
 }
 add_action( 'init', 'feast_sync_original_photos_to_gallery', 47 );
 
+/**
+ * Complete the starter menu when an early partial import created only one dish.
+ * Existing dishes are preserved and only missing titles are added.
+ */
+function feast_complete_starter_menu() {
+	if ( ! add_option( 'feast_completed_starter_menu_v1', 'running', '', false ) ) {
+		return;
+	}
+
+	$dishes = array(
+		array( 'title' => 'Chicken Mansaf', 'excerpt' => 'A generous rice dish made for sharing.', 'image' => 'hero-chicken-mansaf.jpg', 'meta' => array( '_feast_category' => 'mains', '_feast_showcase' => '0' ) ),
+		array( 'title' => 'Malfouf', 'excerpt' => 'Tender stuffed cabbage rolls, slow-cooked and deeply comforting.', 'image' => 'menu-malfouf.jpg', 'meta' => array( '_feast_category' => 'mains', '_feast_showcase' => '1' ) ),
+		array( 'title' => 'Dawood Basha', 'excerpt' => 'Tender meatballs cooked in a rich tomato sauce.', 'meta' => array( '_feast_category' => 'mains', '_feast_showcase' => '0' ) ),
+		array( 'title' => 'Fattoush', 'excerpt' => 'Bright, crisp and made to balance every feast.', 'image' => 'menu-fattoush.jpg', 'meta' => array( '_feast_category' => 'salads', '_feast_showcase' => '1' ) ),
+		array( 'title' => 'Tabouli', 'excerpt' => 'Fresh herbs, tomato and a bright citrus dressing.', 'meta' => array( '_feast_category' => 'salads', '_feast_showcase' => '0' ) ),
+		array( 'title' => 'Hummus', 'excerpt' => 'Smooth, savoury and perfect for sharing.', 'meta' => array( '_feast_category' => 'salads', '_feast_showcase' => '0' ) ),
+		array( 'title' => 'Batata Harra', 'excerpt' => 'Crisp potatoes with herbs and spice.', 'meta' => array( '_feast_category' => 'salads', '_feast_showcase' => '0' ) ),
+		array( 'title' => 'Warak Enab', 'excerpt' => 'Stuffed vine leaves, rolled by hand and full of flavour.', 'image' => 'menu-warak-enab.jpg', 'meta' => array( '_feast_category' => 'bites', '_feast_showcase' => '1' ) ),
+		array( 'title' => 'Kibbeh', 'excerpt' => 'Traditional savoury bites for the table.', 'meta' => array( '_feast_category' => 'bites', '_feast_showcase' => '0' ) ),
+		array( 'title' => 'Sambousek', 'excerpt' => 'Golden pastries with a savoury filling.', 'meta' => array( '_feast_category' => 'bites', '_feast_showcase' => '0' ) ),
+		array( 'title' => 'Fresh Wraps', 'excerpt' => 'Freshly prepared wraps for easy lunches.', 'image' => 'menu-wrap.jpg', 'meta' => array( '_feast_category' => 'bites', '_feast_showcase' => '0' ) ),
+	);
+
+	$existing_posts = get_posts(
+		array(
+			'post_type'      => 'feast_dish',
+			'post_status'    => 'any',
+			'posts_per_page' => -1,
+		)
+	);
+	$existing_titles = array();
+	foreach ( $existing_posts as $existing_post ) {
+		$existing_titles[ strtolower( trim( $existing_post->post_title ) ) ] = true;
+	}
+
+	foreach ( $dishes as $order => $dish ) {
+		if ( isset( $existing_titles[ strtolower( $dish['title'] ) ] ) ) {
+			continue;
+		}
+		$post_id = wp_insert_post(
+			array(
+				'post_type'    => 'feast_dish',
+				'post_status'  => 'publish',
+				'post_title'   => $dish['title'],
+				'post_excerpt' => $dish['excerpt'],
+				'menu_order'   => $order,
+			)
+		);
+		if ( ! $post_id || is_wp_error( $post_id ) ) {
+			continue;
+		}
+		foreach ( $dish['meta'] as $key => $value ) {
+			update_post_meta( $post_id, $key, $value );
+		}
+		if ( ! empty( $dish['image'] ) ) {
+			$image_id = feast_import_theme_image( $dish['image'], $dish['title'] );
+			if ( $image_id ) {
+				set_post_thumbnail( $post_id, $image_id );
+			}
+		}
+	}
+
+	update_option( 'feast_completed_starter_menu_v1', '1', false );
+}
+add_action( 'init', 'feast_complete_starter_menu', 50 );
+
 function feast_seed_post_type( $post_type, $items ) {
 	$existing = get_posts( array( 'post_type' => $post_type, 'post_status' => 'any', 'posts_per_page' => 1, 'fields' => 'ids' ) );
 	if ( ! empty( $existing ) ) {
