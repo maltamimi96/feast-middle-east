@@ -142,7 +142,7 @@ function feast_design_defaults() {
 		'hero_accent'    => '#edd7ad',
 		'button_text'    => '#ffffff',
 		'corner_radius'  => '10',
-		'hero_min_height'=> '920',
+		'hero_height_vh' => '70',
 	);
 }
 
@@ -159,8 +159,9 @@ function feast_sanitize_design_settings( $input ) {
 	$defaults = feast_design_defaults();
 	$output   = array();
 	foreach ( $defaults as $key => $default ) {
-		if ( in_array( $key, array( 'corner_radius', 'hero_min_height' ), true ) ) {
-			$output[ $key ] = isset( $input[ $key ] ) ? (string) absint( $input[ $key ] ) : $default;
+		if ( in_array( $key, array( 'corner_radius', 'hero_height_vh' ), true ) ) {
+			$value = isset( $input[ $key ] ) ? absint( $input[ $key ] ) : absint( $default );
+			$output[ $key ] = 'hero_height_vh' === $key ? (string) min( 100, max( 55, $value ) ) : (string) $value;
 		} else {
 			$output[ $key ] = isset( $input[ $key ] ) && sanitize_hex_color( $input[ $key ] ) ? sanitize_hex_color( $input[ $key ] ) : $default;
 		}
@@ -174,7 +175,7 @@ function feast_dynamic_design_css() {
 	foreach ( array( 'ink', 'forest', 'forest_light', 'cedar', 'red', 'cream', 'paper', 'sand', 'muted' ) as $key ) {
 		$css .= '--' . str_replace( '_', '-', $key ) . ':' . $design[ $key ] . ';';
 	}
-	$css .= '--header-bg:' . $design['header_bg'] . ';--footer-bg:' . $design['footer_bg'] . ';--hero-text:' . $design['hero_text'] . ';--hero-accent:' . $design['hero_accent'] . ';--button-text:' . $design['button_text'] . ';--radius:' . absint( $design['corner_radius'] ) . 'px;--hero-min-height:' . absint( $design['hero_min_height'] ) . 'px;}';
+	$css .= '--header-bg:' . $design['header_bg'] . ';--footer-bg:' . $design['footer_bg'] . ';--hero-text:' . $design['hero_text'] . ';--hero-accent:' . $design['hero_accent'] . ';--button-text:' . $design['button_text'] . ';--radius:' . absint( $design['corner_radius'] ) . 'px;--hero-height:' . absint( $design['hero_height_vh'] ) . 'vh;}';
 	wp_add_inline_style( 'feast-style', $css );
 }
 add_action( 'wp_enqueue_scripts', 'feast_dynamic_design_css', 20 );
@@ -191,7 +192,7 @@ function feast_design_page() {
 	<div class="wrap feast-admin-wrap"><h1>Design &amp; Branding</h1><p class="feast-admin-lead">Change the global brand colours and sizing without editing code. Update the logo under Appearance → Customize → Site Identity, and navigation under Appearance → Menus.</p>
 	<form method="post" action="options.php"><?php settings_fields( 'feast_design_group' ); ?>
 		<div class="feast-admin-card"><h2>Brand colours</h2><?php foreach ( $colours as $key => $label ) : ?><div class="feast-admin-field"><label for="design-<?php echo esc_attr( $key ); ?>"><strong><?php echo esc_html( $label ); ?></strong></label><input id="design-<?php echo esc_attr( $key ); ?>" type="color" name="feast_design[<?php echo esc_attr( $key ); ?>]" value="<?php echo esc_attr( $settings[ $key ] ); ?>"></div><?php endforeach; ?></div>
-		<div class="feast-admin-card"><h2>Layout</h2><div class="feast-admin-field"><label for="design-radius"><strong>Card corner radius (pixels)</strong></label><input id="design-radius" type="number" min="0" max="40" name="feast_design[corner_radius]" value="<?php echo esc_attr( $settings['corner_radius'] ); ?>"></div><div class="feast-admin-field"><label for="design-hero-height"><strong>Desktop hero minimum height (pixels)</strong></label><input id="design-hero-height" type="number" min="650" max="1400" name="feast_design[hero_min_height]" value="<?php echo esc_attr( $settings['hero_min_height'] ); ?>"></div></div>
+		<div class="feast-admin-card"><h2>Layout</h2><div class="feast-admin-field"><label for="design-radius"><strong>Card corner radius (pixels)</strong></label><input id="design-radius" type="number" min="0" max="40" name="feast_design[corner_radius]" value="<?php echo esc_attr( $settings['corner_radius'] ); ?>"></div><div class="feast-admin-field"><label for="design-hero-height"><strong>Desktop hero height (% of screen)</strong></label><input id="design-hero-height" type="number" min="55" max="100" name="feast_design[hero_height_vh]" value="<?php echo esc_attr( $settings['hero_height_vh'] ); ?>"><p class="description">70 means the hero uses 70% of the browser height.</p></div></div>
 		<?php submit_button( 'Save design settings' ); ?>
 	</form></div>
 	<?php
