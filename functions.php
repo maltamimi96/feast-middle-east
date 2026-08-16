@@ -17,10 +17,44 @@ function feast_theme_setup() {
 	add_theme_support( 'post-thumbnails' );
 	add_theme_support( 'custom-logo', array( 'height' => 120, 'width' => 120, 'flex-height' => true, 'flex-width' => true ) );
 	add_theme_support( 'html5', array( 'search-form', 'gallery', 'caption', 'style', 'script' ) );
-	register_nav_menus( array( 'primary' => __( 'Primary Menu', 'feast-middle-east' ) ) );
+	register_nav_menus(
+		array(
+			'primary' => __( 'Primary Menu', 'feast-middle-east' ),
+			'footer'  => __( 'Footer Menu', 'feast-middle-east' ),
+		)
+	);
 	add_post_type_support( 'page', 'excerpt' );
 }
 add_action( 'after_setup_theme', 'feast_theme_setup' );
+
+function feast_primary_menu_fallback() {
+	$items = array(
+		'/catering/' => 'Catering',
+		'/menu/' => 'Menu',
+		'/our-story/' => 'Our story',
+		'/gallery/' => 'Gallery',
+	);
+	echo '<ul class="main-nav__links">';
+	foreach ( $items as $path => $label ) {
+		echo '<li><a href="' . esc_url( home_url( $path ) ) . '">' . esc_html( $label ) . '</a></li>';
+	}
+	echo '</ul>';
+}
+
+function feast_footer_menu_fallback() {
+	$items = array(
+		'/catering/' => 'Catering',
+		'/menu/' => 'Full menu',
+		'/our-story/' => 'Our story',
+		'/gallery/' => 'Gallery',
+		'/contact/' => 'Request a quote',
+	);
+	echo '<ul class="footer-menu">';
+	foreach ( $items as $path => $label ) {
+		echo '<li><a href="' . esc_url( home_url( $path ) ) . '">' . esc_html( $label ) . '</a></li>';
+	}
+	echo '</ul>';
+}
 
 function feast_theme_assets() {
 	$theme = wp_get_theme();

@@ -2,28 +2,24 @@
 	<div class="site-wrap">
 		<div class="footer-grid">
 			<div class="footer-brand">
-				<a class="brand" href="<?php echo esc_url( home_url( '/' ) ); ?>"><img src="<?php echo feast_asset( 'logo.jpg' ); ?>" alt="" width="64" height="64"><span class="brand__text">Feast in the Middle East <small>Granville, Sydney</small></span></a>
-				<p>Generous Middle Eastern food for family tables, workplace lunches and the celebrations that matter.</p>
+				<a class="brand" href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php $logo_id = get_theme_mod( 'custom_logo' ); if ( $logo_id ) : echo wp_get_attachment_image( $logo_id, 'thumbnail', false, array( 'alt' => '' ) ); else : ?><img src="<?php echo feast_asset( 'logo.jpg' ); ?>" alt="" width="64" height="64"><?php endif; ?><span class="brand__text"><?php echo esc_html( feast_copy( 'brand_name' ) ); ?> <small><?php echo esc_html( feast_copy( 'footer_location' ) ); ?></small></span></a>
+				<p><?php echo esc_html( feast_copy( 'footer_description' ) ); ?></p>
 			</div>
 			<div class="footer-col">
-				<h3>Visit & contact</h3>
+				<h3><?php echo esc_html( feast_copy( 'footer_contact_title' ) ); ?></h3>
 				<p><?php echo nl2br( esc_html( feast_setting( 'address' ) ) ); ?></p>
 				<a href="tel:<?php echo esc_attr( feast_setting( 'phone_link' ) ); ?>"><?php echo esc_html( feast_setting( 'phone_display' ) ); ?></a>
 			</div>
 			<div class="footer-col">
-				<h3>Explore</h3>
-				<a href="<?php echo esc_url( home_url( '/catering/' ) ); ?>">Catering</a>
-				<a href="<?php echo esc_url( home_url( '/menu/' ) ); ?>">Full menu</a>
-				<a href="<?php echo esc_url( home_url( '/our-story/' ) ); ?>">Our story</a>
-				<a href="<?php echo esc_url( home_url( '/gallery/' ) ); ?>">Gallery</a>
-				<a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">Request a quote</a>
-				<a href="<?php echo esc_url( feast_setting( 'instagram' ) ); ?>" target="_blank" rel="noopener">Follow on Instagram</a>
+				<h3><?php echo esc_html( feast_copy( 'footer_explore_title' ) ); ?></h3>
+				<?php wp_nav_menu( array( 'theme_location' => 'footer', 'container' => false, 'menu_class' => 'footer-menu', 'fallback_cb' => 'feast_footer_menu_fallback' ) ); ?>
+				<a href="<?php echo esc_url( feast_setting( 'instagram' ) ); ?>" target="_blank" rel="noopener"><?php echo esc_html( feast_copy( 'gallery_follow_label' ) ); ?></a>
 			</div>
 		</div>
-		<div class="footer-bottom"><span>&copy; <?php echo esc_html( gmdate( 'Y' ) ); ?> Feast in the Middle East.</span><span>Traditional food. Generous hospitality.</span></div>
+		<div class="footer-bottom"><span>&copy; <?php echo esc_html( gmdate( 'Y' ) ); ?> <?php echo esc_html( feast_copy( 'brand_name' ) ); ?>.</span><span><?php echo esc_html( feast_copy( 'footer_bottom_text' ) ); ?></span></div>
 	</div>
 </footer>
-<a class="button mobile-quote" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">Get a catering quote</a>
+<a class="button mobile-quote" href="<?php echo esc_url( feast_resolve_url( feast_copy( 'mobile_cta_link' ) ) ); ?>"><?php echo esc_html( feast_copy( 'mobile_cta_label' ) ); ?></a>
 <?php wp_footer(); ?>
 </body>
 </html>

@@ -96,6 +96,7 @@ function feast_cms_menu() {
 	);
 	add_submenu_page( 'feast-cms', 'Business Settings', 'Business Settings', 'manage_options', 'feast-settings', 'feast_settings_page' );
 	add_submenu_page( 'feast-cms', 'Website Copy', 'Website Copy', 'manage_options', 'feast-copy', 'feast_copy_page' );
+	add_submenu_page( 'feast-cms', 'Design & Branding', 'Design & Branding', 'manage_options', 'feast-design', 'feast_design_page' );
 }
 add_action( 'admin_menu', 'feast_cms_menu' );
 
@@ -121,12 +122,90 @@ function feast_setting( $key ) {
 function feast_register_settings() {
 	register_setting( 'feast_settings_group', 'feast_business', 'feast_sanitize_business_settings' );
 	register_setting( 'feast_copy_group', 'feast_site_copy', 'feast_sanitize_site_copy' );
+	register_setting( 'feast_design_group', 'feast_design', 'feast_sanitize_design_settings' );
+}
+
+function feast_design_defaults() {
+	return array(
+		'ink'            => '#171b18',
+		'forest'         => '#173f32',
+		'forest_light'   => '#245c49',
+		'cedar'          => '#2f765c',
+		'red'            => '#b83d35',
+		'cream'          => '#f7f1e6',
+		'paper'          => '#fffdf8',
+		'sand'           => '#dfc89f',
+		'muted'          => '#676b66',
+		'header_bg'      => '#0a0f0c',
+		'footer_bg'      => '#101713',
+		'hero_text'      => '#fffdf8',
+		'hero_accent'    => '#edd7ad',
+		'button_text'    => '#ffffff',
+		'corner_radius'  => '10',
+		'hero_min_height'=> '920',
+	);
+}
+
+function feast_get_design_settings() {
+	return wp_parse_args( (array) get_option( 'feast_design', array() ), feast_design_defaults() );
+}
+
+function feast_design( $key ) {
+	$settings = feast_get_design_settings();
+	return isset( $settings[ $key ] ) ? $settings[ $key ] : '';
+}
+
+function feast_sanitize_design_settings( $input ) {
+	$defaults = feast_design_defaults();
+	$output   = array();
+	foreach ( $defaults as $key => $default ) {
+		if ( in_array( $key, array( 'corner_radius', 'hero_min_height' ), true ) ) {
+			$output[ $key ] = isset( $input[ $key ] ) ? (string) absint( $input[ $key ] ) : $default;
+		} else {
+			$output[ $key ] = isset( $input[ $key ] ) && sanitize_hex_color( $input[ $key ] ) ? sanitize_hex_color( $input[ $key ] ) : $default;
+		}
+	}
+	return $output;
+}
+
+function feast_dynamic_design_css() {
+	$design = feast_get_design_settings();
+	$css = ':root{';
+	foreach ( array( 'ink', 'forest', 'forest_light', 'cedar', 'red', 'cream', 'paper', 'sand', 'muted' ) as $key ) {
+		$css .= '--' . str_replace( '_', '-', $key ) . ':' . $design[ $key ] . ';';
+	}
+	$css .= '--header-bg:' . $design['header_bg'] . ';--footer-bg:' . $design['footer_bg'] . ';--hero-text:' . $design['hero_text'] . ';--hero-accent:' . $design['hero_accent'] . ';--button-text:' . $design['button_text'] . ';--radius:' . absint( $design['corner_radius'] ) . 'px;--hero-min-height:' . absint( $design['hero_min_height'] ) . 'px;}';
+	wp_add_inline_style( 'feast-style', $css );
+}
+add_action( 'wp_enqueue_scripts', 'feast_dynamic_design_css', 20 );
+
+function feast_design_page() {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+	$settings = feast_get_design_settings();
+	$colours = array(
+		'ink' => 'Main text / dark sections', 'forest' => 'Primary brand colour', 'forest_light' => 'Primary hover colour', 'cedar' => 'Accent green', 'red' => 'Feature accent', 'cream' => 'Cream sections', 'paper' => 'Page background', 'sand' => 'Warm neutral', 'muted' => 'Secondary text', 'header_bg' => 'Header background', 'footer_bg' => 'Footer background', 'hero_text' => 'Hero text', 'hero_accent' => 'Hero script accent', 'button_text' => 'Primary button text',
+	);
+	?>
+	<div class="wrap feast-admin-wrap"><h1>Design &amp; Branding</h1><p class="feast-admin-lead">Change the global brand colours and sizing without editing code. Update the logo under Appearance → Customize → Site Identity, and navigation under Appearance → Menus.</p>
+	<form method="post" action="options.php"><?php settings_fields( 'feast_design_group' ); ?>
+		<div class="feast-admin-card"><h2>Brand colours</h2><?php foreach ( $colours as $key => $label ) : ?><div class="feast-admin-field"><label for="design-<?php echo esc_attr( $key ); ?>"><strong><?php echo esc_html( $label ); ?></strong></label><input id="design-<?php echo esc_attr( $key ); ?>" type="color" name="feast_design[<?php echo esc_attr( $key ); ?>]" value="<?php echo esc_attr( $settings[ $key ] ); ?>"></div><?php endforeach; ?></div>
+		<div class="feast-admin-card"><h2>Layout</h2><div class="feast-admin-field"><label for="design-radius"><strong>Card corner radius (pixels)</strong></label><input id="design-radius" type="number" min="0" max="40" name="feast_design[corner_radius]" value="<?php echo esc_attr( $settings['corner_radius'] ); ?>"></div><div class="feast-admin-field"><label for="design-hero-height"><strong>Desktop hero minimum height (pixels)</strong></label><input id="design-hero-height" type="number" min="650" max="1400" name="feast_design[hero_min_height]" value="<?php echo esc_attr( $settings['hero_min_height'] ); ?>"></div></div>
+		<?php submit_button( 'Save design settings' ); ?>
+	</form></div>
+	<?php
 }
 
 function feast_copy_defaults() {
 	return array(
+		'brand_name'            => 'Feast in the Middle East',
+		'brand_tagline'         => 'Traditional food made with love',
 		'announcement_text'    => 'Catering for family gatherings, celebrations and workplace events',
 		'announcement_mobile'  => 'Middle Eastern catering across Sydney',
+		'header_cta_label'      => 'Get a catering quote',
+		'header_cta_link'       => '/contact/',
+		'call_label'            => 'Call',
 		'trust_1_title'       => 'Made fresh',
 		'trust_1_text'        => 'From our Granville kitchen',
 		'trust_2_title'       => 'Custom menus',
@@ -141,6 +220,14 @@ function feast_copy_defaults() {
 		'menu_eyebrow'        => 'From our kitchen',
 		'menu_title'          => 'The dishes people come back for.',
 		'menu_intro'          => 'Traditional Middle Eastern flavours, generous portions and plenty made for sharing.',
+		'menu_category_mains' => 'Hearty mains',
+		'menu_category_salads'=> 'Salads & sides',
+		'menu_category_bites' => 'Bites & extras',
+		'menu_page_eyebrow'   => 'Our menu',
+		'menu_cta_eyebrow'    => 'Planning an event?',
+		'menu_cta_title'      => 'Build a menu for your guests.',
+		'menu_cta_label'      => 'Request a catering quote',
+		'menu_cta_link'       => '/contact/',
 		'process_eyebrow'     => 'How it works',
 		'process_title'       => 'From your idea to their plates.',
 		'process_intro'       => 'No complicated ordering. Just tell us what you’re planning and we’ll help take care of the food.',
@@ -154,11 +241,47 @@ function feast_copy_defaults() {
 		'story_title'         => 'Food that feels like home.',
 		'story_lead'          => 'Feast in the Middle East is built around the food we love to cook and share: generous, traditional dishes that bring people together.',
 		'story_text'          => 'Whether you’re feeding the family or celebrating with a room full of people, every order gets the same care from our Granville kitchen.',
+		'story_stamp'         => "Made with\nlove in\nGranville",
+		'story_cta_label'     => 'Read our story',
+		'story_cta_link'      => '/our-story/',
+		'story_page_cta_label'=> 'Plan a feast with us',
+		'story_page_cta_link' => '/contact/',
+		'values_eyebrow'      => 'What matters to us',
+		'values_title'        => 'Traditional food. Generous hospitality.',
+		'values_intro'        => 'Food made carefully, served generously and designed to bring people together.',
 		'gallery_eyebrow'     => 'Recent feasts',
 		'gallery_title'       => 'Made to be shared.',
+		'gallery_cta_label'   => 'View the full gallery',
+		'gallery_cta_link'    => '/gallery/',
+		'gallery_follow_label'=> 'Follow us on Instagram',
+		'faq_eyebrow'         => 'Good to know',
+		'faq_title'           => 'Catering questions, answered.',
 		'enquiry_eyebrow'     => 'Start your catering order',
 		'enquiry_title'       => 'Let’s put a feast on the table.',
 		'enquiry_intro'       => 'Send us the basics and we’ll get in touch to discuss the menu, quantities and a custom quote.',
+		'form_success'        => 'Thanks! Your catering request has been sent. We’ll be in touch soon.',
+		'form_error'          => 'We couldn’t send that yet. Check the required fields or call us.',
+		'form_name_label'     => 'Your name *',
+		'form_phone_label'    => 'Phone number *',
+		'form_email_label'    => 'Email *',
+		'form_date_label'     => 'Event date',
+		'form_guests_label'   => 'Approximate guests',
+		'form_guests_placeholder' => 'e.g. 40',
+		'form_type_label'     => 'What are you planning?',
+		'form_type_placeholder' => 'Choose one',
+		'form_type_options'   => "Family gathering\nWedding or celebration\nOffice lunch\nCommunity event\nOther",
+		'form_message_label'  => 'Tell us about your feast',
+		'form_message_placeholder' => 'Your preferred dishes, venue or anything we should know...',
+		'form_submit_label'   => 'Request my catering quote',
+		'form_note'           => 'No payment is taken here. We’ll contact you to confirm the details and quote.',
+		'contact_instagram_label' => 'Instagram',
+		'footer_description'  => 'Generous Middle Eastern food for family tables, workplace lunches and the celebrations that matter.',
+		'footer_contact_title'=> 'Visit & contact',
+		'footer_explore_title'=> 'Explore',
+		'footer_location'     => 'Granville, Sydney',
+		'footer_bottom_text'  => 'Traditional food. Generous hospitality.',
+		'mobile_cta_label'    => 'Get a catering quote',
+		'mobile_cta_link'     => '/contact/',
 	);
 }
 
@@ -171,10 +294,29 @@ function feast_copy( $key ) {
 	return isset( $copy[ $key ] ) ? $copy[ $key ] : '';
 }
 
+function feast_resolve_url( $url ) {
+	if ( ! $url ) {
+		return home_url( '/' );
+	}
+	if ( 0 === strpos( $url, '#' ) ) {
+		return $url;
+	}
+	if ( 0 === strpos( $url, '/' ) ) {
+		return home_url( $url );
+	}
+	return $url;
+}
+
 function feast_sanitize_site_copy( $input ) {
 	$output = array();
 	foreach ( feast_copy_defaults() as $key => $default ) {
-		$output[ $key ] = isset( $input[ $key ] ) ? sanitize_textarea_field( $input[ $key ] ) : $default;
+		if ( ! isset( $input[ $key ] ) ) {
+			$output[ $key ] = $default;
+		} elseif ( false !== strpos( $key, '_link' ) && 0 !== strpos( $input[ $key ], '#' ) && 0 !== strpos( $input[ $key ], '/' ) ) {
+			$output[ $key ] = esc_url_raw( $input[ $key ] );
+		} else {
+			$output[ $key ] = sanitize_textarea_field( $input[ $key ] );
+		}
 	}
 	return $output;
 }
@@ -185,20 +327,24 @@ function feast_copy_page() {
 	}
 	$copy = feast_get_site_copy();
 	$groups = array(
+		'Brand & header'       => array( 'brand_name', 'brand_tagline', 'header_cta_label', 'header_cta_link', 'call_label' ),
 		'Header announcement' => array( 'announcement_text', 'announcement_mobile' ),
 		'Homepage trust bar' => array( 'trust_1_title', 'trust_1_text', 'trust_2_title', 'trust_2_text', 'trust_3_title', 'trust_3_text', 'trust_4_title', 'trust_4_text' ),
 		'Catering section'   => array( 'catering_eyebrow', 'catering_title', 'catering_intro' ),
-		'Menu section'       => array( 'menu_eyebrow', 'menu_title', 'menu_intro' ),
+		'Menu section'       => array( 'menu_eyebrow', 'menu_title', 'menu_intro', 'menu_category_mains', 'menu_category_salads', 'menu_category_bites', 'menu_page_eyebrow', 'menu_cta_eyebrow', 'menu_cta_title', 'menu_cta_label', 'menu_cta_link' ),
 		'How it works'       => array( 'process_eyebrow', 'process_title', 'process_intro', 'step_1_title', 'step_1_text', 'step_2_title', 'step_2_text', 'step_3_title', 'step_3_text' ),
-		'Our story section'  => array( 'story_eyebrow', 'story_title', 'story_lead', 'story_text' ),
-		'Gallery section'    => array( 'gallery_eyebrow', 'gallery_title' ),
+		'Our story section'  => array( 'story_eyebrow', 'story_title', 'story_lead', 'story_text', 'story_stamp', 'story_cta_label', 'story_cta_link', 'story_page_cta_label', 'story_page_cta_link', 'values_eyebrow', 'values_title', 'values_intro' ),
+		'Gallery section'    => array( 'gallery_eyebrow', 'gallery_title', 'gallery_cta_label', 'gallery_cta_link', 'gallery_follow_label' ),
+		'FAQ section'        => array( 'faq_eyebrow', 'faq_title' ),
 		'Enquiry section'    => array( 'enquiry_eyebrow', 'enquiry_title', 'enquiry_intro' ),
+		'Enquiry form'       => array( 'form_success', 'form_error', 'form_name_label', 'form_phone_label', 'form_email_label', 'form_date_label', 'form_guests_label', 'form_guests_placeholder', 'form_type_label', 'form_type_placeholder', 'form_type_options', 'form_message_label', 'form_message_placeholder', 'form_submit_label', 'form_note' ),
+		'Footer & mobile CTA'=> array( 'footer_description', 'footer_contact_title', 'footer_explore_title', 'footer_location', 'footer_bottom_text', 'contact_instagram_label', 'mobile_cta_label', 'mobile_cta_link' ),
 	);
 	?>
 	<div class="wrap feast-admin-wrap"><h1>Website Copy</h1><p class="feast-admin-lead">Edit the headings and supporting text used across the homepage. Offers, packages, dishes and images are managed from their own Feast CMS menus.</p>
 	<form method="post" action="options.php"><?php settings_fields( 'feast_copy_group' ); ?>
 		<?php foreach ( $groups as $group_title => $keys ) : ?><div class="feast-admin-card"><h2><?php echo esc_html( $group_title ); ?></h2>
-			<?php foreach ( $keys as $key ) : $is_text = false !== strpos( $key, '_title' ) || false !== strpos( $key, '_eyebrow' ); ?><div class="feast-admin-field"><label for="<?php echo esc_attr( $key ); ?>"><strong><?php echo esc_html( ucwords( str_replace( '_', ' ', $key ) ) ); ?></strong></label><?php if ( $is_text ) : ?><input type="text" id="<?php echo esc_attr( $key ); ?>" name="feast_site_copy[<?php echo esc_attr( $key ); ?>]" value="<?php echo esc_attr( $copy[ $key ] ); ?>"><?php else : ?><textarea rows="3" id="<?php echo esc_attr( $key ); ?>" name="feast_site_copy[<?php echo esc_attr( $key ); ?>]"><?php echo esc_textarea( $copy[ $key ] ); ?></textarea><?php endif; ?></div><?php endforeach; ?>
+			<?php foreach ( $keys as $key ) : $is_long = (bool) preg_match( '/(_intro|_text|_lead|_description|_note|_options|_success|_error|_stamp)$/', $key ); ?><div class="feast-admin-field"><label for="<?php echo esc_attr( $key ); ?>"><strong><?php echo esc_html( ucwords( str_replace( '_', ' ', $key ) ) ); ?></strong></label><?php if ( ! $is_long ) : ?><input type="text" id="<?php echo esc_attr( $key ); ?>" name="feast_site_copy[<?php echo esc_attr( $key ); ?>]" value="<?php echo esc_attr( $copy[ $key ] ); ?>"><?php else : ?><textarea rows="3" id="<?php echo esc_attr( $key ); ?>" name="feast_site_copy[<?php echo esc_attr( $key ); ?>]"><?php echo esc_textarea( $copy[ $key ] ); ?></textarea><?php endif; ?></div><?php endforeach; ?>
 		</div><?php endforeach; ?>
 		<?php submit_button( 'Save website copy' ); ?>
 	</form></div>
@@ -248,6 +394,8 @@ function feast_meta_fields() {
 	return array(
 		'page' => array(
 			'_feast_page_eyebrow' => array( 'label' => 'Small heading above the page title', 'type' => 'text', 'placeholder' => 'Catering in Sydney' ),
+			'_feast_page_cta_label' => array( 'label' => 'Page call-to-action text (optional)', 'type' => 'text', 'placeholder' => 'Request a catering quote' ),
+			'_feast_page_cta_link'  => array( 'label' => 'Page call-to-action link (optional)', 'type' => 'text', 'placeholder' => '/contact/' ),
 		),
 		'feast_offer' => array(
 			'_feast_eyebrow'        => array( 'label' => 'Small heading', 'type' => 'text', 'placeholder' => 'Middle Eastern catering across Sydney' ),
@@ -256,16 +404,28 @@ function feast_meta_fields() {
 			'_feast_second_label'   => array( 'label' => 'Second button text', 'type' => 'text', 'placeholder' => 'Explore catering' ),
 			'_feast_second_link'    => array( 'label' => 'Second button link', 'type' => 'text', 'placeholder' => '#catering' ),
 			'_feast_note'           => array( 'label' => 'Small note', 'type' => 'text', 'placeholder' => 'Freshly prepared in Granville' ),
+			'_feast_overlay_color'  => array( 'label' => 'Overlay colour', 'type' => 'color', 'default' => '#071309' ),
+			'_feast_overlay_opacity'=> array( 'label' => 'Overlay strength (0–95)', 'type' => 'number', 'placeholder' => '75', 'min' => 0, 'max' => 95 ),
+			'_feast_text_color'     => array( 'label' => 'Hero text colour', 'type' => 'color', 'default' => '#fffdf8' ),
+			'_feast_accent_color'   => array( 'label' => 'Script accent colour', 'type' => 'color', 'default' => '#edd7ad' ),
+			'_feast_primary_color'  => array( 'label' => 'Main button background', 'type' => 'color', 'default' => '#ffffff' ),
+			'_feast_primary_text'   => array( 'label' => 'Main button text colour', 'type' => 'color', 'default' => '#173f32' ),
+			'_feast_second_color'   => array( 'label' => 'Second button background', 'type' => 'color', 'default' => '#173f32' ),
+			'_feast_second_text'    => array( 'label' => 'Second button text colour', 'type' => 'color', 'default' => '#ffffff' ),
 		),
 		'feast_bundle' => array(
 			'_feast_tag'            => array( 'label' => 'Package badge', 'type' => 'text', 'placeholder' => 'Most popular' ),
 			'_feast_audience'       => array( 'label' => 'Best for', 'type' => 'text', 'placeholder' => 'Ideal for 25–100+ guests' ),
 			'_feast_features'       => array( 'label' => 'Package inclusions', 'type' => 'textarea', 'placeholder' => "One inclusion per line\nFresh salads and traditional sides" ),
 			'_feast_cta_label'      => array( 'label' => 'Link text', 'type' => 'text', 'placeholder' => 'Plan my celebration' ),
+			'_feast_cta_link'       => array( 'label' => 'Link destination', 'type' => 'text', 'placeholder' => '/contact/' ),
+			'_feast_price'          => array( 'label' => 'Package price or price note', 'type' => 'text', 'placeholder' => 'Custom quote' ),
 			'_feast_featured'       => array( 'label' => 'Highlight this package', 'type' => 'checkbox' ),
 		),
 		'feast_dish' => array(
-			'_feast_category'       => array( 'label' => 'Menu category', 'type' => 'select', 'options' => array( 'mains' => 'Hearty mains', 'salads' => 'Salads & sides', 'bites' => 'Bites & extras' ) ),
+			'_feast_category'       => array( 'label' => 'Menu category', 'type' => 'select', 'options' => array( 'mains' => feast_copy( 'menu_category_mains' ), 'salads' => feast_copy( 'menu_category_salads' ), 'bites' => feast_copy( 'menu_category_bites' ) ) ),
+			'_feast_price'          => array( 'label' => 'Price', 'type' => 'text', 'placeholder' => '$18 or From $18' ),
+			'_feast_dietary'        => array( 'label' => 'Dietary label (optional)', 'type' => 'text', 'placeholder' => 'Vegetarian · Gluten free' ),
 			'_feast_showcase'       => array( 'label' => 'Show as a large image card', 'type' => 'checkbox' ),
 		),
 		'feast_gallery' => array(),
@@ -302,6 +462,11 @@ function feast_render_meta_box( $post ) {
 				printf( '<option value="%1$s" %2$s>%3$s</option>', esc_attr( $option_value ), selected( $value, $option_value, false ), esc_html( $option_label ) );
 			}
 			echo '</select>';
+		} elseif ( 'color' === $field['type'] ) {
+			$colour = $value ? $value : $field['default'];
+			printf( '<label for="%1$s"><strong>%2$s</strong></label><input type="color" id="%1$s" name="%1$s" value="%3$s">', esc_attr( $key ), esc_html( $field['label'] ), esc_attr( $colour ) );
+		} elseif ( 'number' === $field['type'] ) {
+			printf( '<label for="%1$s"><strong>%2$s</strong></label><input type="number" id="%1$s" name="%1$s" value="%3$s" placeholder="%4$s" min="%5$s" max="%6$s">', esc_attr( $key ), esc_html( $field['label'] ), esc_attr( $value ), esc_attr( $field['placeholder'] ), esc_attr( $field['min'] ), esc_attr( $field['max'] ) );
 		} else {
 			printf( '<label for="%1$s"><strong>%2$s</strong></label><input type="text" id="%1$s" name="%1$s" value="%3$s" placeholder="%4$s">', esc_attr( $key ), esc_html( $field['label'] ), esc_attr( $value ), esc_attr( $field['placeholder'] ) );
 		}
@@ -348,6 +513,10 @@ function feast_save_content_meta( $post_id ) {
 		$raw = wp_unslash( $_POST[ $key ] );
 		if ( 'textarea' === $field['type'] ) {
 			$value = sanitize_textarea_field( $raw );
+		} elseif ( 'color' === $field['type'] ) {
+			$value = sanitize_hex_color( $raw );
+		} elseif ( 'number' === $field['type'] ) {
+			$value = (string) min( (int) $field['max'], max( (int) $field['min'], absint( $raw ) ) );
 		} elseif ( false !== strpos( $key, '_link' ) && 0 !== strpos( $raw, '#' ) ) {
 			$value = esc_url_raw( $raw );
 		} else {

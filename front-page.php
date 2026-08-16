@@ -19,8 +19,20 @@ $story_image = $story_page && has_post_thumbnail( $story_page->ID ) ? get_the_po
 					}
 					$primary_link = get_post_meta( $offer->ID, '_feast_primary_link', true );
 					$second_link  = get_post_meta( $offer->ID, '_feast_second_link', true );
+					$overlay      = sanitize_hex_color( get_post_meta( $offer->ID, '_feast_overlay_color', true ) );
+					$opacity      = absint( get_post_meta( $offer->ID, '_feast_overlay_opacity', true ) );
+					$slide_vars   = array(
+						'--slide-overlay:' . ( $overlay ? $overlay : '#071309' ),
+						'--slide-opacity:' . ( $opacity ? min( 95, $opacity ) : 82 ) . '%',
+						'--slide-text:' . ( sanitize_hex_color( get_post_meta( $offer->ID, '_feast_text_color', true ) ) ?: feast_design( 'hero_text' ) ),
+						'--slide-accent:' . ( sanitize_hex_color( get_post_meta( $offer->ID, '_feast_accent_color', true ) ) ?: feast_design( 'hero_accent' ) ),
+						'--slide-primary:' . ( sanitize_hex_color( get_post_meta( $offer->ID, '_feast_primary_color', true ) ) ?: '#ffffff' ),
+						'--slide-primary-text:' . ( sanitize_hex_color( get_post_meta( $offer->ID, '_feast_primary_text', true ) ) ?: feast_design( 'forest' ) ),
+						'--slide-second:' . ( sanitize_hex_color( get_post_meta( $offer->ID, '_feast_second_color', true ) ) ?: feast_design( 'forest' ) ),
+						'--slide-second-text:' . ( sanitize_hex_color( get_post_meta( $offer->ID, '_feast_second_text', true ) ) ?: '#ffffff' ),
+					);
 					?>
-					<article class="hero-slide<?php echo 0 === $index ? ' is-active' : ''; ?>" data-slide aria-hidden="<?php echo 0 === $index ? 'false' : 'true'; ?>">
+					<article class="hero-slide<?php echo 0 === $index ? ' is-active' : ''; ?>" style="<?php echo esc_attr( implode( ';', $slide_vars ) ); ?>" data-slide aria-hidden="<?php echo 0 === $index ? 'false' : 'true'; ?>">
 						<img class="hero-slide__image" src="<?php echo esc_url( $image ); ?>" alt="<?php echo esc_attr( get_the_title( $offer ) ); ?>" <?php echo 0 === $index ? 'fetchpriority="high"' : 'loading="lazy"'; ?>>
 						<div class="site-wrap hero-content"><div class="hero-copy">
 							<p class="eyebrow eyebrow--light"><?php echo esc_html( get_post_meta( $offer->ID, '_feast_eyebrow', true ) ); ?></p>
@@ -92,8 +104,9 @@ $story_image = $story_page && has_post_thumbnail( $story_page->ID ) ? get_the_po
 							<?php if ( get_post_meta( $bundle->ID, '_feast_tag', true ) ) : ?><span class="bundle-tag"><?php echo esc_html( get_post_meta( $bundle->ID, '_feast_tag', true ) ); ?></span><?php endif; ?>
 							<h3><?php echo esc_html( get_the_title( $bundle ) ); ?></h3>
 							<span class="bundle-for"><?php echo esc_html( get_post_meta( $bundle->ID, '_feast_audience', true ) ); ?></span>
+							<?php if ( get_post_meta( $bundle->ID, '_feast_price', true ) ) : ?><strong class="bundle-price"><?php echo esc_html( get_post_meta( $bundle->ID, '_feast_price', true ) ); ?></strong><?php endif; ?>
 							<?php if ( ! empty( $features ) ) : ?><ul><?php foreach ( $features as $feature ) : ?><li><?php echo esc_html( $feature ); ?></li><?php endforeach; ?></ul><?php endif; ?>
-							<a class="text-link" href="#catering-enquiry" data-bundle="<?php echo esc_attr( get_the_title( $bundle ) ); ?>"><?php echo esc_html( get_post_meta( $bundle->ID, '_feast_cta_label', true ) ? get_post_meta( $bundle->ID, '_feast_cta_label', true ) : 'Ask about this package' ); ?> →</a>
+							<a class="text-link" href="<?php echo esc_url( feast_resolve_url( get_post_meta( $bundle->ID, '_feast_cta_link', true ) ?: '#catering-enquiry' ) ); ?>" data-bundle="<?php echo esc_attr( get_the_title( $bundle ) ); ?>"><?php echo esc_html( get_post_meta( $bundle->ID, '_feast_cta_label', true ) ? get_post_meta( $bundle->ID, '_feast_cta_label', true ) : 'Ask about this package' ); ?> →</a>
 						</article>
 					<?php endforeach; ?>
 				<?php else : ?>
@@ -128,11 +141,11 @@ $story_image = $story_page && has_post_thumbnail( $story_page->ID ) ? get_the_po
 				$showcase_dishes = array_slice( $showcase_dishes, 0, 3 );
 				?>
 				<?php if ( ! empty( $showcase_dishes ) ) : ?><div class="menu-showcase">
-					<?php foreach ( $showcase_dishes as $dish ) : ?><article class="dish-card"><img src="<?php echo esc_url( get_the_post_thumbnail_url( $dish->ID, 'large' ) ); ?>" alt="<?php echo esc_attr( get_the_title( $dish ) ); ?>" loading="lazy"><div class="dish-card__copy"><h3><?php echo esc_html( get_the_title( $dish ) ); ?></h3><p><?php echo esc_html( $dish->post_excerpt ); ?></p></div></article><?php endforeach; ?>
+					<?php foreach ( $showcase_dishes as $dish ) : ?><article class="dish-card"><img src="<?php echo esc_url( get_the_post_thumbnail_url( $dish->ID, 'large' ) ); ?>" alt="<?php echo esc_attr( get_the_title( $dish ) ); ?>" loading="lazy"><div class="dish-card__copy"><div class="dish-title-row"><h3><?php echo esc_html( get_the_title( $dish ) ); ?></h3><?php if ( get_post_meta( $dish->ID, '_feast_price', true ) ) : ?><strong><?php echo esc_html( get_post_meta( $dish->ID, '_feast_price', true ) ); ?></strong><?php endif; ?></div><p><?php echo esc_html( $dish->post_excerpt ); ?></p><?php if ( get_post_meta( $dish->ID, '_feast_dietary', true ) ) : ?><small><?php echo esc_html( get_post_meta( $dish->ID, '_feast_dietary', true ) ); ?></small><?php endif; ?></div></article><?php endforeach; ?>
 				</div><?php endif; ?>
 				<div class="menu-list">
 					<?php
-					$category_labels = array( 'mains' => 'Hearty mains', 'salads' => 'Salads & sides', 'bites' => 'Bites & extras' );
+					$category_labels = array( 'mains' => feast_copy( 'menu_category_mains' ), 'salads' => feast_copy( 'menu_category_salads' ), 'bites' => feast_copy( 'menu_category_bites' ) );
 					foreach ( $category_labels as $category_key => $category_label ) :
 						$category_dishes = array();
 						foreach ( $cms_dishes as $dish ) {
@@ -144,7 +157,7 @@ $story_image = $story_page && has_post_thumbnail( $story_page->ID ) ? get_the_po
 							continue;
 						}
 						?>
-						<div class="menu-group"><h3><?php echo esc_html( $category_label ); ?></h3><?php foreach ( $category_dishes as $dish ) : ?><p><?php echo esc_html( get_the_title( $dish ) ); ?></p><?php endforeach; ?></div>
+						<div class="menu-group"><h3><?php echo esc_html( $category_label ); ?></h3><?php foreach ( $category_dishes as $dish ) : ?><p><span><?php echo esc_html( get_the_title( $dish ) ); ?></span><?php if ( get_post_meta( $dish->ID, '_feast_price', true ) ) : ?><strong><?php echo esc_html( get_post_meta( $dish->ID, '_feast_price', true ) ); ?></strong><?php endif; ?></p><?php endforeach; ?></div>
 					<?php endforeach; ?>
 				</div>
 			<?php else : ?>
@@ -173,14 +186,14 @@ $story_image = $story_page && has_post_thumbnail( $story_page->ID ) ? get_the_po
 
 	<section class="section" id="our-story">
 		<div class="site-wrap story-grid">
-			<div class="story-image"><img src="<?php echo esc_url( $story_image ); ?>" alt="The Feast in the Middle East kitchen team preparing food" loading="lazy"><span class="story-stamp">Made with<br>love in<br>Granville</span></div>
-			<div class="story-copy"><p class="eyebrow"><?php echo esc_html( feast_copy( 'story_eyebrow' ) ); ?></p><h2><?php echo esc_html( feast_copy( 'story_title' ) ); ?></h2><p class="lead"><?php echo esc_html( feast_copy( 'story_lead' ) ); ?></p><p><?php echo esc_html( feast_copy( 'story_text' ) ); ?></p><a class="button button--outline" href="<?php echo esc_url( home_url( '/our-story/' ) ); ?>">Read our story</a></div>
+			<div class="story-image"><img src="<?php echo esc_url( $story_image ); ?>" alt="The Feast in the Middle East kitchen team preparing food" loading="lazy"><span class="story-stamp"><?php echo nl2br( esc_html( feast_copy( 'story_stamp' ) ) ); ?></span></div>
+			<div class="story-copy"><p class="eyebrow"><?php echo esc_html( feast_copy( 'story_eyebrow' ) ); ?></p><h2><?php echo esc_html( feast_copy( 'story_title' ) ); ?></h2><p class="lead"><?php echo esc_html( feast_copy( 'story_lead' ) ); ?></p><p><?php echo esc_html( feast_copy( 'story_text' ) ); ?></p><a class="button button--outline" href="<?php echo esc_url( feast_resolve_url( feast_copy( 'story_cta_link' ) ) ); ?>"><?php echo esc_html( feast_copy( 'story_cta_label' ) ); ?></a></div>
 		</div>
 	</section>
 
 	<section class="section section--cream" id="gallery">
 		<div class="site-wrap">
-			<div class="section-heading"><div><p class="eyebrow"><?php echo esc_html( feast_copy( 'gallery_eyebrow' ) ); ?></p><h2><?php echo esc_html( feast_copy( 'gallery_title' ) ); ?></h2></div><a class="text-link" href="<?php echo esc_url( home_url( '/gallery/' ) ); ?>">View the full gallery →</a></div>
+			<div class="section-heading"><div><p class="eyebrow"><?php echo esc_html( feast_copy( 'gallery_eyebrow' ) ); ?></p><h2><?php echo esc_html( feast_copy( 'gallery_title' ) ); ?></h2></div><a class="text-link" href="<?php echo esc_url( feast_resolve_url( feast_copy( 'gallery_cta_link' ) ) ); ?>"><?php echo esc_html( feast_copy( 'gallery_cta_label' ) ); ?> →</a></div>
 			<div class="gallery-grid">
 				<?php if ( ! empty( $cms_gallery ) ) : ?>
 					<?php foreach ( $cms_gallery as $gallery_item ) : if ( ! has_post_thumbnail( $gallery_item->ID ) ) { continue; } ?><figure><img src="<?php echo esc_url( get_the_post_thumbnail_url( $gallery_item->ID, 'large' ) ); ?>" alt="<?php echo esc_attr( get_the_title( $gallery_item ) ); ?>" loading="lazy"></figure><?php endforeach; ?>
@@ -196,7 +209,7 @@ $story_image = $story_page && has_post_thumbnail( $story_page->ID ) ? get_the_po
 
 	<section class="section enquiry" id="catering-enquiry">
 		<div class="site-wrap enquiry-grid">
-			<div class="enquiry-copy"><p class="eyebrow"><?php echo esc_html( feast_copy( 'enquiry_eyebrow' ) ); ?></p><h2><?php echo esc_html( feast_copy( 'enquiry_title' ) ); ?></h2><p class="lead"><?php echo esc_html( feast_copy( 'enquiry_intro' ) ); ?></p><div class="contact-list"><a href="tel:<?php echo esc_attr( feast_setting( 'phone_link' ) ); ?>">Call <?php echo esc_html( feast_setting( 'phone_display' ) ); ?></a><span><?php echo nl2br( esc_html( feast_setting( 'address' ) ) ); ?></span></div></div>
+			<div class="enquiry-copy"><p class="eyebrow"><?php echo esc_html( feast_copy( 'enquiry_eyebrow' ) ); ?></p><h2><?php echo esc_html( feast_copy( 'enquiry_title' ) ); ?></h2><p class="lead"><?php echo esc_html( feast_copy( 'enquiry_intro' ) ); ?></p><div class="contact-list"><a href="tel:<?php echo esc_attr( feast_setting( 'phone_link' ) ); ?>"><?php echo esc_html( feast_copy( 'call_label' ) ); ?> <?php echo esc_html( feast_setting( 'phone_display' ) ); ?></a><span><?php echo nl2br( esc_html( feast_setting( 'address' ) ) ); ?></span></div></div>
 			<?php get_template_part( 'template-parts/enquiry-form' ); ?>
 		</div>
 	</section>
