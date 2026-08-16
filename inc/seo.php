@@ -90,6 +90,7 @@ function feast_seo_page() {
 	);
 	?>
 	<div class="wrap feast-admin-wrap"><h1>SEO &amp; Local Business</h1><p class="feast-admin-lead">Manage how the business is described to search engines and social platforms. Individual pages have their own SEO fields in the page editor.</p>
+	<?php if ( ! get_option( 'blog_public' ) ) : ?><div class="notice notice-error inline"><p><strong>Search engine indexing is currently disabled.</strong> Open <a href="<?php echo esc_url( admin_url( 'options-reading.php' ) ); ?>">Settings → Reading</a> and untick “Discourage search engines from indexing this site” before launch.</p></div><?php else : ?><div class="notice notice-success inline"><p><strong>Search engine indexing is enabled.</strong> XML sitemap: <a href="<?php echo esc_url( home_url( '/wp-sitemap.xml' ) ); ?>" target="_blank" rel="noopener"><?php echo esc_html( home_url( '/wp-sitemap.xml' ) ); ?></a></p></div><?php endif; ?>
 	<form method="post" action="options.php"><?php settings_fields( 'feast_seo_group' ); ?>
 		<?php foreach ( $groups as $group_title => $keys ) : ?><div class="feast-admin-card"><h2><?php echo esc_html( $group_title ); ?></h2>
 			<?php if ( 'Opening hours' === $group_title ) : ?><p>One period per line using <code>Monday,Tuesday|09:00|17:00</code>. Leave blank until the client confirms the hours.</p><?php endif; ?>
@@ -137,7 +138,13 @@ function feast_filter_document_title( $title ) {
 		return feast_seo_setting( 'home_title' );
 	}
 	$custom = feast_page_seo_value( '_feast_seo_title' );
-	return $custom ? $custom : $title;
+	if ( $custom ) {
+		return $custom;
+	}
+	if ( is_singular() ) {
+		return get_the_title( get_queried_object_id() ) . ' | ' . feast_copy( 'brand_name' );
+	}
+	return $title;
 }
 add_filter( 'pre_get_document_title', 'feast_filter_document_title', 20 );
 
