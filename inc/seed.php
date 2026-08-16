@@ -82,9 +82,20 @@ function feast_sync_bundled_gallery() {
 	if ( get_option( 'feast_gallery_assets_v1' ) ) {
 		return;
 	}
+	if ( ! add_option( 'feast_gallery_sync_lock', time(), '', false ) ) {
+		$lock_time = (int) get_option( 'feast_gallery_sync_lock' );
+		if ( $lock_time && ( time() - $lock_time ) < 300 ) {
+			return;
+		}
+		delete_option( 'feast_gallery_sync_lock' );
+		if ( ! add_option( 'feast_gallery_sync_lock', time(), '', false ) ) {
+			return;
+		}
+	}
 
 	$images = feast_bundled_gallery_images();
 	if ( empty( $images ) ) {
+		delete_option( 'feast_gallery_sync_lock' );
 		return;
 	}
 
@@ -114,6 +125,7 @@ function feast_sync_bundled_gallery() {
 
 	if ( empty( $missing ) ) {
 		update_option( 'feast_gallery_assets_v1', '1', false );
+		delete_option( 'feast_gallery_sync_lock' );
 		return;
 	}
 
@@ -150,8 +162,45 @@ function feast_sync_bundled_gallery() {
 	if ( $created === count( $missing ) ) {
 		update_option( 'feast_gallery_assets_v1', '1', false );
 	}
+	delete_option( 'feast_gallery_sync_lock' );
 }
 add_action( 'init', 'feast_sync_bundled_gallery', 40 );
+
+/**
+ * Remove duplicate CMS rows left by overlapping requests during the first sync.
+ * Attachments are retained in the Media Library and posts are moved to Trash.
+ */
+function feast_cleanup_duplicate_gallery_assets() {
+	if ( get_option( 'feast_gallery_deduped_v1' ) ) {
+		return;
+	}
+
+	$gallery_posts = get_posts(
+		array(
+			'post_type'      => 'feast_gallery',
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+			'orderby'        => 'ID',
+			'order'          => 'ASC',
+			'fields'         => 'ids',
+		)
+	);
+	$seen = array();
+	foreach ( $gallery_posts as $gallery_post_id ) {
+		$asset_key = get_post_meta( $gallery_post_id, '_feast_gallery_asset', true );
+		if ( ! $asset_key ) {
+			continue;
+		}
+		if ( isset( $seen[ $asset_key ] ) ) {
+			wp_trash_post( $gallery_post_id );
+			continue;
+		}
+		$seen[ $asset_key ] = true;
+	}
+
+	update_option( 'feast_gallery_deduped_v1', '1', false );
+}
+add_action( 'init', 'feast_cleanup_duplicate_gallery_assets', 45 );
 
 function feast_seed_post_type( $post_type, $items ) {
 	$existing = get_posts( array( 'post_type' => $post_type, 'post_status' => 'any', 'posts_per_page' => 1, 'fields' => 'ids' ) );
