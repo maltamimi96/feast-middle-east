@@ -87,10 +87,6 @@ $story_image = $story_page && has_post_thumbnail( $story_page->ID ) ? get_the_po
 		</div>
 	</section>
 
-	<div class="trust-bar"><div class="site-wrap trust-grid">
-		<?php for ( $trust = 1; $trust <= 4; $trust++ ) : ?><div class="trust-item"><strong><?php echo esc_html( feast_copy( 'trust_' . $trust . '_title' ) ); ?></strong><span><?php echo esc_html( feast_copy( 'trust_' . $trust . '_text' ) ); ?></span></div><?php endfor; ?>
-	</div></div>
-
 	<section class="section section--cream" id="catering">
 		<div class="site-wrap">
 			<div class="section-heading"><div><p class="eyebrow"><?php echo esc_html( feast_copy( 'catering_eyebrow' ) ); ?></p><h2><?php echo esc_html( feast_copy( 'catering_title' ) ); ?></h2></div><p class="lead"><?php echo esc_html( feast_copy( 'catering_intro' ) ); ?></p></div>
