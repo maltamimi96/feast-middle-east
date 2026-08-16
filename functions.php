@@ -24,7 +24,8 @@ add_action( 'after_setup_theme', 'feast_theme_setup' );
 
 function feast_theme_assets() {
 	$theme = wp_get_theme();
-	wp_enqueue_style( 'feast-style', get_stylesheet_uri(), array(), $theme->get( 'Version' ) );
+	wp_enqueue_style( 'feast-fonts', 'https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600;700&family=Poppins:wght@400;500;600;700&display=swap', array(), null );
+	wp_enqueue_style( 'feast-style', get_stylesheet_uri(), array( 'feast-fonts' ), $theme->get( 'Version' ) );
 	wp_enqueue_script( 'feast-main', get_template_directory_uri() . '/assets/js/main.js', array(), $theme->get( 'Version' ), true );
 }
 add_action( 'wp_enqueue_scripts', 'feast_theme_assets' );

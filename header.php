@@ -9,6 +9,12 @@
 <?php wp_body_open(); ?>
 <a class="skip-link" href="#main-content">Skip to content</a>
 <header class="site-header" id="site-header">
+	<div class="announcement-bar">
+		<div class="site-wrap announcement-bar__inner">
+			<span><?php echo esc_html( feast_copy( 'announcement_text' ) ); ?></span>
+			<a href="tel:<?php echo esc_attr( feast_setting( 'phone_link' ) ); ?>">Call <?php echo esc_html( feast_setting( 'phone_display' ) ); ?></a>
+		</div>
+	</div>
 	<div class="site-wrap header-inner">
 		<a class="brand" href="<?php echo esc_url( home_url( '/' ) ); ?>" aria-label="Feast in the Middle East home">
 			<img src="<?php echo feast_asset( 'logo.jpg' ); ?>" alt="" width="64" height="64">
