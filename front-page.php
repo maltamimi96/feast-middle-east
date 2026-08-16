@@ -118,6 +118,15 @@ $story_image = $story_page && has_post_thumbnail( $story_page->ID ) ? get_the_po
 		</div>
 	</section>
 
+	<?php if ( shortcode_exists( 'trustindex' ) ) : ?>
+	<section class="section reviews-section" id="reviews" aria-labelledby="reviews-title">
+		<div class="site-wrap">
+			<div class="section-heading"><div><p class="eyebrow"><?php echo esc_html( feast_copy( 'reviews_eyebrow' ) ); ?></p><h2 id="reviews-title"><?php echo esc_html( feast_copy( 'reviews_title' ) ); ?></h2></div><p class="lead"><?php echo esc_html( feast_copy( 'reviews_intro' ) ); ?></p></div>
+			<div class="reviews-widget"><?php echo do_shortcode( '[trustindex no-registration=google]' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
+		</div>
+	</section>
+	<?php endif; ?>
+
 	<section class="section" id="menu">
 		<div class="site-wrap">
 			<div class="section-heading"><div><p class="eyebrow"><?php echo esc_html( feast_copy( 'menu_eyebrow' ) ); ?></p><h2><?php echo esc_html( feast_copy( 'menu_title' ) ); ?></h2></div><p class="lead"><?php echo esc_html( feast_copy( 'menu_intro' ) ); ?></p></div>
