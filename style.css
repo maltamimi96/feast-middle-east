@@ -3,7 +3,7 @@ Theme Name: Feast in the Middle East
 Theme URI: https://feastinthemiddleeast.com.au/
 Author: Feast in the Middle East
 Description: A custom catering-first WordPress theme for Feast in the Middle East, Granville.
-Version: 1.3.0
+Version: 1.3.1
 Requires at least: 6.0
 Requires PHP: 7.4
 Text Domain: feast-middle-east
@@ -108,6 +108,7 @@ h3 { font-size: clamp(1.4rem, 2vw, 1.9rem); }
   color: #fff;
   backdrop-filter: blur(14px);
 }
+.admin-bar .site-header { top: 32px; }
 .announcement-bar { background: var(--forest); border-bottom: 1px solid rgba(255,255,255,.12); color: #fff; }
 .announcement-bar__inner { min-height: 2.35rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; font-size: .7rem; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; }
 .announcement-bar a { color: #efd7a8; font-weight: 700; text-decoration: none; white-space: nowrap; }
@@ -317,6 +318,10 @@ h3 { font-size: clamp(1.4rem, 2vw, 1.9rem); }
 	.page-menu-grid, .full-gallery-grid { grid-template-columns: 1fr; }
 	.page-cta { display: block; }
 	.page-cta .button { margin-top: 1.5rem; }
+}
+
+@media (max-width: 782px) {
+	.admin-bar .site-header { top: 46px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
