@@ -32,7 +32,8 @@ function feast_import_theme_image( $filename, $title ) {
 	if ( false === $contents ) {
 		return 0;
 	}
-	$upload = wp_upload_bits( $filename, null, $contents );
+	// Asset keys may include a theme subdirectory, but Media Library filenames may not.
+	$upload = wp_upload_bits( basename( $filename ), null, $contents );
 	if ( ! empty( $upload['error'] ) ) {
 		return 0;
 	}
@@ -54,6 +55,103 @@ function feast_import_theme_image( $filename, $title ) {
 	update_post_meta( $attachment_id, '_feast_theme_asset', $filename );
 	return (int) $attachment_id;
 }
+
+/**
+ * Return every bundled gallery image in a predictable order.
+ */
+function feast_bundled_gallery_images() {
+	$directory = get_template_directory() . '/assets/images/gallery';
+	$images    = glob( $directory . '/*.{jpg,jpeg,png,webp,avif}', GLOB_BRACE );
+
+	if ( false === $images ) {
+		return array();
+	}
+
+	natcasesort( $images );
+	return array_values( $images );
+}
+
+/**
+ * Gradually import bundled gallery photos into the editable Gallery CMS.
+ *
+ * Keeping the batch deliberately small prevents shared hosting from timing out
+ * while WordPress creates its responsive image sizes. The sync is idempotent and
+ * continues on subsequent requests until every bundled image is editable.
+ */
+function feast_sync_bundled_gallery() {
+	if ( get_option( 'feast_gallery_assets_v1' ) ) {
+		return;
+	}
+
+	$images = feast_bundled_gallery_images();
+	if ( empty( $images ) ) {
+		return;
+	}
+
+	$gallery_posts = get_posts(
+		array(
+			'post_type'      => 'feast_gallery',
+			'post_status'    => 'any',
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+		)
+	);
+	$imported       = array();
+	foreach ( $gallery_posts as $gallery_post_id ) {
+		$asset_key = get_post_meta( $gallery_post_id, '_feast_gallery_asset', true );
+		if ( $asset_key ) {
+			$imported[ $asset_key ] = true;
+		}
+	}
+
+	$missing = array();
+	foreach ( $images as $index => $image_path ) {
+		$asset_key = 'gallery/' . basename( $image_path );
+		if ( empty( $imported[ $asset_key ] ) ) {
+			$missing[ $index ] = $asset_key;
+		}
+	}
+
+	if ( empty( $missing ) ) {
+		update_option( 'feast_gallery_assets_v1', '1', false );
+		return;
+	}
+
+	$created = 0;
+	foreach ( $missing as $index => $asset_key ) {
+		if ( $created >= 4 ) {
+			break;
+		}
+
+		$title         = sprintf( 'Middle Eastern catering gallery photo %02d', $index + 1 );
+		$attachment_id = feast_import_theme_image( $asset_key, $title );
+		if ( ! $attachment_id ) {
+			continue;
+		}
+
+		$post_id = wp_insert_post(
+			array(
+				'post_type'   => 'feast_gallery',
+				'post_status' => 'publish',
+				'post_title'  => $title,
+				'menu_order'  => 100 + $index,
+			)
+		);
+		if ( ! $post_id || is_wp_error( $post_id ) ) {
+			continue;
+		}
+
+		update_post_meta( $post_id, '_feast_gallery_asset', $asset_key );
+		update_post_meta( $attachment_id, '_wp_attachment_image_alt', $title );
+		set_post_thumbnail( $post_id, $attachment_id );
+		$created++;
+	}
+
+	if ( $created === count( $missing ) ) {
+		update_option( 'feast_gallery_assets_v1', '1', false );
+	}
+}
+add_action( 'init', 'feast_sync_bundled_gallery', 40 );
 
 function feast_seed_post_type( $post_type, $items ) {
 	$existing = get_posts( array( 'post_type' => $post_type, 'post_status' => 'any', 'posts_per_page' => 1, 'fields' => 'ids' ) );
@@ -191,4 +289,3 @@ function feast_seed_admin_notice() {
 	echo '<div class="notice notice-success is-dismissible"><p><strong>Feast CMS is ready.</strong> The current offers, packages, dishes, gallery and website pages are now editable from WordPress.</p></div>';
 }
 add_action( 'admin_notices', 'feast_seed_admin_notice' );
-

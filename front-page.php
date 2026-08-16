@@ -3,7 +3,7 @@ get_header();
 $cms_offers  = feast_content_items( 'feast_offer' );
 $cms_bundles = feast_content_items( 'feast_bundle' );
 $cms_dishes  = feast_content_items( 'feast_dish' );
-$cms_gallery = feast_content_items( 'feast_gallery', 6 );
+$cms_gallery = feast_content_items( 'feast_gallery', 8 );
 $hero_count  = ! empty( $cms_offers ) ? count( $cms_offers ) : 3;
 $story_page  = get_page_by_path( 'our-story', OBJECT, 'page' );
 $story_image = $story_page && has_post_thumbnail( $story_page->ID ) ? get_the_post_thumbnail_url( $story_page->ID, 'large' ) : feast_asset( 'owner-kitchen.jpg' );
