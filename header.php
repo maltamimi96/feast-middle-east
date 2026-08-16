@@ -11,7 +11,8 @@
 <header class="site-header" id="site-header">
 	<div class="announcement-bar">
 		<div class="site-wrap announcement-bar__inner">
-			<span><?php echo esc_html( feast_copy( 'announcement_text' ) ); ?></span>
+			<span class="announcement-bar__desktop"><?php echo esc_html( feast_copy( 'announcement_text' ) ); ?></span>
+			<span class="announcement-bar__mobile"><?php echo esc_html( feast_copy( 'announcement_mobile' ) ); ?></span>
 			<a href="tel:<?php echo esc_attr( feast_setting( 'phone_link' ) ); ?>">Call <?php echo esc_html( feast_setting( 'phone_display' ) ); ?></a>
 		</div>
 	</div>

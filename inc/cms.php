@@ -126,6 +126,7 @@ function feast_register_settings() {
 function feast_copy_defaults() {
 	return array(
 		'announcement_text'    => 'Catering for family gatherings, celebrations and workplace events',
+		'announcement_mobile'  => 'Middle Eastern catering across Sydney',
 		'trust_1_title'       => 'Made fresh',
 		'trust_1_text'        => 'From our Granville kitchen',
 		'trust_2_title'       => 'Custom menus',
@@ -184,7 +185,7 @@ function feast_copy_page() {
 	}
 	$copy = feast_get_site_copy();
 	$groups = array(
-		'Header announcement' => array( 'announcement_text' ),
+		'Header announcement' => array( 'announcement_text', 'announcement_mobile' ),
 		'Homepage trust bar' => array( 'trust_1_title', 'trust_1_text', 'trust_2_title', 'trust_2_text', 'trust_3_title', 'trust_3_text', 'trust_4_title', 'trust_4_text' ),
 		'Catering section'   => array( 'catering_eyebrow', 'catering_title', 'catering_intro' ),
 		'Menu section'       => array( 'menu_eyebrow', 'menu_title', 'menu_intro' ),
