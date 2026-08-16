@@ -10,6 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 require_once get_template_directory() . '/inc/cms.php';
+require_once get_template_directory() . '/inc/seo.php';
 require_once get_template_directory() . '/inc/seed.php';
 
 function feast_theme_setup() {

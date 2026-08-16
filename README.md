@@ -24,9 +24,12 @@ After activation, WordPress contains a **Feast CMS** menu with:
 - **Business Settings** — phone, address, Instagram URL and catering enquiry email.
 - **Website Copy** — brand text, navigation CTA, homepage headings, category names, trust points, story, process steps, FAQ heading, enquiry form labels, footer and mobile CTA.
 - **Design & Branding** — global colours, card radius and hero height.
+- **SEO & Local Business** — homepage search title and description, social image, structured address, service area, cuisine, hours, profiles and search-verification codes.
 - **Catering FAQs** — questions and answers shown on the catering page.
 
 Use **Appearance → Customize → Site Identity** for the logo. Use **Appearance → Menus** to manage the header and footer navigation locations.
+
+Every page and post also has optional SEO title, meta description, social image, canonical URL and no-index controls. The theme outputs canonical tags, Open Graph/Twitter metadata and JSON-LD for the restaurant, menu, catering service, breadcrumbs and visible FAQs. If Yoast, Rank Math or All in One SEO is installed later, the native frontend SEO output disables itself to prevent duplicate metadata.
 
 The theme also creates editable WordPress pages for **Catering**, **Menu**, **Our Story**, **Gallery**, and **Contact**. Edit each page's title, excerpt, main content, small heading and featured image using the normal WordPress page editor.
 

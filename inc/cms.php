@@ -396,6 +396,18 @@ function feast_meta_fields() {
 			'_feast_page_eyebrow' => array( 'label' => 'Small heading above the page title', 'type' => 'text', 'placeholder' => 'Catering in Sydney' ),
 			'_feast_page_cta_label' => array( 'label' => 'Page call-to-action text (optional)', 'type' => 'text', 'placeholder' => 'Request a catering quote' ),
 			'_feast_page_cta_link'  => array( 'label' => 'Page call-to-action link (optional)', 'type' => 'text', 'placeholder' => '/contact/' ),
+			'_feast_seo_title'       => array( 'label' => 'SEO title (optional)', 'type' => 'text', 'placeholder' => 'Keep this clear and specific, around 50–60 characters' ),
+			'_feast_meta_description'=> array( 'label' => 'Meta description (optional)', 'type' => 'textarea', 'placeholder' => 'A useful summary for search results, around 140–160 characters' ),
+			'_feast_social_image'    => array( 'label' => 'Social sharing image URL (optional)', 'type' => 'text', 'placeholder' => 'Leave blank to use the featured image' ),
+			'_feast_canonical_url'   => array( 'label' => 'Canonical URL override (advanced)', 'type' => 'text', 'placeholder' => 'Leave blank for the normal page URL' ),
+			'_feast_noindex'         => array( 'label' => 'Hide this page from search engines', 'type' => 'checkbox' ),
+		),
+		'post' => array(
+			'_feast_seo_title'       => array( 'label' => 'SEO title (optional)', 'type' => 'text', 'placeholder' => 'Keep this clear and specific, around 50–60 characters' ),
+			'_feast_meta_description'=> array( 'label' => 'Meta description (optional)', 'type' => 'textarea', 'placeholder' => 'A useful summary for search results, around 140–160 characters' ),
+			'_feast_social_image'    => array( 'label' => 'Social sharing image URL (optional)', 'type' => 'text', 'placeholder' => 'Leave blank to use the featured image' ),
+			'_feast_canonical_url'   => array( 'label' => 'Canonical URL override (advanced)', 'type' => 'text', 'placeholder' => 'Leave blank for the normal post URL' ),
+			'_feast_noindex'         => array( 'label' => 'Hide this post from search engines', 'type' => 'checkbox' ),
 		),
 		'feast_offer' => array(
 			'_feast_eyebrow'        => array( 'label' => 'Small heading', 'type' => 'text', 'placeholder' => 'Middle Eastern catering across Sydney' ),
@@ -477,6 +489,7 @@ function feast_render_meta_box( $post ) {
 function feast_render_help_box( $post ) {
 	$guides = array(
 		'page'          => 'Edit the page title, introductory excerpt, main content and featured image. Dedicated Feast page layouts update automatically.',
+		'post'          => 'Edit the post normally. SEO fields override the search title, description, social image and indexing only when needed.',
 		'feast_offer'   => 'Add the large headline as the title, supporting sentence as the excerpt, and the background photo as the featured image.',
 		'feast_bundle'  => 'Add the package name as the title. Put each inclusion on its own line. Drag is not required: use the Order field under Page Attributes.',
 		'feast_dish'    => 'Add the dish name, a short description and a featured image. Use Order to control its position.',
@@ -517,7 +530,7 @@ function feast_save_content_meta( $post_id ) {
 			$value = sanitize_hex_color( $raw );
 		} elseif ( 'number' === $field['type'] ) {
 			$value = (string) min( (int) $field['max'], max( (int) $field['min'], absint( $raw ) ) );
-		} elseif ( false !== strpos( $key, '_link' ) && 0 !== strpos( $raw, '#' ) ) {
+		} elseif ( ( false !== strpos( $key, '_link' ) || false !== strpos( $key, '_url' ) || false !== strpos( $key, '_image' ) ) && 0 !== strpos( $raw, '#' ) && 0 !== strpos( $raw, '/' ) ) {
 			$value = esc_url_raw( $raw );
 		} else {
 			$value = sanitize_text_field( $raw );
@@ -544,7 +557,7 @@ function feast_content_items( $post_type, $limit = -1, $meta_query = array() ) {
 
 function feast_admin_assets( $hook ) {
 	$screen = get_current_screen();
-	if ( ! $screen || ( 0 !== strpos( $screen->id, 'feast_' ) && false === strpos( $screen->id, 'feast-cms' ) && false === strpos( $screen->id, 'feast-settings' ) ) ) {
+	if ( ! $screen || ( ! in_array( $screen->id, array( 'page', 'post' ), true ) && 0 !== strpos( $screen->id, 'feast_' ) && false === strpos( $screen->id, 'feast-cms' ) && false === strpos( $screen->id, 'feast-settings' ) ) ) {
 		return;
 	}
 	wp_enqueue_style( 'feast-admin', get_template_directory_uri() . '/assets/css/admin.css', array(), wp_get_theme()->get( 'Version' ) );
