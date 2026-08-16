@@ -1,0 +1,17 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/theme.json",
+  "version": 2,
+  "settings": {
+    "appearanceTools": true,
+    "layout": { "contentSize": "820px", "wideSize": "1160px" },
+    "color": {
+      "palette": [
+        { "slug": "forest", "name": "Forest", "color": "#173f32" },
+        { "slug": "cedar", "name": "Cedar", "color": "#2f765c" },
+        { "slug": "red", "name": "Red", "color": "#b83d35" },
+        { "slug": "cream", "name": "Cream", "color": "#f7f1e6" },
+        { "slug": "ink", "name": "Ink", "color": "#171b18" }
+      ]
+    }
+  }
+}
