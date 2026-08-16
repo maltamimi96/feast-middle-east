@@ -7,15 +7,15 @@
 			</div>
 			<div class="footer-col">
 				<h3>Visit & contact</h3>
-				<p>Inside HAWA Food Spot<br>43 South St, Granville NSW</p>
-				<a href="tel:+61407495908">0407 495 908</a>
+				<p><?php echo nl2br( esc_html( feast_setting( 'address' ) ) ); ?></p>
+				<a href="tel:<?php echo esc_attr( feast_setting( 'phone_link' ) ); ?>"><?php echo esc_html( feast_setting( 'phone_display' ) ); ?></a>
 			</div>
 			<div class="footer-col">
 				<h3>Explore</h3>
 				<a href="#catering">Catering bundles</a>
 				<a href="#menu">Menu highlights</a>
 				<a href="#catering-enquiry">Request a quote</a>
-				<a href="https://www.instagram.com/feast_in_the_middle_east/" target="_blank" rel="noopener">Follow on Instagram</a>
+				<a href="<?php echo esc_url( feast_setting( 'instagram' ) ); ?>" target="_blank" rel="noopener">Follow on Instagram</a>
 			</div>
 		</div>
 		<div class="footer-bottom"><span>&copy; <?php echo esc_html( gmdate( 'Y' ) ); ?> Feast in the Middle East.</span><span>Traditional food. Generous hospitality.</span></div>

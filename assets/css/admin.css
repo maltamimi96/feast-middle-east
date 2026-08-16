@@ -1,0 +1,10 @@
+.feast-admin-wrap { max-width: 1000px; }
+.feast-admin-lead { max-width: 720px; font-size: 16px; color: #50575e; }
+.feast-admin-card { margin-top: 24px; padding: 24px; background: #fff; border: 1px solid #dcdcde; border-radius: 10px; }
+.feast-admin-card h2 { margin-top: 0; }
+.feast-admin-field { display: grid; gap: 7px; margin-bottom: 20px; }
+.feast-admin-field:last-child { margin-bottom: 0; }
+.feast-admin-field input[type="text"],
+.feast-admin-field textarea,
+.feast-admin-field select { width: 100%; max-width: 760px; }
+.feast-admin-field textarea { min-height: 110px; }

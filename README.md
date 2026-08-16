@@ -14,3 +14,15 @@ A custom, coded WordPress theme focused on catering enquiries and menu discovery
 The homepage content is intentionally stored in `front-page.php` so it remains completely code-controlled and can be deployed through GitHub. No page builder is required.
 
 Contact details and package text can be updated in `front-page.php`, `header.php`, and `footer.php`.
+
+## Client CMS
+
+After activation, WordPress contains a **Feast CMS** menu with:
+
+- **Hero Offers** — slideshow headline, supporting text, buttons, note and background image.
+- **Catering Packages** — package name, audience, inclusions, badge, call to action and featured styling.
+- **Menu Dishes** — dish name, description, category, image and showcase option.
+- **Gallery Images** — upload and order homepage gallery images.
+- **Business Settings** — phone, address, Instagram URL and catering enquiry email.
+
+Use the WordPress **Featured Image** box to upload images. Use **Page Attributes → Order** to control display order. Published items appear on the website; drafts remain hidden. If a section has no published CMS items, the theme's original content is used as a fallback.

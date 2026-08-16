@@ -9,6 +9,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+require_once get_template_directory() . '/inc/cms.php';
+
 function feast_theme_setup() {
 	add_theme_support( 'title-tag' );
 	add_theme_support( 'post-thumbnails' );
@@ -58,7 +60,7 @@ function feast_handle_enquiry() {
 	$subject = sprintf( 'New catering enquiry from %s', $name );
 	$body    = "Name: {$name}\nEmail: {$email}\nPhone: {$phone}\nEvent date: {$date}\nGuests: {$guests}\nEvent type: {$type}\n\nDetails:\n{$message}";
 	$headers = array( 'Reply-To: ' . $name . ' <' . $email . '>' );
-	$sent    = wp_mail( get_option( 'admin_email' ), $subject, $body, $headers );
+	$sent    = wp_mail( feast_setting( 'enquiry_email' ), $subject, $body, $headers );
 
 	wp_safe_redirect( add_query_arg( 'enquiry', $sent ? 'sent' : 'error', $redirect ) . '#catering-enquiry' );
 	exit;
