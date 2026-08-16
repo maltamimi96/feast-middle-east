@@ -3,7 +3,7 @@ Theme Name: Feast in the Middle East
 Theme URI: https://feastinthemiddleeast.com.au/
 Author: Feast in the Middle East
 Description: A custom catering-first WordPress theme for Feast in the Middle East, Granville.
-Version: 1.6.6
+Version: 1.7.0
 Requires at least: 6.0
 Requires PHP: 7.4
 Text Domain: feast-middle-east
@@ -164,18 +164,21 @@ h3 { font-size: clamp(1.4rem, 2vw, 1.9rem); }
 .slider-arrow:hover { background: #fff; color: var(--forest); }
 
 .bundle-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
-.bundle-card { position: relative; display: flex; min-height: 29rem; flex-direction: column; padding: 2.25rem; overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); }
-.bundle-card--featured { background: var(--forest); color: #fff; transform: translateY(-.75rem); box-shadow: var(--shadow); }
+.bundle-card { position: relative; min-height: 34rem; overflow: hidden; border: 0; border-radius: var(--radius); background: var(--forest); color: #fff; isolation: isolate; }
+.bundle-card::after { content: ""; position: absolute; z-index: -1; inset: 0; background: linear-gradient(180deg, rgba(8,14,11,.08) 8%, rgba(8,14,11,.45) 43%, rgba(8,14,11,.96) 100%); }
+.bundle-card__image { position: absolute; z-index: -2; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .55s ease; }
+.bundle-card:hover .bundle-card__image { transform: scale(1.035); }
+.bundle-card__content { position: relative; z-index: 1; display: flex; min-height: 34rem; flex-direction: column; padding: 2.25rem; }
+.bundle-card--featured { transform: translateY(-.75rem); box-shadow: var(--shadow); }
 .bundle-tag { align-self: flex-start; margin-bottom: 3.5rem; padding: .35rem .7rem; border-radius: 999px; background: var(--cream); color: var(--forest); font-size: .68rem; font-weight: 850; letter-spacing: .09em; text-transform: uppercase; }
 .bundle-card--featured .bundle-tag { background: var(--sand); }
 .bundle-card h3 { margin-bottom: .6rem; font-size: 2rem; }
-.bundle-for { color: var(--red); font-weight: 800; }
+.bundle-for { color: var(--sand); font-weight: 800; }
 .bundle-price { display: block; margin-top: .35rem; font-size: 1.05rem; }
 .bundle-card--featured .bundle-for { color: var(--sand); }
-.bundle-card ul { margin: 1.2rem 0 2rem; padding-left: 1.15rem; color: var(--muted); }
-.bundle-card--featured ul { color: rgba(255,255,255,.75); }
+.bundle-card ul { margin: 1.2rem 0 2rem; padding-left: 1.15rem; color: rgba(255,255,255,.82); }
 .bundle-card .text-link { margin-top: auto; }
-.bundle-card--featured .text-link { color: #fff; }
+.bundle-card .text-link, .bundle-card--featured .text-link { color: #fff; }
 
 .menu-showcase { display: grid; grid-template-columns: 1.15fr .85fr; gap: 1.25rem; }
 .dish-card { position: relative; min-height: 26rem; overflow: hidden; border-radius: var(--radius); background: #ddd; color: #fff; }
@@ -303,7 +306,7 @@ h3 { font-size: clamp(1.4rem, 2vw, 1.9rem); }
   .main-nav a { font-family: "Poppins", sans-serif; font-size: 1.55rem; }
   .main-nav .button { font-family: inherit; font-size: 1rem; }
   .bundle-grid, .steps, .menu-list { grid-template-columns: 1fr; }
-  .bundle-card { min-height: 22rem; }
+	.bundle-card, .bundle-card__content { min-height: 30rem; }
   .bundle-card--featured { transform: none; }
   .story-grid, .enquiry-grid { grid-template-columns: 1fr; }
   .enquiry-copy { position: static; }

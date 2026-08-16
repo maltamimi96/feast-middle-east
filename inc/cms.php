@@ -487,7 +487,7 @@ function feast_render_help_box( $post ) {
 		'page'          => 'Edit the page title, introductory excerpt, main content and featured image. Dedicated Feast page layouts update automatically.',
 		'post'          => 'Edit the post normally. SEO fields override the search title, description, social image and indexing only when needed.',
 		'feast_offer'   => 'Add the large headline as the title, supporting sentence as the excerpt, and the background photo as the featured image.',
-		'feast_bundle'  => 'Add the package name as the title. Put each inclusion on its own line. Drag is not required: use the Order field under Page Attributes.',
+		'feast_bundle'  => 'Add the package name as the title, choose a strong event or food photo as the Package image, and put each inclusion on its own line. Use Order to control its position.',
 		'feast_dish'    => 'Add the dish name, a short description and a featured image. Use Order to control its position.',
 		'feast_gallery' => 'Add a descriptive title and choose a featured image. The title is used as accessible image text.',
 		'feast_faq'     => 'Add the customer question as the title and the answer in the main content editor. Use Order to control its position.',

@@ -95,20 +95,24 @@ $story_image = $story_page && has_post_thumbnail( $story_page->ID ) ? get_the_po
 					<?php foreach ( $cms_bundles as $bundle ) :
 						$features = array_filter( array_map( 'trim', preg_split( '/\r\n|\r|\n/', get_post_meta( $bundle->ID, '_feast_features', true ) ) ) );
 						$featured = '1' === get_post_meta( $bundle->ID, '_feast_featured', true );
+						$bundle_image = has_post_thumbnail( $bundle->ID ) ? get_the_post_thumbnail_url( $bundle->ID, 'large' ) : '';
 						?>
-						<article class="bundle-card<?php echo $featured ? ' bundle-card--featured' : ''; ?>">
+						<article class="bundle-card<?php echo $featured ? ' bundle-card--featured' : ''; ?><?php echo $bundle_image ? ' bundle-card--has-image' : ''; ?>">
+							<?php if ( $bundle_image ) : ?><img class="bundle-card__image" src="<?php echo esc_url( $bundle_image ); ?>" alt="" loading="lazy"><?php endif; ?>
+							<div class="bundle-card__content">
 							<?php if ( get_post_meta( $bundle->ID, '_feast_tag', true ) ) : ?><span class="bundle-tag"><?php echo esc_html( get_post_meta( $bundle->ID, '_feast_tag', true ) ); ?></span><?php endif; ?>
 							<h3><?php echo esc_html( get_the_title( $bundle ) ); ?></h3>
 							<span class="bundle-for"><?php echo esc_html( get_post_meta( $bundle->ID, '_feast_audience', true ) ); ?></span>
 							<?php if ( get_post_meta( $bundle->ID, '_feast_price', true ) ) : ?><strong class="bundle-price"><?php echo esc_html( get_post_meta( $bundle->ID, '_feast_price', true ) ); ?></strong><?php endif; ?>
 							<?php if ( ! empty( $features ) ) : ?><ul><?php foreach ( $features as $feature ) : ?><li><?php echo esc_html( $feature ); ?></li><?php endforeach; ?></ul><?php endif; ?>
 							<a class="text-link" href="<?php echo esc_url( feast_resolve_url( get_post_meta( $bundle->ID, '_feast_cta_link', true ) ?: '#catering-enquiry' ) ); ?>" data-bundle="<?php echo esc_attr( get_the_title( $bundle ) ); ?>"><?php echo esc_html( get_post_meta( $bundle->ID, '_feast_cta_label', true ) ? get_post_meta( $bundle->ID, '_feast_cta_label', true ) : 'Ask about this package' ); ?> →</a>
+							</div>
 						</article>
 					<?php endforeach; ?>
 				<?php else : ?>
-				<article class="bundle-card"><span class="bundle-tag">Warm & generous</span><h3>Family Table</h3><span class="bundle-for">Ideal for 10–25 guests</span><ul><li>Your choice of hearty main dishes</li><li>Fresh salads and traditional sides</li><li>Share-style trays, ready for the table</li><li>Custom quote based on your menu</li></ul><a class="text-link" href="#catering-enquiry" data-bundle="Family Table">Ask about this feast →</a></article>
-				<article class="bundle-card bundle-card--featured"><span class="bundle-tag">Most popular</span><h3>Celebration Feast</h3><span class="bundle-for">Ideal for 25–100+ guests</span><ul><li>A generous mix of mains and favourites</li><li>Salads, dips, sides and finger food</li><li>Designed for weddings and big occasions</li><li>Custom quote built for your guest count</li></ul><a class="text-link" href="#catering-enquiry" data-bundle="Celebration Feast">Plan my celebration →</a></article>
-				<article class="bundle-card"><span class="bundle-tag">Easy crowd-pleaser</span><h3>Office Lunch</h3><span class="bundle-for">Ideal for teams of 10+</span><ul><li>Easy-to-serve hot mains or wraps</li><li>Fresh salads, dips and sides</li><li>Flexible options for team preferences</li><li>Custom quote for pickup or delivery</li></ul><a class="text-link" href="#catering-enquiry" data-bundle="Office Lunch">Feed the team →</a></article>
+				<article class="bundle-card bundle-card--has-image"><img class="bundle-card__image" src="<?php echo feast_asset( 'hero-chicken-mansaf.jpg' ); ?>" alt="" loading="lazy"><div class="bundle-card__content"><span class="bundle-tag">Warm & generous</span><h3>Family Table</h3><span class="bundle-for">Ideal for 10–25 guests</span><ul><li>Your choice of hearty main dishes</li><li>Fresh salads and traditional sides</li><li>Share-style trays, ready for the table</li><li>Custom quote based on your menu</li></ul><a class="text-link" href="#catering-enquiry" data-bundle="Family Table">Ask about this feast →</a></div></article>
+				<article class="bundle-card bundle-card--featured bundle-card--has-image"><img class="bundle-card__image" src="<?php echo feast_asset( 'hero-event-table.jpg' ); ?>" alt="" loading="lazy"><div class="bundle-card__content"><span class="bundle-tag">Most popular</span><h3>Celebration Feast</h3><span class="bundle-for">Ideal for 25–100+ guests</span><ul><li>A generous mix of mains and favourites</li><li>Salads, dips, sides and finger food</li><li>Designed for weddings and big occasions</li><li>Custom quote built for your guest count</li></ul><a class="text-link" href="#catering-enquiry" data-bundle="Celebration Feast">Plan my celebration →</a></div></article>
+				<article class="bundle-card bundle-card--has-image"><img class="bundle-card__image" src="<?php echo feast_asset( 'menu-wrap.jpg' ); ?>" alt="" loading="lazy"><div class="bundle-card__content"><span class="bundle-tag">Easy crowd-pleaser</span><h3>Office Lunch</h3><span class="bundle-for">Ideal for teams of 10+</span><ul><li>Easy-to-serve hot mains or wraps</li><li>Fresh salads, dips and sides</li><li>Flexible options for team preferences</li><li>Custom quote for pickup or delivery</li></ul><a class="text-link" href="#catering-enquiry" data-bundle="Office Lunch">Feed the team →</a></div></article>
 				<?php endif; ?>
 			</div>
 		</div>

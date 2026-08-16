@@ -342,6 +342,42 @@ function feast_complete_starter_menu() {
 }
 add_action( 'init', 'feast_complete_starter_menu', 50 );
 
+/**
+ * Give the starter catering packages relevant photography without replacing
+ * images a site editor has already selected.
+ */
+function feast_add_starter_package_photography() {
+	if ( ! add_option( 'feast_package_photography_v1', 'running', '', false ) ) {
+		return;
+	}
+
+	$package_images = array(
+		'family table'      => 'hero-chicken-mansaf.jpg',
+		'celebration feast' => 'hero-event-table.jpg',
+		'office lunch'      => 'menu-wrap.jpg',
+	);
+	$packages = get_posts(
+		array(
+			'post_type'      => 'feast_bundle',
+			'post_status'    => 'any',
+			'posts_per_page' => -1,
+		)
+	);
+	foreach ( $packages as $package ) {
+		$title_key = strtolower( trim( $package->post_title ) );
+		if ( has_post_thumbnail( $package->ID ) || empty( $package_images[ $title_key ] ) ) {
+			continue;
+		}
+		$image_id = feast_import_theme_image( $package_images[ $title_key ], $package->post_title . ' catering' );
+		if ( $image_id ) {
+			set_post_thumbnail( $package->ID, $image_id );
+		}
+	}
+
+	update_option( 'feast_package_photography_v1', '1', false );
+}
+add_action( 'init', 'feast_add_starter_package_photography', 52 );
+
 function feast_seed_post_type( $post_type, $items ) {
 	$existing = get_posts( array( 'post_type' => $post_type, 'post_status' => 'any', 'posts_per_page' => 1, 'fields' => 'ids' ) );
 	if ( ! empty( $existing ) ) {
