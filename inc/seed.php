@@ -202,6 +202,80 @@ function feast_cleanup_duplicate_gallery_assets() {
 }
 add_action( 'init', 'feast_cleanup_duplicate_gallery_assets', 45 );
 
+/**
+ * Add the original hero, menu and story photographs to the Gallery CMS too.
+ * These files already exist in the Media Library, so no duplicate upload is made.
+ */
+function feast_sync_original_photos_to_gallery() {
+	// add_option() is atomic, so only one overlapping request can perform this sync.
+	if ( ! add_option( 'feast_original_gallery_assets_v1', 'running', '', false ) ) {
+		return;
+	}
+
+	$originals = array(
+		'catering-selection.jpg'  => 'A generous Middle Eastern catering selection',
+		'event-salads.jpg'        => 'Fresh salads prepared for an event',
+		'hero-catering-spread.jpg' => 'A generous catering spread',
+		'hero-chicken-mansaf.jpg' => 'Traditional chicken mansaf',
+		'hero-event-table.jpg'    => 'A catered celebration table',
+		'menu-fattoush.jpg'       => 'Freshly prepared fattoush',
+		'menu-malfouf.jpg'        => 'Traditional stuffed malfouf',
+		'menu-warak-enab.jpg'     => 'Hand-rolled warak enab',
+		'menu-wrap.jpg'           => 'Fresh Middle Eastern wraps',
+		'owner-kitchen.jpg'       => 'Preparing food in the Feast kitchen',
+	);
+
+	$gallery_posts = get_posts(
+		array(
+			'post_type'      => 'feast_gallery',
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+		)
+	);
+	$imported = array();
+	foreach ( $gallery_posts as $gallery_post_id ) {
+		$asset_key = get_post_meta( $gallery_post_id, '_feast_gallery_asset', true );
+		if ( ! $asset_key ) {
+			$thumbnail_id = get_post_thumbnail_id( $gallery_post_id );
+			$asset_key    = $thumbnail_id ? get_post_meta( $thumbnail_id, '_feast_theme_asset', true ) : '';
+			if ( $asset_key ) {
+				update_post_meta( $gallery_post_id, '_feast_gallery_asset', $asset_key );
+			}
+		}
+		if ( $asset_key ) {
+			$imported[ $asset_key ] = true;
+		}
+	}
+
+	$order = 10;
+	foreach ( $originals as $asset_key => $title ) {
+		if ( ! empty( $imported[ $asset_key ] ) ) {
+			continue;
+		}
+		$attachment_id = feast_import_theme_image( $asset_key, $title );
+		if ( ! $attachment_id ) {
+			continue;
+		}
+		$post_id = wp_insert_post(
+			array(
+				'post_type'   => 'feast_gallery',
+				'post_status' => 'publish',
+				'post_title'  => $title,
+				'menu_order'  => $order++,
+			)
+		);
+		if ( $post_id && ! is_wp_error( $post_id ) ) {
+			update_post_meta( $post_id, '_feast_gallery_asset', $asset_key );
+			update_post_meta( $attachment_id, '_wp_attachment_image_alt', $title );
+			set_post_thumbnail( $post_id, $attachment_id );
+		}
+	}
+
+	update_option( 'feast_original_gallery_assets_v1', '1', false );
+}
+add_action( 'init', 'feast_sync_original_photos_to_gallery', 47 );
+
 function feast_seed_post_type( $post_type, $items ) {
 	$existing = get_posts( array( 'post_type' => $post_type, 'post_status' => 'any', 'posts_per_page' => 1, 'fields' => 'ids' ) );
 	if ( ! empty( $existing ) ) {
