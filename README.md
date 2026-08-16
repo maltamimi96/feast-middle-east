@@ -24,5 +24,9 @@ After activation, WordPress contains a **Feast CMS** menu with:
 - **Menu Dishes** — dish name, description, category, image and showcase option.
 - **Gallery Images** — upload and order homepage gallery images.
 - **Business Settings** — phone, address, Instagram URL and catering enquiry email.
+- **Website Copy** — homepage headings, trust points, story, process steps and enquiry messaging.
+- **Catering FAQs** — questions and answers shown on the catering page.
+
+The theme also creates editable WordPress pages for **Catering**, **Menu**, **Our Story**, **Gallery**, and **Contact**. Edit each page's title, excerpt, main content, small heading and featured image using the normal WordPress page editor.
 
 Use the WordPress **Featured Image** box to upload images. Use **Page Attributes → Order** to control display order. Published items appear on the website; drafts remain hidden. If a section has no published CMS items, the theme's original content is used as a fallback.

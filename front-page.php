@@ -5,6 +5,8 @@ $cms_bundles = feast_content_items( 'feast_bundle' );
 $cms_dishes  = feast_content_items( 'feast_dish' );
 $cms_gallery = feast_content_items( 'feast_gallery', 6 );
 $hero_count  = ! empty( $cms_offers ) ? count( $cms_offers ) : 3;
+$story_page  = get_page_by_path( 'our-story', OBJECT, 'page' );
+$story_image = $story_page && has_post_thumbnail( $story_page->ID ) ? get_the_post_thumbnail_url( $story_page->ID, 'large' ) : feast_asset( 'owner-kitchen.jpg' );
 ?>
 <main id="main-content">
 	<section class="hero" aria-label="Featured catering offers">
@@ -74,15 +76,12 @@ $hero_count  = ! empty( $cms_offers ) ? count( $cms_offers ) : 3;
 	</section>
 
 	<div class="trust-bar"><div class="site-wrap trust-grid">
-		<div class="trust-item"><strong>Made fresh</strong><span>From our Granville kitchen</span></div>
-		<div class="trust-item"><strong>Custom menus</strong><span>Built around your event</span></div>
-		<div class="trust-item"><strong>10–100+ guests</strong><span>Small gatherings to big days</span></div>
-		<div class="trust-item"><strong>Pickup or delivery</strong><span>Ask about your location</span></div>
+		<?php for ( $trust = 1; $trust <= 4; $trust++ ) : ?><div class="trust-item"><strong><?php echo esc_html( feast_copy( 'trust_' . $trust . '_title' ) ); ?></strong><span><?php echo esc_html( feast_copy( 'trust_' . $trust . '_text' ) ); ?></span></div><?php endfor; ?>
 	</div></div>
 
 	<section class="section section--cream" id="catering">
 		<div class="site-wrap">
-			<div class="section-heading"><div><p class="eyebrow">Catering made simple</p><h2>Choose your kind of feast.</h2></div><p class="lead">Start with one of our popular catering styles, then we’ll tailor the dishes and quantities to your guests.</p></div>
+			<div class="section-heading"><div><p class="eyebrow"><?php echo esc_html( feast_copy( 'catering_eyebrow' ) ); ?></p><h2><?php echo esc_html( feast_copy( 'catering_title' ) ); ?></h2></div><p class="lead"><?php echo esc_html( feast_copy( 'catering_intro' ) ); ?></p></div>
 			<div class="bundle-grid">
 				<?php if ( ! empty( $cms_bundles ) ) : ?>
 					<?php foreach ( $cms_bundles as $bundle ) :
@@ -108,7 +107,7 @@ $hero_count  = ! empty( $cms_offers ) ? count( $cms_offers ) : 3;
 
 	<section class="section" id="menu">
 		<div class="site-wrap">
-			<div class="section-heading"><div><p class="eyebrow">From our kitchen</p><h2>The dishes people come back for.</h2></div><p class="lead">Traditional Middle Eastern flavours, generous portions and plenty made for sharing.</p></div>
+			<div class="section-heading"><div><p class="eyebrow"><?php echo esc_html( feast_copy( 'menu_eyebrow' ) ); ?></p><h2><?php echo esc_html( feast_copy( 'menu_title' ) ); ?></h2></div><p class="lead"><?php echo esc_html( feast_copy( 'menu_intro' ) ); ?></p></div>
 			<?php if ( ! empty( $cms_dishes ) ) :
 				$showcase_dishes = array();
 				foreach ( $cms_dishes as $dish ) {
@@ -165,25 +164,23 @@ $hero_count  = ! empty( $cms_offers ) ? count( $cms_offers ) : 3;
 
 	<section class="section process">
 		<div class="site-wrap">
-			<div class="section-heading"><div><p class="eyebrow eyebrow--light">How it works</p><h2>From your idea to their plates.</h2></div><p class="lead">No complicated ordering. Just tell us what you’re planning and we’ll help take care of the food.</p></div>
+			<div class="section-heading"><div><p class="eyebrow eyebrow--light"><?php echo esc_html( feast_copy( 'process_eyebrow' ) ); ?></p><h2><?php echo esc_html( feast_copy( 'process_title' ) ); ?></h2></div><p class="lead"><?php echo esc_html( feast_copy( 'process_intro' ) ); ?></p></div>
 			<div class="steps">
-				<div class="step"><span class="step__number">01</span><h3>Tell us about the event</h3><p>Share your date, guest count, event style and any dishes you already have in mind.</p></div>
-				<div class="step"><span class="step__number">02</span><h3>We build your menu</h3><p>We’ll recommend the right mix and quantities, then send you a custom quote.</p></div>
-				<div class="step"><span class="step__number">03</span><h3>We prepare the feast</h3><p>Your food is freshly prepared and organised for pickup or an agreed delivery.</p></div>
+				<?php for ( $step = 1; $step <= 3; $step++ ) : ?><div class="step"><span class="step__number">0<?php echo esc_html( $step ); ?></span><h3><?php echo esc_html( feast_copy( 'step_' . $step . '_title' ) ); ?></h3><p><?php echo esc_html( feast_copy( 'step_' . $step . '_text' ) ); ?></p></div><?php endfor; ?>
 			</div>
 		</div>
 	</section>
 
 	<section class="section" id="our-story">
 		<div class="site-wrap story-grid">
-			<div class="story-image"><img src="<?php echo feast_asset( 'owner-kitchen.jpg' ); ?>" alt="The Feast in the Middle East kitchen team preparing food" loading="lazy"><span class="story-stamp">Made with<br>love in<br>Granville</span></div>
-			<div class="story-copy"><p class="eyebrow">Our table is your table</p><h2>Food that feels like home.</h2><p class="lead">Feast in the Middle East is built around the food we love to cook and share: generous, traditional dishes that bring people together.</p><p>Whether you’re feeding the family or celebrating with a room full of people, every order gets the same care from our Granville kitchen.</p><a class="button button--outline" href="#catering-enquiry">Let’s plan your feast</a></div>
+			<div class="story-image"><img src="<?php echo esc_url( $story_image ); ?>" alt="The Feast in the Middle East kitchen team preparing food" loading="lazy"><span class="story-stamp">Made with<br>love in<br>Granville</span></div>
+			<div class="story-copy"><p class="eyebrow"><?php echo esc_html( feast_copy( 'story_eyebrow' ) ); ?></p><h2><?php echo esc_html( feast_copy( 'story_title' ) ); ?></h2><p class="lead"><?php echo esc_html( feast_copy( 'story_lead' ) ); ?></p><p><?php echo esc_html( feast_copy( 'story_text' ) ); ?></p><a class="button button--outline" href="<?php echo esc_url( home_url( '/our-story/' ) ); ?>">Read our story</a></div>
 		</div>
 	</section>
 
 	<section class="section section--cream" id="gallery">
 		<div class="site-wrap">
-			<div class="section-heading"><div><p class="eyebrow">Recent feasts</p><h2>Made to be shared.</h2></div><a class="text-link" href="<?php echo esc_url( feast_setting( 'instagram' ) ); ?>" target="_blank" rel="noopener">See more on Instagram →</a></div>
+			<div class="section-heading"><div><p class="eyebrow"><?php echo esc_html( feast_copy( 'gallery_eyebrow' ) ); ?></p><h2><?php echo esc_html( feast_copy( 'gallery_title' ) ); ?></h2></div><a class="text-link" href="<?php echo esc_url( home_url( '/gallery/' ) ); ?>">View the full gallery →</a></div>
 			<div class="gallery-grid">
 				<?php if ( ! empty( $cms_gallery ) ) : ?>
 					<?php foreach ( $cms_gallery as $gallery_item ) : if ( ! has_post_thumbnail( $gallery_item->ID ) ) { continue; } ?><figure><img src="<?php echo esc_url( get_the_post_thumbnail_url( $gallery_item->ID, 'large' ) ); ?>" alt="<?php echo esc_attr( get_the_title( $gallery_item ) ); ?>" loading="lazy"></figure><?php endforeach; ?>
@@ -199,18 +196,8 @@ $hero_count  = ! empty( $cms_offers ) ? count( $cms_offers ) : 3;
 
 	<section class="section enquiry" id="catering-enquiry">
 		<div class="site-wrap enquiry-grid">
-			<div class="enquiry-copy"><p class="eyebrow">Start your catering order</p><h2>Let’s put a feast on the table.</h2><p class="lead">Send us the basics and we’ll get in touch to discuss the menu, quantities and a custom quote.</p><div class="contact-list"><a href="tel:<?php echo esc_attr( feast_setting( 'phone_link' ) ); ?>">Call <?php echo esc_html( feast_setting( 'phone_display' ) ); ?></a><span><?php echo nl2br( esc_html( feast_setting( 'address' ) ) ); ?></span></div></div>
-			<form class="form-card" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post">
-				<input type="hidden" name="action" value="feast_catering_enquiry">
-				<?php wp_nonce_field( 'feast_catering_enquiry', 'feast_nonce' ); ?>
-				<div class="form-honeypot" aria-hidden="true"><label for="website">Leave this blank</label><input id="website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
-				<?php $enquiry_status = isset( $_GET['enquiry'] ) ? sanitize_key( wp_unslash( $_GET['enquiry'] ) ) : ''; if ( 'sent' === $enquiry_status ) : ?><p class="form-status form-status--success" role="status">Thanks! Your catering request has been sent. We’ll be in touch soon.</p><?php elseif ( $enquiry_status ) : ?><p class="form-status form-status--error" role="alert">We couldn’t send that yet. Check the required fields or call us on <?php echo esc_html( feast_setting( 'phone_display' ) ); ?>.</p><?php endif; ?>
-				<div class="form-row"><div class="form-field"><label for="name">Your name *</label><input id="name" name="name" type="text" autocomplete="name" required></div><div class="form-field"><label for="phone">Phone number *</label><input id="phone" name="phone" type="tel" autocomplete="tel" required></div></div>
-				<div class="form-row"><div class="form-field"><label for="email">Email *</label><input id="email" name="email" type="email" autocomplete="email" required></div><div class="form-field"><label for="event-date">Event date</label><input id="event-date" name="event_date" type="date"></div></div>
-				<div class="form-row"><div class="form-field"><label for="guests">Approximate guests</label><input id="guests" name="guests" type="number" min="1" inputmode="numeric" placeholder="e.g. 40"></div><div class="form-field"><label for="event-type">What are you planning?</label><select id="event-type" name="event_type"><option value="">Choose one</option><option>Family gathering</option><option>Wedding or celebration</option><option>Office lunch</option><option>Community event</option><option>Other</option></select></div></div>
-				<div class="form-field"><label for="message">Tell us about your feast</label><textarea id="message" name="message" placeholder="Your preferred dishes, venue or anything we should know..."></textarea></div>
-				<button class="button button--wide" type="submit">Request my catering quote</button><p class="form-note">No payment is taken here. We’ll contact you to confirm the details and quote.</p>
-			</form>
+			<div class="enquiry-copy"><p class="eyebrow"><?php echo esc_html( feast_copy( 'enquiry_eyebrow' ) ); ?></p><h2><?php echo esc_html( feast_copy( 'enquiry_title' ) ); ?></h2><p class="lead"><?php echo esc_html( feast_copy( 'enquiry_intro' ) ); ?></p><div class="contact-list"><a href="tel:<?php echo esc_attr( feast_setting( 'phone_link' ) ); ?>">Call <?php echo esc_html( feast_setting( 'phone_display' ) ); ?></a><span><?php echo nl2br( esc_html( feast_setting( 'address' ) ) ); ?></span></div></div>
+			<?php get_template_part( 'template-parts/enquiry-form' ); ?>
 		</div>
 	</section>
 </main>

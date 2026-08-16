@@ -16,11 +16,11 @@
 		</a>
 		<button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-navigation" aria-label="Open menu"><span></span><span></span><span></span></button>
 		<nav class="main-nav" id="main-navigation" aria-label="Primary navigation">
-			<a href="<?php echo esc_url( home_url( '/#catering' ) ); ?>">Catering</a>
-			<a href="<?php echo esc_url( home_url( '/#menu' ) ); ?>">Menu</a>
-			<a href="<?php echo esc_url( home_url( '/#our-story' ) ); ?>">Our story</a>
-			<a href="<?php echo esc_url( home_url( '/#gallery' ) ); ?>">Gallery</a>
-			<a class="button button--light" href="<?php echo esc_url( home_url( '/#catering-enquiry' ) ); ?>">Get a catering quote</a>
+			<a href="<?php echo esc_url( home_url( '/catering/' ) ); ?>">Catering</a>
+			<a href="<?php echo esc_url( home_url( '/menu/' ) ); ?>">Menu</a>
+			<a href="<?php echo esc_url( home_url( '/our-story/' ) ); ?>">Our story</a>
+			<a href="<?php echo esc_url( home_url( '/gallery/' ) ); ?>">Gallery</a>
+			<a class="button button--light" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">Get a catering quote</a>
 		</nav>
 	</div>
 </header>

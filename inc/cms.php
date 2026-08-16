@@ -39,6 +39,13 @@ function feast_register_content_types() {
 			'featured_name' => 'Gallery image',
 			'supports'      => array( 'title', 'thumbnail', 'page-attributes' ),
 		),
+		'feast_faq' => array(
+			'singular'      => 'Catering FAQ',
+			'plural'        => 'Catering FAQs',
+			'menu_name'     => 'Catering FAQs',
+			'featured_name' => 'FAQ image',
+			'supports'      => array( 'title', 'editor', 'page-attributes' ),
+		),
 	);
 
 	foreach ( $types as $slug => $type ) {
@@ -88,6 +95,7 @@ function feast_cms_menu() {
 		24
 	);
 	add_submenu_page( 'feast-cms', 'Business Settings', 'Business Settings', 'manage_options', 'feast-settings', 'feast_settings_page' );
+	add_submenu_page( 'feast-cms', 'Website Copy', 'Website Copy', 'manage_options', 'feast-copy', 'feast_copy_page' );
 }
 add_action( 'admin_menu', 'feast_cms_menu' );
 
@@ -112,6 +120,86 @@ function feast_setting( $key ) {
 
 function feast_register_settings() {
 	register_setting( 'feast_settings_group', 'feast_business', 'feast_sanitize_business_settings' );
+	register_setting( 'feast_copy_group', 'feast_site_copy', 'feast_sanitize_site_copy' );
+}
+
+function feast_copy_defaults() {
+	return array(
+		'trust_1_title'       => 'Made fresh',
+		'trust_1_text'        => 'From our Granville kitchen',
+		'trust_2_title'       => 'Custom menus',
+		'trust_2_text'        => 'Built around your event',
+		'trust_3_title'       => '10–100+ guests',
+		'trust_3_text'        => 'Small gatherings to big days',
+		'trust_4_title'       => 'Pickup or delivery',
+		'trust_4_text'        => 'Ask about your location',
+		'catering_eyebrow'    => 'Catering made simple',
+		'catering_title'      => 'Choose your kind of feast.',
+		'catering_intro'      => 'Start with one of our popular catering styles, then we’ll tailor the dishes and quantities to your guests.',
+		'menu_eyebrow'        => 'From our kitchen',
+		'menu_title'          => 'The dishes people come back for.',
+		'menu_intro'          => 'Traditional Middle Eastern flavours, generous portions and plenty made for sharing.',
+		'process_eyebrow'     => 'How it works',
+		'process_title'       => 'From your idea to their plates.',
+		'process_intro'       => 'No complicated ordering. Just tell us what you’re planning and we’ll help take care of the food.',
+		'step_1_title'        => 'Tell us about the event',
+		'step_1_text'         => 'Share your date, guest count, event style and any dishes you already have in mind.',
+		'step_2_title'        => 'We build your menu',
+		'step_2_text'         => 'We’ll recommend the right mix and quantities, then send you a custom quote.',
+		'step_3_title'        => 'We prepare the feast',
+		'step_3_text'         => 'Your food is freshly prepared and organised for pickup or an agreed delivery.',
+		'story_eyebrow'       => 'Our table is your table',
+		'story_title'         => 'Food that feels like home.',
+		'story_lead'          => 'Feast in the Middle East is built around the food we love to cook and share: generous, traditional dishes that bring people together.',
+		'story_text'          => 'Whether you’re feeding the family or celebrating with a room full of people, every order gets the same care from our Granville kitchen.',
+		'gallery_eyebrow'     => 'Recent feasts',
+		'gallery_title'       => 'Made to be shared.',
+		'enquiry_eyebrow'     => 'Start your catering order',
+		'enquiry_title'       => 'Let’s put a feast on the table.',
+		'enquiry_intro'       => 'Send us the basics and we’ll get in touch to discuss the menu, quantities and a custom quote.',
+	);
+}
+
+function feast_get_site_copy() {
+	return wp_parse_args( (array) get_option( 'feast_site_copy', array() ), feast_copy_defaults() );
+}
+
+function feast_copy( $key ) {
+	$copy = feast_get_site_copy();
+	return isset( $copy[ $key ] ) ? $copy[ $key ] : '';
+}
+
+function feast_sanitize_site_copy( $input ) {
+	$output = array();
+	foreach ( feast_copy_defaults() as $key => $default ) {
+		$output[ $key ] = isset( $input[ $key ] ) ? sanitize_textarea_field( $input[ $key ] ) : $default;
+	}
+	return $output;
+}
+
+function feast_copy_page() {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+	$copy = feast_get_site_copy();
+	$groups = array(
+		'Homepage trust bar' => array( 'trust_1_title', 'trust_1_text', 'trust_2_title', 'trust_2_text', 'trust_3_title', 'trust_3_text', 'trust_4_title', 'trust_4_text' ),
+		'Catering section'   => array( 'catering_eyebrow', 'catering_title', 'catering_intro' ),
+		'Menu section'       => array( 'menu_eyebrow', 'menu_title', 'menu_intro' ),
+		'How it works'       => array( 'process_eyebrow', 'process_title', 'process_intro', 'step_1_title', 'step_1_text', 'step_2_title', 'step_2_text', 'step_3_title', 'step_3_text' ),
+		'Our story section'  => array( 'story_eyebrow', 'story_title', 'story_lead', 'story_text' ),
+		'Gallery section'    => array( 'gallery_eyebrow', 'gallery_title' ),
+		'Enquiry section'    => array( 'enquiry_eyebrow', 'enquiry_title', 'enquiry_intro' ),
+	);
+	?>
+	<div class="wrap feast-admin-wrap"><h1>Website Copy</h1><p class="feast-admin-lead">Edit the headings and supporting text used across the homepage. Offers, packages, dishes and images are managed from their own Feast CMS menus.</p>
+	<form method="post" action="options.php"><?php settings_fields( 'feast_copy_group' ); ?>
+		<?php foreach ( $groups as $group_title => $keys ) : ?><div class="feast-admin-card"><h2><?php echo esc_html( $group_title ); ?></h2>
+			<?php foreach ( $keys as $key ) : $is_text = false !== strpos( $key, '_title' ) || false !== strpos( $key, '_eyebrow' ); ?><div class="feast-admin-field"><label for="<?php echo esc_attr( $key ); ?>"><strong><?php echo esc_html( ucwords( str_replace( '_', ' ', $key ) ) ); ?></strong></label><?php if ( $is_text ) : ?><input type="text" id="<?php echo esc_attr( $key ); ?>" name="feast_site_copy[<?php echo esc_attr( $key ); ?>]" value="<?php echo esc_attr( $copy[ $key ] ); ?>"><?php else : ?><textarea rows="3" id="<?php echo esc_attr( $key ); ?>" name="feast_site_copy[<?php echo esc_attr( $key ); ?>]"><?php echo esc_textarea( $copy[ $key ] ); ?></textarea><?php endif; ?></div><?php endforeach; ?>
+		</div><?php endforeach; ?>
+		<?php submit_button( 'Save website copy' ); ?>
+	</form></div>
+	<?php
 }
 add_action( 'admin_init', 'feast_register_settings' );
 
@@ -155,6 +243,9 @@ function feast_settings_page() {
 
 function feast_meta_fields() {
 	return array(
+		'page' => array(
+			'_feast_page_eyebrow' => array( 'label' => 'Small heading above the page title', 'type' => 'text', 'placeholder' => 'Catering in Sydney' ),
+		),
 		'feast_offer' => array(
 			'_feast_eyebrow'        => array( 'label' => 'Small heading', 'type' => 'text', 'placeholder' => 'Middle Eastern catering across Sydney' ),
 			'_feast_primary_label'  => array( 'label' => 'Main button text', 'type' => 'text', 'placeholder' => 'Request a catering quote' ),
@@ -175,6 +266,7 @@ function feast_meta_fields() {
 			'_feast_showcase'       => array( 'label' => 'Show as a large image card', 'type' => 'checkbox' ),
 		),
 		'feast_gallery' => array(),
+		'feast_faq' => array(),
 	);
 }
 
@@ -216,10 +308,12 @@ function feast_render_meta_box( $post ) {
 
 function feast_render_help_box( $post ) {
 	$guides = array(
+		'page'          => 'Edit the page title, introductory excerpt, main content and featured image. Dedicated Feast page layouts update automatically.',
 		'feast_offer'   => 'Add the large headline as the title, supporting sentence as the excerpt, and the background photo as the featured image.',
 		'feast_bundle'  => 'Add the package name as the title. Put each inclusion on its own line. Drag is not required: use the Order field under Page Attributes.',
 		'feast_dish'    => 'Add the dish name, a short description and a featured image. Use Order to control its position.',
 		'feast_gallery' => 'Add a descriptive title and choose a featured image. The title is used as accessible image text.',
+		'feast_faq'     => 'Add the customer question as the title and the answer in the main content editor. Use Order to control its position.',
 	);
 	echo '<p>' . esc_html( $guides[ $post->post_type ] ) . '</p><p><strong>Publish</strong> to put this item on the website. Save as <strong>Draft</strong> to hide it.</p>';
 }
@@ -284,4 +378,3 @@ function feast_admin_assets( $hook ) {
 	wp_enqueue_style( 'feast-admin', get_template_directory_uri() . '/assets/css/admin.css', array(), wp_get_theme()->get( 'Version' ) );
 }
 add_action( 'admin_enqueue_scripts', 'feast_admin_assets' );
-

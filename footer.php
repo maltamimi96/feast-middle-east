@@ -12,16 +12,18 @@
 			</div>
 			<div class="footer-col">
 				<h3>Explore</h3>
-				<a href="#catering">Catering bundles</a>
-				<a href="#menu">Menu highlights</a>
-				<a href="#catering-enquiry">Request a quote</a>
+				<a href="<?php echo esc_url( home_url( '/catering/' ) ); ?>">Catering</a>
+				<a href="<?php echo esc_url( home_url( '/menu/' ) ); ?>">Full menu</a>
+				<a href="<?php echo esc_url( home_url( '/our-story/' ) ); ?>">Our story</a>
+				<a href="<?php echo esc_url( home_url( '/gallery/' ) ); ?>">Gallery</a>
+				<a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">Request a quote</a>
 				<a href="<?php echo esc_url( feast_setting( 'instagram' ) ); ?>" target="_blank" rel="noopener">Follow on Instagram</a>
 			</div>
 		</div>
 		<div class="footer-bottom"><span>&copy; <?php echo esc_html( gmdate( 'Y' ) ); ?> Feast in the Middle East.</span><span>Traditional food. Generous hospitality.</span></div>
 	</div>
 </footer>
-<a class="button mobile-quote" href="#catering-enquiry">Get a catering quote</a>
+<a class="button mobile-quote" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>">Get a catering quote</a>
 <?php wp_footer(); ?>
 </body>
 </html>
