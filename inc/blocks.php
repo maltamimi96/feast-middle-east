@@ -134,8 +134,27 @@ function feast_migrate_homepage_to_visual_block() {
 
 	$home_id = absint( get_option( 'page_on_front' ) );
 	if ( ! $home_id ) {
-		delete_option( 'feast_visual_homepage_lock' );
-		return;
+		$home_page = get_page_by_path( 'home', OBJECT, 'page' );
+		if ( $home_page ) {
+			$home_id = (int) $home_page->ID;
+		} else {
+			$home_id = wp_insert_post(
+				array(
+					'post_title'     => 'Home',
+					'post_name'      => 'home',
+					'post_type'      => 'page',
+					'post_status'    => 'publish',
+					'comment_status' => 'closed',
+				),
+				true
+			);
+			if ( is_wp_error( $home_id ) ) {
+				delete_option( 'feast_visual_homepage_lock' );
+				return;
+			}
+		}
+		update_option( 'show_on_front', 'page' );
+		update_option( 'page_on_front', $home_id );
 	}
 
 	$current_content = (string) get_post_field( 'post_content', $home_id );
