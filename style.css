@@ -3,7 +3,7 @@ Theme Name: Feast in the Middle East
 Theme URI: https://feastinthemiddleeast.com.au/
 Author: Feast in the Middle East
 Description: A custom catering-first WordPress theme for Feast in the Middle East, Granville.
-Version: 1.7.1
+Version: 1.7.2
 Requires at least: 6.0
 Requires PHP: 7.4
 Text Domain: feast-middle-east
@@ -145,13 +145,13 @@ h3 { font-size: clamp(1.4rem, 2vw, 1.9rem); }
 .hero-slide.is-active .hero-slide__image { transform: scale(1); }
 .hero-slide::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, color-mix(in srgb, var(--slide-overlay, #071309) var(--slide-opacity, 82%), transparent) 0%, color-mix(in srgb, var(--slide-overlay, #071309) 62%, transparent) 44%, color-mix(in srgb, var(--slide-overlay, #071309) 16%, transparent) 82%), linear-gradient(0deg, color-mix(in srgb, var(--slide-overlay, #071309) 68%, transparent), transparent 48%); }
 .hero-content { position: relative; z-index: 2; height: 100%; display: flex; align-items: center; padding-top: 11rem; padding-bottom: 5.25rem; }
-.hero-copy { max-width: 790px; padding-inline: clamp(.75rem, 1.5vw, 1.5rem); }
+.hero-copy { max-width: 980px; padding-inline: clamp(.75rem, 1.5vw, 1.5rem); }
 .hero-copy { color: var(--slide-text, var(--hero-text)); }
 .hero-copy .eyebrow { color: var(--slide-accent, var(--hero-accent)); }
-.hero-copy h1 { max-width: 10.5ch; margin-bottom: 1.2rem; color: inherit; font-size: clamp(3.35rem, 5.8vw, 5.75rem); text-wrap: balance; }
+.hero-copy h1 { max-width: 13ch; margin-bottom: 1.2rem; color: inherit; font-size: clamp(3.35rem, 5.8vw, 5.75rem); text-wrap: balance; }
 .hero-copy .button--light { border-color: var(--slide-primary, #fff); background: var(--slide-primary, #fff); color: var(--slide-primary-text, var(--forest)); }
 .hero-copy .button:not(.button--light) { border-color: var(--slide-second, var(--forest)); background: var(--slide-second, var(--forest)); color: var(--slide-second-text, #fff); }
-.hero-copy p:not(.eyebrow) { max-width: 40rem; margin-bottom: 2rem; color: rgba(255,255,255,.88); font-size: clamp(1.08rem, 2vw, 1.35rem); }
+.hero-copy p:not(.eyebrow) { max-width: 48rem; margin-bottom: 2rem; color: rgba(255,255,255,.88); font-size: clamp(1.08rem, 2vw, 1.35rem); }
 .hero-actions { display: flex; flex-wrap: wrap; gap: .8rem; }
 .hero-note { display: flex; align-items: center; gap: .6rem; margin-top: 1.5rem; color: rgba(255,255,255,.8); font-size: .83rem; font-weight: 650; }
 .hero-note::before { content: ""; width: .48rem; height: .48rem; border-radius: 50%; background: var(--sand); }
@@ -332,7 +332,7 @@ h3 { font-size: clamp(1.4rem, 2vw, 1.9rem); }
 	.hero { height: auto; min-height: max(720px, 70svh); }
 	.hero-content { height: auto; min-height: max(720px, 70svh); align-items: end; padding-top: 9.75rem; padding-bottom: 9.5rem; }
 	.hero-copy { width: 100%; padding-inline: .35rem; }
-	.hero-copy h1 { max-width: 9ch; font-size: clamp(2.7rem, 11.5vw, 3.6rem); overflow-wrap: anywhere; }
+	.hero-copy h1 { max-width: 11ch; font-size: clamp(2.7rem, 11.5vw, 3.6rem); overflow-wrap: anywhere; }
 	.hero-copy p:not(.eyebrow) { font-size: 1rem; line-height: 1.55; }
 	.hero-actions { display: grid; width: min(100%, 22rem); gap: .65rem; }
 	.hero-actions .button { width: 100%; min-height: 3.5rem; }
