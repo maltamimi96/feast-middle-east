@@ -58,7 +58,8 @@
 							quickLink( config.links.packages, 'Catering packages' ),
 							quickLink( config.links.menu, 'Menu dishes' ),
 							quickLink( config.links.gallery, 'Gallery images' ),
-							quickLink( config.links.copy, 'Other website copy' )
+							quickLink( config.links.copy, 'Other website copy' ),
+							quickLink( config.links.design, 'Site-wide styling' )
 						)
 					),
 					panels

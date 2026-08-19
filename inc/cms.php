@@ -143,6 +143,122 @@ function feast_design_defaults() {
 		'button_text'    => '#ffffff',
 		'corner_radius'  => '10',
 		'hero_height_vh' => '70',
+		'site_width'             => '1240',
+		'desktop_gutter'         => '24',
+		'mobile_gutter'          => '10',
+		'section_padding'        => '144',
+		'mobile_section_padding' => '72',
+		'section_heading_gap'    => '40',
+		'wide_grid_gap'          => '112',
+		'enquiry_grid_gap'       => '96',
+		'content_page_width'     => '820',
+		'content_page_top'       => '144',
+		'content_page_bottom'    => '80',
+		'base_font_size'         => '16',
+		'body_line_height'       => '165',
+		'h1_size'                => '128',
+		'h2_size'                => '77',
+		'h3_size'                => '30',
+		'eyebrow_size'           => '41',
+		'lead_size'              => '20',
+		'announcement_height'    => '38',
+		'header_height'          => '112',
+		'mobile_header_height'   => '86',
+		'logo_size'              => '66',
+		'nav_gap'                => '32',
+		'mobile_hero_min_height' => '720',
+		'hero_content_top'       => '176',
+		'hero_content_bottom'    => '84',
+		'hero_text_width'        => '980',
+		'hero_title_size'        => '92',
+		'hero_body_size'         => '22',
+		'mobile_hero_content_top'=> '156',
+		'mobile_hero_content_bottom' => '152',
+		'mobile_hero_title_size' => '58',
+		'inner_hero_height'      => '620',
+		'mobile_inner_hero_height' => '560',
+		'inner_hero_bottom'      => '80',
+		'grid_gap'               => '20',
+		'card_padding'           => '36',
+		'feature_padding'        => '64',
+		'button_height'          => '52',
+		'button_padding_x'       => '22',
+		'button_radius'          => '2',
+		'form_padding'           => '48',
+		'mobile_form_padding'    => '20',
+		'gallery_gap'            => '13',
+		'footer_top'             => '64',
+		'footer_bottom'          => '24',
+		'footer_grid_gap'        => '32',
+	);
+}
+
+/**
+ * Numeric site-wide styling controls and their safe limits.
+ */
+function feast_design_control_groups() {
+	return array(
+		'Page layout & spacing' => array(
+			'site_width'             => array( 'label' => 'Maximum content width', 'min' => 900, 'max' => 1600, 'unit' => 'px' ),
+			'desktop_gutter'         => array( 'label' => 'Desktop side padding', 'min' => 12, 'max' => 100, 'unit' => 'px' ),
+			'mobile_gutter'          => array( 'label' => 'Mobile side padding', 'min' => 8, 'max' => 40, 'unit' => 'px' ),
+			'section_padding'        => array( 'label' => 'Desktop section top / bottom padding', 'min' => 40, 'max' => 240, 'unit' => 'px' ),
+			'mobile_section_padding' => array( 'label' => 'Mobile section top / bottom padding', 'min' => 24, 'max' => 140, 'unit' => 'px' ),
+			'section_heading_gap'    => array( 'label' => 'Space below section headings', 'min' => 12, 'max' => 100, 'unit' => 'px' ),
+			'wide_grid_gap'          => array( 'label' => 'Story image / text column gap', 'min' => 20, 'max' => 180, 'unit' => 'px' ),
+			'enquiry_grid_gap'       => array( 'label' => 'Enquiry text / form column gap', 'min' => 20, 'max' => 160, 'unit' => 'px' ),
+			'content_page_width'     => array( 'label' => 'Standard text page width', 'min' => 560, 'max' => 1200, 'unit' => 'px' ),
+			'content_page_top'       => array( 'label' => 'Standard page top padding', 'min' => 80, 'max' => 240, 'unit' => 'px' ),
+			'content_page_bottom'    => array( 'label' => 'Standard page bottom padding', 'min' => 40, 'max' => 180, 'unit' => 'px' ),
+		),
+		'Typography' => array(
+			'base_font_size'   => array( 'label' => 'Body text size', 'min' => 14, 'max' => 22, 'unit' => 'px' ),
+			'body_line_height' => array( 'label' => 'Body line height', 'min' => 120, 'max' => 210, 'unit' => '%' ),
+			'h1_size'          => array( 'label' => 'Maximum H1 size', 'min' => 48, 'max' => 160, 'unit' => 'px' ),
+			'h2_size'          => array( 'label' => 'Maximum H2 size', 'min' => 36, 'max' => 110, 'unit' => 'px' ),
+			'h3_size'          => array( 'label' => 'Maximum H3 size', 'min' => 20, 'max' => 52, 'unit' => 'px' ),
+			'eyebrow_size'     => array( 'label' => 'Script heading size', 'min' => 22, 'max' => 64, 'unit' => 'px' ),
+			'lead_size'        => array( 'label' => 'Intro / lead text size', 'min' => 16, 'max' => 34, 'unit' => 'px' ),
+		),
+		'Header & navigation' => array(
+			'announcement_height'  => array( 'label' => 'Announcement bar height', 'min' => 28, 'max' => 70, 'unit' => 'px' ),
+			'header_height'        => array( 'label' => 'Desktop navigation height', 'min' => 72, 'max' => 170, 'unit' => 'px' ),
+			'mobile_header_height' => array( 'label' => 'Mobile navigation height', 'min' => 64, 'max' => 130, 'unit' => 'px' ),
+			'logo_size'            => array( 'label' => 'Logo size', 'min' => 36, 'max' => 110, 'unit' => 'px' ),
+			'nav_gap'              => array( 'label' => 'Navigation link spacing', 'min' => 8, 'max' => 70, 'unit' => 'px' ),
+		),
+		'Hero sections' => array(
+			'hero_height_vh'         => array( 'label' => 'Homepage hero height', 'min' => 55, 'max' => 100, 'unit' => 'vh' ),
+			'mobile_hero_min_height' => array( 'label' => 'Mobile homepage hero minimum height', 'min' => 560, 'max' => 1000, 'unit' => 'px' ),
+			'hero_content_top'       => array( 'label' => 'Homepage hero content top padding', 'min' => 80, 'max' => 300, 'unit' => 'px' ),
+			'hero_content_bottom'    => array( 'label' => 'Homepage hero content bottom padding', 'min' => 30, 'max' => 220, 'unit' => 'px' ),
+			'hero_text_width'        => array( 'label' => 'Homepage hero text area width', 'min' => 520, 'max' => 1300, 'unit' => 'px' ),
+			'hero_title_size'        => array( 'label' => 'Desktop homepage hero title size', 'min' => 48, 'max' => 130, 'unit' => 'px' ),
+			'hero_body_size'         => array( 'label' => 'Desktop homepage hero paragraph size', 'min' => 16, 'max' => 36, 'unit' => 'px' ),
+			'mobile_hero_content_top'=> array( 'label' => 'Mobile hero content top padding', 'min' => 70, 'max' => 260, 'unit' => 'px' ),
+			'mobile_hero_content_bottom' => array( 'label' => 'Mobile hero content bottom padding', 'min' => 70, 'max' => 260, 'unit' => 'px' ),
+			'mobile_hero_title_size' => array( 'label' => 'Mobile homepage hero title size', 'min' => 36, 'max' => 80, 'unit' => 'px' ),
+			'inner_hero_height'      => array( 'label' => 'Menu / Catering / page hero height', 'min' => 380, 'max' => 900, 'unit' => 'px' ),
+			'mobile_inner_hero_height' => array( 'label' => 'Mobile inner page hero height', 'min' => 360, 'max' => 760, 'unit' => 'px' ),
+			'inner_hero_bottom'      => array( 'label' => 'Inner hero content bottom padding', 'min' => 30, 'max' => 160, 'unit' => 'px' ),
+		),
+		'Cards, grids, buttons & forms' => array(
+			'corner_radius'   => array( 'label' => 'Card and image corner radius', 'min' => 0, 'max' => 60, 'unit' => 'px' ),
+			'grid_gap'        => array( 'label' => 'Card and column gap', 'min' => 4, 'max' => 70, 'unit' => 'px' ),
+			'card_padding'    => array( 'label' => 'Card inner padding', 'min' => 12, 'max' => 80, 'unit' => 'px' ),
+			'feature_padding' => array( 'label' => 'Large feature / callout padding', 'min' => 24, 'max' => 110, 'unit' => 'px' ),
+			'button_height'   => array( 'label' => 'Button minimum height', 'min' => 38, 'max' => 80, 'unit' => 'px' ),
+			'button_padding_x'=> array( 'label' => 'Button left / right padding', 'min' => 10, 'max' => 60, 'unit' => 'px' ),
+			'button_radius'   => array( 'label' => 'Button corner radius', 'min' => 0, 'max' => 40, 'unit' => 'px' ),
+			'form_padding'    => array( 'label' => 'Enquiry form inner padding', 'min' => 16, 'max' => 90, 'unit' => 'px' ),
+			'mobile_form_padding' => array( 'label' => 'Mobile form inner padding', 'min' => 12, 'max' => 50, 'unit' => 'px' ),
+			'gallery_gap'     => array( 'label' => 'Gallery image gap', 'min' => 0, 'max' => 50, 'unit' => 'px' ),
+		),
+		'Footer' => array(
+			'footer_top'      => array( 'label' => 'Footer top padding', 'min' => 24, 'max' => 140, 'unit' => 'px' ),
+			'footer_bottom'   => array( 'label' => 'Footer bottom padding', 'min' => 12, 'max' => 80, 'unit' => 'px' ),
+			'footer_grid_gap' => array( 'label' => 'Footer column gap', 'min' => 12, 'max' => 100, 'unit' => 'px' ),
+		),
 	);
 }
 
@@ -158,10 +274,14 @@ function feast_design( $key ) {
 function feast_sanitize_design_settings( $input ) {
 	$defaults = feast_design_defaults();
 	$output   = array();
+	$numeric  = array();
+	foreach ( feast_design_control_groups() as $controls ) {
+		$numeric = array_merge( $numeric, $controls );
+	}
 	foreach ( $defaults as $key => $default ) {
-		if ( in_array( $key, array( 'corner_radius', 'hero_height_vh' ), true ) ) {
+		if ( isset( $numeric[ $key ] ) ) {
 			$value = isset( $input[ $key ] ) ? absint( $input[ $key ] ) : absint( $default );
-			$output[ $key ] = 'hero_height_vh' === $key ? (string) min( 100, max( 55, $value ) ) : (string) $value;
+			$output[ $key ] = (string) min( $numeric[ $key ]['max'], max( $numeric[ $key ]['min'], $value ) );
 		} else {
 			$output[ $key ] = isset( $input[ $key ] ) && sanitize_hex_color( $input[ $key ] ) ? sanitize_hex_color( $input[ $key ] ) : $default;
 		}
@@ -169,14 +289,30 @@ function feast_sanitize_design_settings( $input ) {
 	return $output;
 }
 
-function feast_dynamic_design_css() {
+function feast_design_css() {
 	$design = feast_get_design_settings();
 	$css = ':root{';
 	foreach ( array( 'ink', 'forest', 'forest_light', 'cedar', 'red', 'cream', 'paper', 'sand', 'muted' ) as $key ) {
 		$css .= '--' . str_replace( '_', '-', $key ) . ':' . $design[ $key ] . ';';
 	}
-	$css .= '--header-bg:' . $design['header_bg'] . ';--footer-bg:' . $design['footer_bg'] . ';--hero-text:' . $design['hero_text'] . ';--hero-accent:' . $design['hero_accent'] . ';--button-text:' . $design['button_text'] . ';--radius:' . absint( $design['corner_radius'] ) . 'px;--hero-height:' . absint( $design['hero_height_vh'] ) . 'vh;}';
-	wp_add_inline_style( 'feast-style', $css );
+	$css .= '--header-bg:' . $design['header_bg'] . ';--footer-bg:' . $design['footer_bg'] . ';--hero-text:' . $design['hero_text'] . ';--hero-accent:' . $design['hero_accent'] . ';--button-text:' . $design['button_text'] . ';';
+	foreach ( feast_design_control_groups() as $controls ) {
+		foreach ( $controls as $key => $control ) {
+			$variable = '--' . str_replace( '_', '-', $key );
+			if ( 'corner_radius' === $key ) {
+				$variable = '--radius';
+			} elseif ( 'hero_height_vh' === $key ) {
+				$variable = '--hero-height';
+			}
+			$css .= $variable . ':' . absint( $design[ $key ] ) . $control['unit'] . ';';
+		}
+	}
+	$css .= '}';
+	return $css;
+}
+
+function feast_dynamic_design_css() {
+	wp_add_inline_style( 'feast-style', feast_design_css() );
 }
 add_action( 'wp_enqueue_scripts', 'feast_dynamic_design_css', 20 );
 
@@ -189,10 +325,12 @@ function feast_design_page() {
 		'ink' => 'Main text / dark sections', 'forest' => 'Primary brand colour', 'forest_light' => 'Primary hover colour', 'cedar' => 'Accent green', 'red' => 'Feature accent', 'cream' => 'Cream sections', 'paper' => 'Page background', 'sand' => 'Warm neutral', 'muted' => 'Secondary text', 'header_bg' => 'Header background', 'footer_bg' => 'Footer background', 'hero_text' => 'Hero text', 'hero_accent' => 'Hero script accent', 'button_text' => 'Primary button text',
 	);
 	?>
-	<div class="wrap feast-admin-wrap"><h1>Design &amp; Branding</h1><p class="feast-admin-lead">Change the global brand colours and sizing without editing code. Update the logo under Appearance → Customize → Site Identity, and navigation under Appearance → Menus.</p>
+	<div class="wrap feast-admin-wrap"><h1>Design &amp; Branding</h1><p class="feast-admin-lead">Style the entire website without editing code. These settings apply to the homepage, Menu, Catering, Story, Gallery, Contact, navigation and footer. Update the logo under Appearance → Customize → Site Identity, and navigation under Appearance → Menus.</p><p><a class="button button-secondary" href="<?php echo esc_url( home_url( '/' ) ); ?>" target="_blank" rel="noopener">Open live website preview ↗</a></p>
 	<form method="post" action="options.php"><?php settings_fields( 'feast_design_group' ); ?>
 		<div class="feast-admin-card"><h2>Brand colours</h2><?php foreach ( $colours as $key => $label ) : ?><div class="feast-admin-field"><label for="design-<?php echo esc_attr( $key ); ?>"><strong><?php echo esc_html( $label ); ?></strong></label><input id="design-<?php echo esc_attr( $key ); ?>" type="color" name="feast_design[<?php echo esc_attr( $key ); ?>]" value="<?php echo esc_attr( $settings[ $key ] ); ?>"></div><?php endforeach; ?></div>
-		<div class="feast-admin-card"><h2>Layout</h2><div class="feast-admin-field"><label for="design-radius"><strong>Card corner radius (pixels)</strong></label><input id="design-radius" type="number" min="0" max="40" name="feast_design[corner_radius]" value="<?php echo esc_attr( $settings['corner_radius'] ); ?>"></div><div class="feast-admin-field"><label for="design-hero-height"><strong>Desktop hero height (% of screen)</strong></label><input id="design-hero-height" type="number" min="55" max="100" name="feast_design[hero_height_vh]" value="<?php echo esc_attr( $settings['hero_height_vh'] ); ?>"><p class="description">70 means the hero uses 70% of the browser height.</p></div></div>
+		<?php foreach ( feast_design_control_groups() as $group_title => $controls ) : ?><div class="feast-admin-card"><h2><?php echo esc_html( $group_title ); ?></h2>
+			<?php foreach ( $controls as $key => $control ) : ?><div class="feast-admin-field feast-admin-field--number"><label for="design-<?php echo esc_attr( $key ); ?>"><strong><?php echo esc_html( $control['label'] ); ?></strong></label><div><input id="design-<?php echo esc_attr( $key ); ?>" type="number" min="<?php echo esc_attr( $control['min'] ); ?>" max="<?php echo esc_attr( $control['max'] ); ?>" name="feast_design[<?php echo esc_attr( $key ); ?>]" value="<?php echo esc_attr( $settings[ $key ] ); ?>"><span><?php echo esc_html( $control['unit'] ); ?></span></div></div><?php endforeach; ?>
+		</div><?php endforeach; ?>
 		<?php submit_button( 'Save design settings' ); ?>
 	</form></div>
 	<?php

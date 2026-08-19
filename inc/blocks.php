@@ -83,6 +83,7 @@ function feast_register_homepage_block() {
 				'menu'     => admin_url( 'edit.php?post_type=feast_dish' ),
 				'gallery'  => admin_url( 'edit.php?post_type=feast_gallery' ),
 				'copy'     => admin_url( 'admin.php?page=feast-copy' ),
+				'design'   => admin_url( 'admin.php?page=feast-design' ),
 			),
 		)
 	);

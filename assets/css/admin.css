@@ -8,3 +8,6 @@
 .feast-admin-field textarea,
 .feast-admin-field select { width: 100%; max-width: 760px; }
 .feast-admin-field textarea { min-height: 110px; }
+.feast-admin-field--number > div { display: flex; max-width: 260px; align-items: center; gap: 8px; }
+.feast-admin-field--number input[type="number"] { width: 120px; }
+.feast-admin-field--number span { color: #646970; font-weight: 600; }

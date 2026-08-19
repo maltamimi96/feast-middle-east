@@ -72,6 +72,7 @@ function feast_block_editor_assets() {
 	$theme = wp_get_theme();
 	wp_enqueue_style( 'feast-editor-fonts', 'https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600;700&family=Poppins:wght@400;500;600;700&display=swap', array(), null );
 	wp_enqueue_style( 'feast-homepage-editor', get_template_directory_uri() . '/assets/css/editor-homepage.css', array(), $theme->get( 'Version' ) );
+	wp_add_inline_style( 'feast-homepage-editor', feast_design_css() );
 }
 add_action( 'enqueue_block_editor_assets', 'feast_block_editor_assets' );
 
