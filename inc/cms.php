@@ -286,6 +286,10 @@ function feast_get_site_copy() {
 }
 
 function feast_copy( $key ) {
+	global $feast_homepage_copy_overrides;
+	if ( is_array( $feast_homepage_copy_overrides ) && array_key_exists( $key, $feast_homepage_copy_overrides ) ) {
+		return (string) $feast_homepage_copy_overrides[ $key ];
+	}
 	$copy = feast_get_site_copy();
 	return isset( $copy[ $key ] ) ? $copy[ $key ] : '';
 }

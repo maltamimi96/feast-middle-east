@@ -12,12 +12,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 require_once get_template_directory() . '/inc/cms.php';
 require_once get_template_directory() . '/inc/seo.php';
 require_once get_template_directory() . '/inc/seed.php';
+require_once get_template_directory() . '/inc/blocks.php';
 
 function feast_theme_setup() {
 	add_theme_support( 'title-tag' );
 	add_theme_support( 'post-thumbnails' );
 	add_theme_support( 'custom-logo', array( 'height' => 120, 'width' => 120, 'flex-height' => true, 'flex-width' => true ) );
 	add_theme_support( 'html5', array( 'search-form', 'gallery', 'caption', 'style', 'script' ) );
+	add_theme_support( 'editor-styles' );
+	add_editor_style( 'style.css' );
 	register_nav_menus(
 		array(
 			'primary' => __( 'Primary Menu', 'feast-middle-east' ),
@@ -64,6 +67,13 @@ function feast_theme_assets() {
 	wp_enqueue_script( 'feast-main', get_template_directory_uri() . '/assets/js/main.js', array(), $theme->get( 'Version' ), true );
 }
 add_action( 'wp_enqueue_scripts', 'feast_theme_assets' );
+
+function feast_block_editor_assets() {
+	$theme = wp_get_theme();
+	wp_enqueue_style( 'feast-editor-fonts', 'https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600;700&family=Poppins:wght@400;500;600;700&display=swap', array(), null );
+	wp_enqueue_style( 'feast-homepage-editor', get_template_directory_uri() . '/assets/css/editor-homepage.css', array(), $theme->get( 'Version' ) );
+}
+add_action( 'enqueue_block_editor_assets', 'feast_block_editor_assets' );
 
 function feast_asset( $file ) {
 	return esc_url( get_template_directory_uri() . '/assets/images/' . ltrim( $file, '/' ) );

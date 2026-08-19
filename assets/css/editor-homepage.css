@@ -1,0 +1,19 @@
+.feast-homepage-editor-shell {
+	width: 100%;
+	max-width: none;
+}
+
+.feast-homepage-editor-shell > .components-notice {
+	margin: 0 0 1rem;
+}
+
+.feast-homepage-editor-shell .feast-homepage-block {
+	pointer-events: none;
+}
+
+.feast-editor-links {
+	display: flex;
+	flex-wrap: wrap;
+	gap: .5rem;
+}
+
