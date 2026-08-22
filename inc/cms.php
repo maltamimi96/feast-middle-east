@@ -416,6 +416,10 @@ function feast_copy_defaults() {
 		'footer_bottom_text'  => 'Traditional food. Generous hospitality.',
 		'mobile_cta_label'    => 'Get a catering quote',
 		'mobile_cta_link'     => '/contact/',
+		'notfound_eyebrow'    => 'Page not found',
+		'notfound_title'      => 'This plate is empty.',
+		'notfound_text'       => 'The page you were after has moved or never existed. Head back to the homepage to explore our menu and catering.',
+		'notfound_cta_label'  => 'Back to the homepage',
 	);
 }
 
@@ -476,6 +480,7 @@ function feast_copy_page() {
 		'FAQ section'        => array( 'faq_eyebrow', 'faq_title' ),
 		'Enquiry section'    => array( 'enquiry_eyebrow', 'enquiry_title', 'enquiry_intro' ),
 		'Enquiry form'       => array( 'form_success', 'form_error', 'form_name_label', 'form_phone_label', 'form_email_label', 'form_date_label', 'form_guests_label', 'form_guests_placeholder', 'form_type_label', 'form_type_placeholder', 'form_type_options', 'form_message_label', 'form_message_placeholder', 'form_submit_label', 'form_note' ),
+		'Not found page'     => array( 'notfound_eyebrow', 'notfound_title', 'notfound_text', 'notfound_cta_label' ),
 		'Footer & mobile CTA'=> array( 'footer_description', 'footer_contact_title', 'footer_explore_title', 'footer_location', 'footer_bottom_text', 'contact_instagram_label', 'mobile_cta_label', 'mobile_cta_link' ),
 	);
 	?>

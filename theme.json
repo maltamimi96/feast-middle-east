@@ -56,9 +56,5 @@
       "button": { "color": { "background": "#173f32", "text": "#ffffff" }, "border": { "radius": "2px" }, "typography": { "fontSize": "0.82rem", "fontWeight": "600", "letterSpacing": "0.05em", "textTransform": "uppercase" } },
       "link": { "color": { "text": "#173f32" } }
     }
-  },
-  "templateParts": [
-    { "name": "header", "title": "Header", "area": "header" },
-    { "name": "footer", "title": "Footer", "area": "footer" }
-  ]
+  }
 }

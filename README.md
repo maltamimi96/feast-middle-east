@@ -11,11 +11,11 @@ A custom, coded WordPress theme focused on catering enquiries and menu discovery
 
 ## Visual editing (no paid builder)
 
-This is a native WordPress block theme. Open **Appearance → Editor** to edit the global header, footer, colours, fonts, page width and template spacing. Open **Pages → Home** (or any dedicated page) to edit the actual nested blocks.
+Open **Pages → Home** to edit the homepage. Its hero slides, headings, paragraphs, photos, buttons, catering cards, menu lists, process steps, story, gallery and enquiry copy are normal Gutenberg blocks, so they can be selected, moved, duplicated, deleted and styled independently. The editor stacks the hero slides so they are easy to work on; the public website rotates them as a slideshow.
 
-The hero slides, headings, paragraphs, photos, buttons, catering cards, menu lists, process steps, story, gallery and enquiry copy are normal Gutenberg blocks. They can be selected, moved, duplicated, deleted and styled independently. The editor stacks the hero slides so they are easy to work on; the public website rotates them as a slideshow.
+Catering, Menu, Our Story, Gallery and Contact work differently. Each has its own PHP template that builds the page from the Feast CMS, so their packages, dishes, photos and FAQs stay live — add a dish in **Feast CMS → Menu Dishes** and it appears on the menu page with its photo, price and dietary label. On those pages the editor content field is the short intro paragraph only; everything else is edited from the Feast CMS menus below.
 
-The enquiry form remains a functional Shortcode block so its secure submission handling stays intact. Its labels and messages are edited under **Feast CMS → Website Copy**. GitHub deployment still controls the theme code, while WordPress stores visual edits in the database.
+The header, footer, colours, fonts and spacing are theme code driven by **Feast CMS → Website Copy** and **Design & Branding**, not by Appearance → Editor. The enquiry form remains a functional Shortcode block so its secure submission handling stays intact. GitHub deployment controls the theme code, while WordPress stores page edits in the database.
 
 ## Client CMS
 
@@ -31,10 +31,8 @@ After activation, WordPress contains a **Feast CMS** menu with:
 - **SEO & Local Business** — homepage search title and description, social image, structured address, service area, cuisine, hours, profiles and search-verification codes.
 - **Catering FAQs** — questions and answers shown on the catering page.
 
-Use **Appearance → Editor → Design → Navigation** for menus, and select the logo directly in the Header template part.
+Use **Appearance → Menus** to manage the Primary and Footer menus, and **Appearance → Customise → Site Identity** to set the logo.
 
 Every page and post also has optional SEO title, meta description, social image, canonical URL and no-index controls. The theme outputs canonical tags, Open Graph/Twitter metadata and JSON-LD for the restaurant, menu, catering service, breadcrumbs and visible FAQs. If Yoast, Rank Math or All in One SEO is installed later, the native frontend SEO output disables itself to prevent duplicate metadata.
-
-The theme also creates native editable layouts for **Catering**, **Menu**, **Our Story**, **Gallery**, and **Contact**. Every section on those pages is built from the same core Group, Cover, Image, Heading, Paragraph, List, Button, Columns, Gallery and Details blocks.
 
 Use the WordPress **Featured Image** box to upload images. Use **Page Attributes → Order** to control display order. Published items appear on the website; drafts remain hidden. If a section has no published CMS items, the theme's original content is used as a fallback.
