@@ -23,7 +23,7 @@ function feast_theme_setup() {
 	add_theme_support( 'wp-block-styles' );
 	add_theme_support( 'responsive-embeds' );
 	add_theme_support( 'align-wide' );
-	add_editor_style( 'style.css' );
+	add_editor_style( array( 'style.css', 'assets/css/editor.css' ) );
 	register_nav_menus(
 		array(
 			'primary' => __( 'Primary Menu', 'feast-middle-east' ),
@@ -75,6 +75,21 @@ function feast_block_editor_assets() {
 	wp_enqueue_style( 'feast-editor-fonts', 'https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600;700&family=Poppins:wght@400;500;600;700&display=swap', array(), null );
 }
 add_action( 'enqueue_block_editor_assets', 'feast_block_editor_assets' );
+
+/**
+ * Load the theme fonts inside the editor canvas.
+ *
+ * The canvas is an iframe, which enqueue_block_editor_assets does not reach, so
+ * headings fell back to a serif face while editing. enqueue_block_assets runs
+ * inside the iframe as well.
+ */
+function feast_editor_canvas_assets() {
+	if ( ! is_admin() ) {
+		return;
+	}
+	wp_enqueue_style( 'feast-fonts', 'https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600;700&family=Poppins:wght@400;500;600;700&display=swap', array(), null );
+}
+add_action( 'enqueue_block_assets', 'feast_editor_canvas_assets' );
 
 function feast_asset( $file ) {
 	return esc_url( get_template_directory_uri() . '/assets/images/' . ltrim( $file, '/' ) );

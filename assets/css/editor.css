@@ -1,0 +1,14 @@
+/*
+ * Editor-only corrections.
+ *
+ * The block editor wraps page content in .is-root-container, which caps every
+ * direct child at the theme.json content size (820px). The homepage layout is
+ * full bleed on the site, so without this the editor shows the whole page
+ * squeezed into a narrow column that looks nothing like the published page.
+ * Groups nested inside keep the 820px text column, exactly as they do live.
+ */
+.editor-styles-wrapper .is-root-container > .feast-native-home {
+	max-width: none;
+	margin-left: 0;
+	margin-right: 0;
+}
