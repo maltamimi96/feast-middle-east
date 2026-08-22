@@ -70,7 +70,7 @@ function feast_register_content_types() {
 				'public'              => false,
 				'show_ui'             => true,
 				'show_in_menu'        => 'feast-cms',
-				'show_in_rest'        => false,
+				'show_in_rest'        => true,
 				'supports'            => $type['supports'],
 				'menu_position'       => 25,
 				'capability_type'     => 'post',

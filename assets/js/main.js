@@ -26,9 +26,9 @@
     });
   }
 
-  const slider = document.querySelector('[data-slider]');
+  const slider = document.querySelector('[data-slider], .feast-native-slider');
   if (slider) {
-    const slides = Array.from(slider.querySelectorAll('[data-slide]'));
+    const slides = Array.from(slider.querySelectorAll('[data-slide], .hero-slide'));
     const dots = Array.from(document.querySelectorAll('[data-slide-to]'));
     const nextButton = document.querySelector('[data-slide-next]');
     const prevButton = document.querySelector('[data-slide-prev]');

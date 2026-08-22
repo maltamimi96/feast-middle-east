@@ -1,0 +1,9 @@
+<?php
+/**
+ * Title: Editable story page
+ * Slug: feast-middle-east/page-our-story
+ * Categories: feast
+ */
+$image = esc_url( get_template_directory_uri() . '/assets/images/owner-kitchen.jpg' );
+?>
+<!-- wp:group {"className":"feast-native-page","layout":{"type":"default"}} --><div class="wp-block-group feast-native-page"><!-- wp:group {"className":"section native-page-top","layout":{"type":"constrained"}} --><div class="wp-block-group section native-page-top"><!-- wp:columns {"verticalAlignment":"center","className":"story-grid"} --><div class="wp-block-columns are-vertically-aligned-center story-grid"><!-- wp:column --><div class="wp-block-column"><!-- wp:image {"sizeSlug":"large","linkDestination":"none"} --><figure class="wp-block-image size-large"><img src="<?php echo $image; ?>" alt="Preparing food in the Feast kitchen"/></figure><!-- /wp:image --></div><!-- /wp:column --><!-- wp:column --><div class="wp-block-column"><!-- wp:paragraph {"className":"eyebrow"} --><p class="eyebrow">Our story</p><!-- /wp:paragraph --><!-- wp:heading {"level":1} --><h1 class="wp-block-heading">Food with heart, heritage and generosity.</h1><!-- /wp:heading --><!-- wp:paragraph {"className":"lead"} --><p class="lead">We bring the warmth of a Middle Eastern family table to gatherings across Sydney.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>Every dish is prepared with traditional flavours, fresh ingredients and the belief that good food should be shared generously.</p><!-- /wp:paragraph --><!-- wp:buttons --><div class="wp-block-buttons"><!-- wp:button --><div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="/contact/">Plan a feast with us</a></div><!-- /wp:button --></div><!-- /wp:buttons --></div><!-- /wp:column --></div><!-- /wp:columns --></div><!-- /wp:group --></div><!-- /wp:group -->
