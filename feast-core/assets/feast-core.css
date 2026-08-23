@@ -20,6 +20,7 @@
 .feast-cms-card:hover .feast-cms-card__image img { transform: scale(1.035); }
 .feast-cms-card__body { display: flex; flex: 1; flex-direction: column; padding: 28px; }
 .feast-cms-grid--feast_dish .feast-cms-card { min-height: 500px; }
+.feast-cms-grid--feast_bundle .feast-cms-card { min-height: 611px; }
 .feast-cms-grid--feast_bundle .feast-cms-card__body ul { margin-bottom: 0; }
 .feast-cms-card__title { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
 .feast-cms-card__title h3 { margin-bottom: .5rem; }
@@ -138,6 +139,7 @@
 @media (max-width: 767px) {
 	.feast-cms-grid { grid-template-columns: 1fr; }
 	.feast-cms-grid--feast_dish .feast-cms-card { min-height: 460px; }
+	.feast-cms-grid--feast_bundle .feast-cms-card { min-height: 570px; }
 	.elementor-element-ctmenu06 { grid-template-columns: 1fr; gap: 16px; }
 	.announcement-bar,
 	.announcement-bar__inner { min-height: 44px; }
