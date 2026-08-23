@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'FEAST_CORE_VERSION', '0.2.0' );
+define( 'FEAST_CORE_VERSION', '0.2.1' );
 define( 'FEAST_CORE_FILE', __FILE__ );
 if ( defined( 'FEAST_CORE_EMBEDDED' ) && FEAST_CORE_EMBEDDED ) {
 	define( 'FEAST_CORE_DIR', trailingslashit( get_template_directory() ) . 'feast-core/' );
@@ -49,6 +49,7 @@ add_action( 'elementor/widgets/register', 'feast_core_register_widgets' );
 
 function feast_core_assets() {
 	wp_enqueue_style( 'feast-core-elementor', FEAST_CORE_URL . 'assets/feast-core.css', array(), FEAST_CORE_VERSION );
+	wp_enqueue_script( 'feast-core-elementor', FEAST_CORE_URL . 'assets/feast-core.js', array(), FEAST_CORE_VERSION, true );
 }
 add_action( 'wp_enqueue_scripts', 'feast_core_assets', 30 );
 
