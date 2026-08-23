@@ -32,14 +32,17 @@
 	.feast-elementor-location--header .elementor-element-hd700301 { width: 100%; }
 	.feast-elementor-location--header .elementor-element-hd700401 {
 		width: 100%;
+	}
+	.feast-elementor-location--header .elementor-element-hd700401 > .e-con-inner {
 		flex-direction: row;
 		flex-wrap: wrap;
 		justify-content: center;
 		gap: 4px 6px;
 	}
-	.feast-elementor-location--header .elementor-element-hd700401 > .elementor-element {
+	.feast-elementor-location--header .elementor-element-hd700401 > .e-con-inner > .elementor-element {
 		width: auto;
 		max-width: none;
+		flex: 0 0 auto;
 	}
 	.feast-elementor-location--header .elementor-element-hd700401 .elementor-button {
 		padding: 10px 8px;
