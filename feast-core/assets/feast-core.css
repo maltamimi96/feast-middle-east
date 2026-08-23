@@ -141,7 +141,12 @@
 .elementor-element-hmca1001,
 .elementor-element-hmca1002 {
 	overflow: hidden;
+	opacity: 0;
 }
+.feast-food-loop-ready .elementor-element-hmca1001,
+.feast-food-loop-ready .elementor-element-hmca1002,
+.elementor-editor-active .elementor-element-hmca1001,
+.elementor-editor-active .elementor-element-hmca1002 { opacity: 1; }
 .elementor-element-hmca1001 {
 	direction: rtl;
 }
