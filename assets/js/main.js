@@ -51,9 +51,15 @@
       });
     };
 
-    const stop = () => window.clearInterval(timer);
+    const stop = () => {
+      window.clearInterval(timer);
+      timer = undefined;
+    };
     const start = () => {
-      if (!reducedMotion) timer = window.setInterval(() => show(current + 1), 6500);
+      stop();
+      if (!reducedMotion && slides.length > 1) {
+        timer = window.setInterval(() => show(current + 1), 9000);
+      }
     };
     const restart = () => { stop(); start(); };
 
