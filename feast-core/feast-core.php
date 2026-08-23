@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'FEAST_CORE_VERSION', '0.1.9' );
+define( 'FEAST_CORE_VERSION', '0.2.0' );
 define( 'FEAST_CORE_FILE', __FILE__ );
 if ( defined( 'FEAST_CORE_EMBEDDED' ) && FEAST_CORE_EMBEDDED ) {
 	define( 'FEAST_CORE_DIR', trailingslashit( get_template_directory() ) . 'feast-core/' );

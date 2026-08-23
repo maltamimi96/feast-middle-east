@@ -123,15 +123,71 @@
 }
 .elementor-element-hm740202 ul { margin: 18px 0 24px; padding-left: 1.2rem; }
 .elementor-element-hm740202 li { margin-bottom: 8px; color: #676b66; }
-.elementor-element-hmca0005 img {
+.elementor-element-hm740101,
+.elementor-element-hm740201,
+.elementor-element-hm740211,
+.elementor-element-hm740211 .elementor-widget-container {
+	align-self: stretch;
+	height: 100%;
+}
+.elementor-element-hm740211 img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	min-height: 650px;
+	object-fit: cover;
+	object-position: center;
+}
+.elementor-element-hmca1001,
+.elementor-element-hmca1002 {
+	overflow: hidden;
+}
+.elementor-element-hmca1001 {
+	direction: rtl;
+}
+.elementor-element-hmca1002 {
+	direction: ltr;
+}
+.elementor-element-hmca1001 img,
+.elementor-element-hmca1002 img {
 	display: block;
 	width: 100%;
 	aspect-ratio: 4 / 3;
 	object-fit: cover;
 	border-radius: 12px;
 }
-.elementor-element-hmca0005 .swiper-slide { height: auto; }
-.elementor-element-hmca0005 .swiper-slide a { display: block; height: 100%; }
+.elementor-element-hmca1001 .swiper-slide,
+.elementor-element-hmca1002 .swiper-slide { height: auto; }
+.elementor-element-hmca1001 .swiper-slide a,
+.elementor-element-hmca1002 .swiper-slide a { display: block; height: 100%; }
+.elementor-element-os710101,
+.elementor-element-os710201,
+.elementor-element-os710211,
+.elementor-element-os710211 .elementor-widget-container {
+	align-self: stretch;
+	height: 100%;
+}
+.elementor-element-os710211 img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	min-height: 720px;
+	object-fit: cover;
+	object-position: center 24%;
+}
+.elementor-element-os715103 img {
+	display: block;
+	width: 100%;
+	aspect-ratio: 4 / 5;
+	object-fit: cover;
+	object-position: center;
+}
+.elementor-element-os730221 img {
+	display: block;
+	width: 100%;
+	aspect-ratio: 4 / 3;
+	object-fit: cover;
+}
 .elementor-editor-active .feast-elementor-location { pointer-events: auto; }
 @media (max-width: 1024px) {
 	.elementor-element-ctmenu06 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -170,5 +226,8 @@
 	.feast-elementor-location--header .elementor-element-hd700401 .elementor-button {
 		padding: 10px 8px;
 	}
+	.elementor-element-hm740211 img,
+	.elementor-element-os710211 img { min-height: 460px; }
+	.elementor-element-hmca1001 { margin-bottom: 24px !important; }
 }
 
