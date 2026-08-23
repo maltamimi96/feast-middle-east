@@ -15,8 +15,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 define( 'FEAST_CORE_VERSION', '0.1.0' );
 define( 'FEAST_CORE_FILE', __FILE__ );
-define( 'FEAST_CORE_DIR', plugin_dir_path( __FILE__ ) );
-define( 'FEAST_CORE_URL', plugin_dir_url( __FILE__ ) );
+if ( defined( 'FEAST_CORE_EMBEDDED' ) && FEAST_CORE_EMBEDDED ) {
+	define( 'FEAST_CORE_DIR', trailingslashit( get_template_directory() ) . 'feast-core/' );
+	define( 'FEAST_CORE_URL', trailingslashit( get_template_directory_uri() ) . 'feast-core/' );
+} else {
+	define( 'FEAST_CORE_DIR', plugin_dir_path( __FILE__ ) );
+	define( 'FEAST_CORE_URL', plugin_dir_url( __FILE__ ) );
+}
 
 /** Register the Feast widget group in Elementor. */
 function feast_core_elementor_category( $elements_manager ) {
@@ -52,7 +57,7 @@ function feast_core_elementor_notice() {
 	if ( did_action( 'elementor/loaded' ) || ! current_user_can( 'activate_plugins' ) ) {
 		return;
 	}
-	echo '<div class="notice notice-warning"><p><strong>Feast Core:</strong> Install and activate Elementor Website Builder (free) to use the Feast visual widgets. The existing website will continue to work without it.</p></div>';
+	echo '<div class="notice notice-warning"><p><strong>Feast visual editor:</strong> Activate Elementor Website Builder (free) to use the Feast visual widgets. The existing website will continue to work without it.</p></div>';
 }
 add_action( 'admin_notices', 'feast_core_elementor_notice' );
 

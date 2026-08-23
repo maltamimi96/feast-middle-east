@@ -1,5 +1,10 @@
 # Feast in the Middle East WordPress Theme
 
+The repository also includes the embedded Feast Core integration under
+`feast-core/`. With Elementor Free active, it adds the Feast Hero Slider,
+CMS Collection and Catering Enquiry widgets plus editable global header and
+footer locations. No second Hostinger repository is required.
+
 A custom, coded WordPress theme focused on catering enquiries and menu discovery.
 
 ## Install

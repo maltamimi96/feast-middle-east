@@ -14,6 +14,14 @@ require_once get_template_directory() . '/inc/seo.php';
 require_once get_template_directory() . '/inc/seed.php';
 require_once get_template_directory() . '/inc/blocks.php';
 
+// Ship the project-specific Elementor widgets with the theme so Hostinger only
+// needs the existing repository and webhook. If the standalone Feast Core
+// plugin is ever activated, WordPress loads it first and this copy is skipped.
+if ( ! defined( 'FEAST_CORE_VERSION' ) ) {
+	define( 'FEAST_CORE_EMBEDDED', true );
+	require_once get_template_directory() . '/feast-core/feast-core.php';
+}
+
 function feast_theme_setup() {
 	add_theme_support( 'title-tag' );
 	add_theme_support( 'post-thumbnails' );
