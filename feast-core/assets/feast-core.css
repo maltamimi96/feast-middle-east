@@ -21,9 +21,41 @@
 .feast-cms-card__title strong { color: var(--forest, #173f32); white-space: nowrap; }
 .feast-cms-card__body p { color: var(--muted, #676b66); }
 .feast-cms-card__body small { color: var(--cedar, #2f765c); font-weight: 600; }
+.elementor-element-ctmenu06 {
+	display: grid !important;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 22px;
+	width: 100%;
+}
+.elementor-element-ctmenu06 > .elementor-element {
+	min-width: 0;
+	width: 100%;
+	overflow: hidden;
+	border-radius: 12px;
+	background: #fff;
+	box-shadow: 0 16px 42px rgba(23, 27, 24, .1);
+}
+.elementor-element-ctmenu06 .elementor-widget-container,
+.elementor-element-ctmenu06 .elementor-image,
+.elementor-element-ctmenu06 a {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+.elementor-element-ctmenu06 img {
+	display: block;
+	width: 100%;
+	height: auto;
+	aspect-ratio: 3 / 4;
+	object-fit: cover;
+}
 .elementor-editor-active .feast-elementor-location { pointer-events: auto; }
+@media (max-width: 1024px) {
+	.elementor-element-ctmenu06 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 @media (max-width: 767px) {
 	.feast-cms-grid { grid-template-columns: 1fr; }
+	.elementor-element-ctmenu06 { grid-template-columns: 1fr; gap: 16px; }
 	.feast-elementor-location--header .elementor-element-hd700101 { display: none; }
 	.feast-elementor-location--header .elementor-element-hd700201 {
 		gap: 12px;
