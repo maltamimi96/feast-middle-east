@@ -154,10 +154,18 @@
 	width: 100%;
 	aspect-ratio: 4 / 3;
 	object-fit: cover;
-	border-radius: 12px;
+	border-radius: 0;
 }
 .elementor-element-hmca1001 .swiper-slide,
-.elementor-element-hmca1002 .swiper-slide { height: auto; }
+.elementor-element-hmca1002 .swiper-slide {
+	height: auto;
+	box-sizing: border-box;
+	padding-inline: 16px;
+}
+.elementor-element-hmca1001 .swiper-wrapper,
+.elementor-element-hmca1002 .swiper-wrapper {
+	transition-timing-function: linear !important;
+}
 .elementor-element-hmca1001 .swiper-slide a,
 .elementor-element-hmca1002 .swiper-slide a { display: block; height: 100%; }
 .elementor-element-os710101,
