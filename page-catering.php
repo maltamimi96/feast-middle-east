@@ -1,6 +1,12 @@
 <?php
 get_header();
 while ( have_posts() ) : the_post();
+	if ( feast_is_elementor_page() ) {
+		echo '<main id="main-content">';
+		the_content();
+		echo '</main>';
+		continue;
+	}
 	$bundles = feast_content_items( 'feast_bundle' );
 	$faqs    = feast_content_items( 'feast_faq' );
 	?>

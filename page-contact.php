@@ -1,6 +1,12 @@
 <?php
 get_header();
 while ( have_posts() ) : the_post();
+	if ( feast_is_elementor_page() ) {
+		echo '<main id="main-content">';
+		the_content();
+		echo '</main>';
+		continue;
+	}
 	?>
 	<main id="main-content">
 		<?php get_template_part( 'template-parts/inner-hero', null, array( 'eyebrow' => 'Catering enquiries', 'fallback_image' => 'catering-selection.jpg' ) ); ?>

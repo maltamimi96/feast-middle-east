@@ -1,6 +1,12 @@
 <?php
 get_header();
 while ( have_posts() ) : the_post();
+	if ( feast_is_elementor_page() ) {
+		echo '<main id="main-content">';
+		the_content();
+		echo '</main>';
+		continue;
+	}
 	$image = has_post_thumbnail() ? get_the_post_thumbnail_url( get_the_ID(), 'large' ) : feast_asset( 'owner-kitchen.jpg' );
 	?>
 	<main id="main-content">

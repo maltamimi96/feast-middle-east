@@ -1,3 +1,5 @@
+<?php if ( feast_elementor_location( 'footer' ) ) : ?>
+<?php else : ?>
 <footer class="site-footer">
 	<div class="site-wrap">
 		<div class="footer-grid">
@@ -20,6 +22,7 @@
 	</div>
 </footer>
 <a class="button mobile-quote" href="<?php echo esc_url( feast_resolve_url( feast_copy( 'mobile_cta_link' ) ) ); ?>"><?php echo esc_html( feast_copy( 'mobile_cta_label' ) ); ?></a>
+<?php endif; ?>
 <?php wp_footer(); ?>
 </body>
 </html>

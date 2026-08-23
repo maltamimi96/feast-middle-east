@@ -8,6 +8,8 @@
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 <a class="skip-link" href="#main-content">Skip to content</a>
+<?php if ( feast_elementor_location( 'header' ) ) : ?>
+<?php else : ?>
 <header class="site-header" id="site-header">
 	<div class="announcement-bar">
 		<div class="site-wrap announcement-bar__inner">
@@ -29,3 +31,4 @@
 		</nav>
 	</div>
 </header>
+<?php endif; ?>

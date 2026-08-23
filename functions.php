@@ -31,8 +31,28 @@ function feast_theme_setup() {
 		)
 	);
 	add_post_type_support( 'page', 'excerpt' );
+	add_theme_support( 'elementor' );
 }
 add_action( 'after_setup_theme', 'feast_theme_setup' );
+
+/**
+ * Whether the current page has been built with Elementor.
+ *
+ * Kept in the theme so every dedicated page template can safely hand control
+ * to Elementor without making Elementor a hard dependency.
+ */
+function feast_is_elementor_page( $post_id = 0 ) {
+	$post_id = $post_id ? absint( $post_id ) : get_queried_object_id();
+	return $post_id
+		&& did_action( 'elementor/loaded' )
+		&& class_exists( '\\Elementor\\Plugin' )
+		&& \Elementor\Plugin::$instance->db->is_built_with_elementor( $post_id );
+}
+
+/** Render a globally assigned Elementor header or footer when Feast Core is active. */
+function feast_elementor_location( $location ) {
+	return function_exists( 'feast_core_render_location' ) && feast_core_render_location( $location );
+}
 
 function feast_primary_menu_fallback() {
 	$items = array(

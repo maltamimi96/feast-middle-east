@@ -1,6 +1,12 @@
 <?php
 get_header();
 while ( have_posts() ) : the_post();
+	if ( feast_is_elementor_page() ) {
+		echo '<main id="main-content">';
+		the_content();
+		echo '</main>';
+		continue;
+	}
 	$gallery = feast_content_items( 'feast_gallery' );
 	?>
 	<main id="main-content">
