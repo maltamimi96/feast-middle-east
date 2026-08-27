@@ -286,17 +286,17 @@ function feast_complete_starter_menu() {
 	}
 
 	$dishes = array(
-		array( 'title' => 'Chicken Mansaf', 'excerpt' => 'A generous rice dish made for sharing.', 'image' => 'hero-chicken-mansaf.jpg', 'meta' => array( '_feast_category' => 'mains', '_feast_showcase' => '0' ) ),
-		array( 'title' => 'Malfouf', 'excerpt' => 'Tender stuffed cabbage rolls, slow-cooked and deeply comforting.', 'image' => 'menu-malfouf.jpg', 'meta' => array( '_feast_category' => 'mains', '_feast_showcase' => '1' ) ),
-		array( 'title' => 'Dawood Basha', 'excerpt' => 'Tender meatballs cooked in a rich tomato sauce.', 'meta' => array( '_feast_category' => 'mains', '_feast_showcase' => '0' ) ),
-		array( 'title' => 'Fattoush', 'excerpt' => 'Bright, crisp and made to balance every feast.', 'image' => 'menu-fattoush.jpg', 'meta' => array( '_feast_category' => 'salads', '_feast_showcase' => '1' ) ),
-		array( 'title' => 'Tabouli', 'excerpt' => 'Fresh herbs, tomato and a bright citrus dressing.', 'meta' => array( '_feast_category' => 'salads', '_feast_showcase' => '0' ) ),
-		array( 'title' => 'Hummus', 'excerpt' => 'Smooth, savoury and perfect for sharing.', 'meta' => array( '_feast_category' => 'salads', '_feast_showcase' => '0' ) ),
-		array( 'title' => 'Batata Harra', 'excerpt' => 'Crisp potatoes with herbs and spice.', 'meta' => array( '_feast_category' => 'salads', '_feast_showcase' => '0' ) ),
-		array( 'title' => 'Warak Enab', 'excerpt' => 'Stuffed vine leaves, rolled by hand and full of flavour.', 'image' => 'menu-warak-enab.jpg', 'meta' => array( '_feast_category' => 'bites', '_feast_showcase' => '1' ) ),
-		array( 'title' => 'Kibbeh', 'excerpt' => 'Traditional savoury bites for the table.', 'meta' => array( '_feast_category' => 'bites', '_feast_showcase' => '0' ) ),
-		array( 'title' => 'Sambousek', 'excerpt' => 'Golden pastries with a savoury filling.', 'meta' => array( '_feast_category' => 'bites', '_feast_showcase' => '0' ) ),
-		array( 'title' => 'Fresh Wraps', 'excerpt' => 'Freshly prepared wraps for easy lunches.', 'image' => 'menu-wrap.jpg', 'meta' => array( '_feast_category' => 'bites', '_feast_showcase' => '0' ) ),
+		array( 'title' => 'Chicken Mansaf', 'excerpt' => 'Tender spiced chicken served over fragrant rice with a creamy jameed yoghurt sauce and toasted nuts.', 'image' => 'hero-chicken-mansaf.jpg', 'meta' => array( '_feast_category' => 'mains', '_feast_showcase' => '0' ) ),
+		array( 'title' => 'Malfouf', 'excerpt' => 'Cabbage leaves filled with seasoned rice and meat, rolled by hand and slow-cooked with garlic and lemon.', 'image' => 'menu-malfouf.jpg', 'meta' => array( '_feast_category' => 'mains', '_feast_showcase' => '1' ) ),
+		array( 'title' => 'Dawood Basha', 'excerpt' => 'Tender Middle Eastern meatballs simmered in a rich tomato and onion sauce, served as a comforting homestyle main.', 'meta' => array( '_feast_category' => 'mains', '_feast_showcase' => '0' ) ),
+		array( 'title' => 'Fattoush', 'excerpt' => 'A crisp salad of lettuce, tomato, cucumber, radish and herbs, tossed with toasted pita and a tangy sumac dressing.', 'image' => 'menu-fattoush.jpg', 'meta' => array( '_feast_category' => 'salads', '_feast_showcase' => '1' ) ),
+		array( 'title' => 'Tabouli', 'excerpt' => 'Finely chopped parsley, tomato, mint and bulgur dressed with fresh lemon juice and olive oil.', 'meta' => array( '_feast_category' => 'salads', '_feast_showcase' => '0' ) ),
+		array( 'title' => 'Hummus', 'excerpt' => 'A silky blend of chickpeas, tahini, lemon and garlic, finished with a drizzle of olive oil.', 'meta' => array( '_feast_category' => 'salads', '_feast_showcase' => '0' ) ),
+		array( 'title' => 'Batata Harra', 'excerpt' => 'Crispy potato cubes tossed with garlic, coriander, chilli and lemon for a bright, spicy finish.', 'meta' => array( '_feast_category' => 'salads', '_feast_showcase' => '0' ) ),
+		array( 'title' => 'Warak Enab', 'excerpt' => 'Tender vine leaves rolled by hand around a fragrant rice and herb filling, then gently cooked with lemon.', 'image' => 'menu-warak-enab.jpg', 'meta' => array( '_feast_category' => 'bites', '_feast_showcase' => '1' ) ),
+		array( 'title' => 'Kibbeh', 'excerpt' => 'Golden bulgur shells filled with seasoned minced meat, onion and aromatic Middle Eastern spices.', 'meta' => array( '_feast_category' => 'bites', '_feast_showcase' => '0' ) ),
+		array( 'title' => 'Sambousek', 'excerpt' => 'Crisp, golden pastry parcels filled with savoury seasoned meat and fragrant spices.', 'meta' => array( '_feast_category' => 'bites', '_feast_showcase' => '0' ) ),
+		array( 'title' => 'Fresh Wraps', 'excerpt' => 'Soft flatbread packed with freshly prepared fillings, crisp salad and flavourful house sauces.', 'image' => 'menu-wrap.jpg', 'meta' => array( '_feast_category' => 'bites', '_feast_showcase' => '0' ) ),
 	);
 
 	$existing_posts = get_posts(
@@ -341,6 +341,57 @@ function feast_complete_starter_menu() {
 	update_option( 'feast_completed_starter_menu_v1', '1', false );
 }
 add_action( 'init', 'feast_complete_starter_menu', 50 );
+
+/**
+ * Replace the generic starter copy with a description specific to each dish.
+ *
+ * This one-time migration also updates sites where the starter menu has already
+ * been imported into WordPress.
+ */
+function feast_update_starter_menu_descriptions() {
+	if ( ! add_option( 'feast_updated_menu_descriptions_v2', 'running', '', false ) ) {
+		return;
+	}
+
+	$descriptions = array(
+		'chicken mansaf' => 'Tender spiced chicken served over fragrant rice with a creamy jameed yoghurt sauce and toasted nuts.',
+		'malfouf'        => 'Cabbage leaves filled with seasoned rice and meat, rolled by hand and slow-cooked with garlic and lemon.',
+		'dawood basha'   => 'Tender Middle Eastern meatballs simmered in a rich tomato and onion sauce, served as a comforting homestyle main.',
+		'fattoush'       => 'A crisp salad of lettuce, tomato, cucumber, radish and herbs, tossed with toasted pita and a tangy sumac dressing.',
+		'tabouli'        => 'Finely chopped parsley, tomato, mint and bulgur dressed with fresh lemon juice and olive oil.',
+		'hummus'         => 'A silky blend of chickpeas, tahini, lemon and garlic, finished with a drizzle of olive oil.',
+		'batata harra'   => 'Crispy potato cubes tossed with garlic, coriander, chilli and lemon for a bright, spicy finish.',
+		'warak enab'     => 'Tender vine leaves rolled by hand around a fragrant rice and herb filling, then gently cooked with lemon.',
+		'kibbeh'         => 'Golden bulgur shells filled with seasoned minced meat, onion and aromatic Middle Eastern spices.',
+		'sambousek'      => 'Crisp, golden pastry parcels filled with savoury seasoned meat and fragrant spices.',
+		'fresh wraps'    => 'Soft flatbread packed with freshly prepared fillings, crisp salad and flavourful house sauces.',
+	);
+
+	$dishes = get_posts(
+		array(
+			'post_type'      => 'feast_dish',
+			'post_status'    => 'any',
+			'posts_per_page' => -1,
+		)
+	);
+
+	foreach ( $dishes as $dish ) {
+		$title = strtolower( trim( $dish->post_title ) );
+		if ( ! isset( $descriptions[ $title ] ) ) {
+			continue;
+		}
+
+		wp_update_post(
+			array(
+				'ID'           => $dish->ID,
+				'post_excerpt' => $descriptions[ $title ],
+			)
+		);
+	}
+
+	update_option( 'feast_updated_menu_descriptions_v2', '1', false );
+}
+add_action( 'init', 'feast_update_starter_menu_descriptions', 51 );
 
 /**
  * Give the starter catering packages relevant photography without replacing
@@ -461,17 +512,17 @@ function feast_seed_initial_content() {
 	feast_seed_post_type(
 		'feast_dish',
 		array(
-			array( 'title' => 'Chicken Mansaf', 'excerpt' => 'A generous rice dish made for sharing.', 'image' => 'hero-chicken-mansaf.jpg', 'meta' => array( '_feast_category' => 'mains', '_feast_showcase' => '0' ) ),
-			array( 'title' => 'Malfouf', 'excerpt' => 'Tender stuffed cabbage rolls, slow-cooked and deeply comforting.', 'image' => 'menu-malfouf.jpg', 'meta' => array( '_feast_category' => 'mains', '_feast_showcase' => '1' ) ),
-			array( 'title' => 'Dawood Basha', 'excerpt' => 'A traditional homestyle favourite.', 'meta' => array( '_feast_category' => 'mains', '_feast_showcase' => '0' ) ),
-			array( 'title' => 'Fattoush', 'excerpt' => 'Bright, crisp and made to balance every feast.', 'image' => 'menu-fattoush.jpg', 'meta' => array( '_feast_category' => 'salads', '_feast_showcase' => '1' ) ),
-			array( 'title' => 'Tabouli', 'excerpt' => 'Fresh herbs, tomato and a bright citrus dressing.', 'meta' => array( '_feast_category' => 'salads', '_feast_showcase' => '0' ) ),
-			array( 'title' => 'Hummus', 'excerpt' => 'Smooth, savoury and perfect for sharing.', 'meta' => array( '_feast_category' => 'salads', '_feast_showcase' => '0' ) ),
-			array( 'title' => 'Batata Harra', 'excerpt' => 'Crisp potatoes with herbs and spice.', 'meta' => array( '_feast_category' => 'salads', '_feast_showcase' => '0' ) ),
-			array( 'title' => 'Warak Enab', 'excerpt' => 'Stuffed vine leaves, rolled by hand and full of flavour.', 'image' => 'menu-warak-enab.jpg', 'meta' => array( '_feast_category' => 'bites', '_feast_showcase' => '1' ) ),
-			array( 'title' => 'Kibbeh', 'excerpt' => 'Traditional savoury bites for the table.', 'meta' => array( '_feast_category' => 'bites', '_feast_showcase' => '0' ) ),
-			array( 'title' => 'Sambousek', 'excerpt' => 'Golden pastries with a savoury filling.', 'meta' => array( '_feast_category' => 'bites', '_feast_showcase' => '0' ) ),
-			array( 'title' => 'Fresh Wraps', 'excerpt' => 'Freshly prepared wraps for easy lunches.', 'image' => 'menu-wrap.jpg', 'meta' => array( '_feast_category' => 'bites', '_feast_showcase' => '0' ) ),
+			array( 'title' => 'Chicken Mansaf', 'excerpt' => 'Tender spiced chicken served over fragrant rice with a creamy jameed yoghurt sauce and toasted nuts.', 'image' => 'hero-chicken-mansaf.jpg', 'meta' => array( '_feast_category' => 'mains', '_feast_showcase' => '0' ) ),
+			array( 'title' => 'Malfouf', 'excerpt' => 'Cabbage leaves filled with seasoned rice and meat, rolled by hand and slow-cooked with garlic and lemon.', 'image' => 'menu-malfouf.jpg', 'meta' => array( '_feast_category' => 'mains', '_feast_showcase' => '1' ) ),
+			array( 'title' => 'Dawood Basha', 'excerpt' => 'Tender Middle Eastern meatballs simmered in a rich tomato and onion sauce, served as a comforting homestyle main.', 'meta' => array( '_feast_category' => 'mains', '_feast_showcase' => '0' ) ),
+			array( 'title' => 'Fattoush', 'excerpt' => 'A crisp salad of lettuce, tomato, cucumber, radish and herbs, tossed with toasted pita and a tangy sumac dressing.', 'image' => 'menu-fattoush.jpg', 'meta' => array( '_feast_category' => 'salads', '_feast_showcase' => '1' ) ),
+			array( 'title' => 'Tabouli', 'excerpt' => 'Finely chopped parsley, tomato, mint and bulgur dressed with fresh lemon juice and olive oil.', 'meta' => array( '_feast_category' => 'salads', '_feast_showcase' => '0' ) ),
+			array( 'title' => 'Hummus', 'excerpt' => 'A silky blend of chickpeas, tahini, lemon and garlic, finished with a drizzle of olive oil.', 'meta' => array( '_feast_category' => 'salads', '_feast_showcase' => '0' ) ),
+			array( 'title' => 'Batata Harra', 'excerpt' => 'Crispy potato cubes tossed with garlic, coriander, chilli and lemon for a bright, spicy finish.', 'meta' => array( '_feast_category' => 'salads', '_feast_showcase' => '0' ) ),
+			array( 'title' => 'Warak Enab', 'excerpt' => 'Tender vine leaves rolled by hand around a fragrant rice and herb filling, then gently cooked with lemon.', 'image' => 'menu-warak-enab.jpg', 'meta' => array( '_feast_category' => 'bites', '_feast_showcase' => '1' ) ),
+			array( 'title' => 'Kibbeh', 'excerpt' => 'Golden bulgur shells filled with seasoned minced meat, onion and aromatic Middle Eastern spices.', 'meta' => array( '_feast_category' => 'bites', '_feast_showcase' => '0' ) ),
+			array( 'title' => 'Sambousek', 'excerpt' => 'Crisp, golden pastry parcels filled with savoury seasoned meat and fragrant spices.', 'meta' => array( '_feast_category' => 'bites', '_feast_showcase' => '0' ) ),
+			array( 'title' => 'Fresh Wraps', 'excerpt' => 'Soft flatbread packed with freshly prepared fillings, crisp salad and flavourful house sauces.', 'image' => 'menu-wrap.jpg', 'meta' => array( '_feast_category' => 'bites', '_feast_showcase' => '0' ) ),
 		)
 	);
 
