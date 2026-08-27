@@ -343,28 +343,39 @@ function feast_complete_starter_menu() {
 add_action( 'init', 'feast_complete_starter_menu', 50 );
 
 /**
- * Replace the generic starter copy with a description specific to each dish.
+ * Replace missing or generic menu copy with a description specific to each dish.
  *
  * This one-time migration also updates sites where the starter menu has already
  * been imported into WordPress.
  */
 function feast_update_starter_menu_descriptions() {
-	if ( ! add_option( 'feast_updated_menu_descriptions_v2', 'running', '', false ) ) {
+	if ( ! add_option( 'feast_updated_menu_descriptions_v3', 'running', '', false ) ) {
 		return;
 	}
 
 	$descriptions = array(
-		'chicken mansaf' => 'Tender spiced chicken served over fragrant rice with a creamy jameed yoghurt sauce and toasted nuts.',
-		'malfouf'        => 'Cabbage leaves filled with seasoned rice and meat, rolled by hand and slow-cooked with garlic and lemon.',
-		'dawood basha'   => 'Tender Middle Eastern meatballs simmered in a rich tomato and onion sauce, served as a comforting homestyle main.',
-		'fattoush'       => 'A crisp salad of lettuce, tomato, cucumber, radish and herbs, tossed with toasted pita and a tangy sumac dressing.',
-		'tabouli'        => 'Finely chopped parsley, tomato, mint and bulgur dressed with fresh lemon juice and olive oil.',
-		'hummus'         => 'A silky blend of chickpeas, tahini, lemon and garlic, finished with a drizzle of olive oil.',
-		'batata harra'   => 'Crispy potato cubes tossed with garlic, coriander, chilli and lemon for a bright, spicy finish.',
-		'warak enab'     => 'Tender vine leaves rolled by hand around a fragrant rice and herb filling, then gently cooked with lemon.',
-		'kibbeh'         => 'Golden bulgur shells filled with seasoned minced meat, onion and aromatic Middle Eastern spices.',
-		'sambousek'      => 'Crisp, golden pastry parcels filled with savoury seasoned meat and fragrant spices.',
-		'fresh wraps'    => 'Soft flatbread packed with freshly prepared fillings, crisp salad and flavourful house sauces.',
+		'lamb kabsah'                => 'Slow-cooked lamb served over fragrant spiced rice with toasted nuts and a rich blend of warming Middle Eastern flavours.',
+		'kousa bi banadoora'         => 'Tender zucchini filled with seasoned rice and meat, then gently simmered in a bright, savoury tomato sauce.',
+		'mloukhiyeh'                 => 'A comforting jute mallow stew cooked with garlic, coriander and lemon, traditionally served with fragrant rice.',
+		'chicken mansaf'             => 'Tender spiced chicken served over fragrant rice with a creamy jameed yoghurt sauce and toasted nuts.',
+		'shish barak'                => 'Delicate meat-filled dumplings simmered in a warm, garlicky yoghurt sauce and finished with fresh coriander.',
+		'fasolia'                    => 'A slow-cooked homestyle bean stew in a rich tomato sauce, seasoned with garlic and aromatic spices.',
+		'lubiyah and lahme'          => 'Tender green beans and slow-cooked meat simmered together in a savoury tomato, garlic and spice sauce.',
+		'wara anib zaat'             => 'Vine leaves rolled around a fragrant rice, tomato and herb filling, gently cooked with lemon and olive oil.',
+		'eggplant with diced tomato' => 'Tender eggplant cooked with diced tomato, garlic and herbs for a rich, savoury vegetable dish.',
+		'sheikh al mahshi'           => 'Tender eggplant filled with seasoned meat and aromatic spices, then simmered in a rich tomato sauce.',
+		'malfouf'                    => 'Cabbage leaves filled with seasoned rice and meat, rolled by hand and slow-cooked with garlic and lemon.',
+		'kousa b laban'              => 'Tender stuffed zucchini simmered in a creamy, garlicky yoghurt sauce and served as a comforting homestyle favourite.',
+		'kafta and batata'           => 'Seasoned kafta and sliced potatoes baked in a rich tomato sauce with onion and warming Middle Eastern spices.',
+		'dawood basha'               => 'Tender Middle Eastern meatballs simmered in a rich tomato and onion sauce, served as a comforting homestyle main.',
+		'fattoush'                   => 'A crisp salad of lettuce, tomato, cucumber, radish and herbs, tossed with toasted pita and a tangy sumac dressing.',
+		'tabouli'                    => 'Finely chopped parsley, tomato, mint and bulgur dressed with fresh lemon juice and olive oil.',
+		'hummus'                     => 'A silky blend of chickpeas, tahini, lemon and garlic, finished with a drizzle of olive oil.',
+		'batata harra'               => 'Crispy potato cubes tossed with garlic, coriander, chilli and lemon for a bright, spicy finish.',
+		'warak enab'                 => 'Tender vine leaves rolled by hand around a fragrant rice and herb filling, then gently cooked with lemon.',
+		'kibbeh'                     => 'Golden bulgur shells filled with seasoned minced meat, onion and aromatic Middle Eastern spices.',
+		'sambousek'                  => 'Crisp, golden pastry parcels filled with savoury seasoned meat and fragrant spices.',
+		'fresh wraps'                => 'Soft flatbread packed with freshly prepared fillings, crisp salad and flavourful house sauces.',
 	);
 
 	$dishes = get_posts(
@@ -389,7 +400,7 @@ function feast_update_starter_menu_descriptions() {
 		);
 	}
 
-	update_option( 'feast_updated_menu_descriptions_v2', '1', false );
+	update_option( 'feast_updated_menu_descriptions_v3', '1', false );
 }
 add_action( 'init', 'feast_update_starter_menu_descriptions', 51 );
 
