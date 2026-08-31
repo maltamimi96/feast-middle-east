@@ -10,6 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 require_once get_template_directory() . '/inc/cms.php';
+require_once get_template_directory() . '/inc/enquiries.php';
 require_once get_template_directory() . '/inc/seo.php';
 require_once get_template_directory() . '/inc/seed.php';
 require_once get_template_directory() . '/inc/blocks.php';
@@ -152,7 +153,23 @@ function feast_handle_enquiry() {
 	$subject = sprintf( 'New catering enquiry from %s', $name );
 	$body    = "Name: {$name}\nEmail: {$email}\nPhone: {$phone}\nEvent date: {$date}\nGuests: {$guests}\nEvent type: {$type}\n\nDetails:\n{$message}";
 	$headers = array( 'Reply-To: ' . $name . ' <' . $email . '>' );
-	$sent    = wp_mail( feast_setting( 'enquiry_email' ), $subject, $body, $headers );
+	$enquiry_id = feast_store_enquiry(
+		array(
+			'name'       => $name,
+			'email'      => $email,
+			'phone'      => $phone,
+			'event_date' => $date,
+			'guests'     => $guests,
+			'event_type' => $type,
+			'message'    => $message,
+			'source'     => $redirect,
+		)
+	);
+	$sent = wp_mail( feast_setting( 'enquiry_email' ), $subject, $body, $headers );
+
+	if ( $enquiry_id ) {
+		update_post_meta( $enquiry_id, '_feast_email_status', $sent ? 'sent' : 'failed' );
+	}
 
 	wp_safe_redirect( add_query_arg( 'enquiry', $sent ? 'sent' : 'error', $redirect ) . '#catering-enquiry' );
 	exit;

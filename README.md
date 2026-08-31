@@ -26,6 +26,7 @@ The header, footer, colours, fonts and spacing are theme code driven by **Feast 
 
 After activation, WordPress contains a **Feast CMS** menu with:
 
+- **Enquiries** — private records of catering form submissions, including contact details, event information, the customer message and notification-email status.
 - **Hero Offers** — slideshow headline, supporting text, buttons, links, note, background image, overlay and per-slide colours.
 - **Catering Packages** — package name, price, audience, inclusions, badge, destination link and featured styling.
 - **Menu Dishes** — dish name, description, price, dietary label, category, image and showcase option.
