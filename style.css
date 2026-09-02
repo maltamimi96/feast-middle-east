@@ -223,7 +223,9 @@ h3 { font-size: clamp(1.25rem, 2vw, var(--h3-size)); }
 .bundle-for { color: var(--sand); font-weight: 800; }
 .bundle-price { display: block; margin-top: .35rem; font-size: 1.05rem; }
 .bundle-card--featured .bundle-for { color: var(--sand); }
-.bundle-card ul { margin: 1.2rem 0 2rem; padding-left: 1.15rem; color: rgba(255,255,255,.82); }
+.bundle-card ul { display: grid; gap: .65rem; margin: 1.2rem 0 2rem; padding: 0; color: rgba(255,255,255,.82); list-style: none; }
+.bundle-card li { position: relative; margin: 0; padding-left: 1.3rem; }
+.bundle-card li::before { content: "—"; position: absolute; left: 0; color: var(--sand); font-weight: 700; }
 .bundle-card .text-link { margin-top: auto; }
 .bundle-card .text-link, .bundle-card--featured .text-link { color: #fff; }
 

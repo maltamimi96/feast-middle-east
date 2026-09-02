@@ -21,7 +21,40 @@
 .feast-cms-card__body { display: flex; flex: 1; flex-direction: column; padding: 28px; }
 .feast-cms-grid--feast_dish .feast-cms-card { min-height: 500px; }
 .feast-cms-grid--feast_bundle .feast-cms-card { min-height: 611px; }
-.feast-cms-grid--feast_bundle .feast-cms-card__body ul { margin-bottom: 0; }
+.feast-cms-card__audience {
+	display: inline-flex;
+	align-self: flex-start;
+	margin: 2px 0 20px;
+	padding: 7px 11px;
+	border: 1px solid color-mix(in srgb, var(--cedar, #2f765c) 35%, transparent);
+	border-radius: 999px;
+	background: color-mix(in srgb, var(--cedar, #2f765c) 8%, transparent);
+	color: var(--cedar, #2f765c);
+	font-size: 13px;
+	font-weight: 700;
+	line-height: 1.2;
+}
+.feast-cms-grid--feast_bundle .feast-cms-card__body ul {
+	display: grid;
+	gap: 10px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+.feast-cms-grid--feast_bundle .feast-cms-card__body li {
+	position: relative;
+	margin: 0;
+	padding-left: 20px;
+	color: var(--muted, #676b66);
+}
+.feast-cms-grid--feast_bundle .feast-cms-card__body li::before {
+	content: "—";
+	position: absolute;
+	left: 0;
+	top: 0;
+	color: var(--cedar, #2f765c);
+	font-weight: 700;
+}
 .feast-cms-card__title { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
 .feast-cms-card__title h3 { margin-bottom: .5rem; }
 .feast-cms-card__title strong { color: var(--forest, #173f32); white-space: nowrap; }
@@ -257,4 +290,3 @@
 	.elementor-element-os710211 img { min-height: 460px; }
 	.elementor-element-hmca1001 { margin-bottom: 24px !important; }
 }
-

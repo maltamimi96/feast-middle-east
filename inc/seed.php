@@ -404,6 +404,36 @@ function feast_update_starter_menu_descriptions() {
 }
 add_action( 'init', 'feast_update_starter_menu_descriptions', 51 );
 
+/** Update existing catering packages with clearer guest ranges. */
+function feast_update_package_guest_ranges() {
+	if ( ! add_option( 'feast_updated_package_guest_ranges_v1', 'running', '', false ) ) {
+		return;
+	}
+
+	$ranges = array(
+		'family table'      => 'Ideal for 10–20 guests',
+		'celebration feast' => 'Ideal for 20–50 guests',
+		'office lunch'      => 'Ideal for 10–50 guests',
+	);
+	$packages = get_posts(
+		array(
+			'post_type'      => 'feast_bundle',
+			'post_status'    => 'any',
+			'posts_per_page' => -1,
+		)
+	);
+
+	foreach ( $packages as $package ) {
+		$title = strtolower( trim( $package->post_title ) );
+		if ( isset( $ranges[ $title ] ) ) {
+			update_post_meta( $package->ID, '_feast_audience', $ranges[ $title ] );
+		}
+	}
+
+	update_option( 'feast_updated_package_guest_ranges_v1', '1', false );
+}
+add_action( 'init', 'feast_update_package_guest_ranges', 52 );
+
 /**
  * Give the starter catering packages relevant photography without replacing
  * images a site editor has already selected.
@@ -514,9 +544,9 @@ function feast_seed_initial_content() {
 	feast_seed_post_type(
 		'feast_bundle',
 		array(
-			array( 'title' => 'Family Table', 'meta' => array( '_feast_tag' => 'Warm & generous', '_feast_audience' => 'Ideal for 10–25 guests', '_feast_features' => "Your choice of hearty main dishes\nFresh salads and traditional sides\nShare-style trays, ready for the table\nCustom quote based on your menu", '_feast_cta_label' => 'Ask about this feast', '_feast_featured' => '0' ) ),
-			array( 'title' => 'Celebration Feast', 'meta' => array( '_feast_tag' => 'Most popular', '_feast_audience' => 'Ideal for 25–100+ guests', '_feast_features' => "A generous mix of mains and favourites\nSalads, dips, sides and finger food\nDesigned for weddings and big occasions\nCustom quote built for your guest count", '_feast_cta_label' => 'Plan my celebration', '_feast_featured' => '1' ) ),
-			array( 'title' => 'Office Lunch', 'meta' => array( '_feast_tag' => 'Easy crowd-pleaser', '_feast_audience' => 'Ideal for teams of 10+', '_feast_features' => "Easy-to-serve hot mains or wraps\nFresh salads, dips and sides\nFlexible options for team preferences\nCustom quote for pickup or delivery", '_feast_cta_label' => 'Feed the team', '_feast_featured' => '0' ) ),
+			array( 'title' => 'Family Table', 'meta' => array( '_feast_tag' => 'Warm & generous', '_feast_audience' => 'Ideal for 10–20 guests', '_feast_features' => "Your choice of hearty main dishes\nFresh salads and traditional sides\nShare-style trays, ready for the table\nCustom quote based on your menu", '_feast_cta_label' => 'Ask about this feast', '_feast_featured' => '0' ) ),
+			array( 'title' => 'Celebration Feast', 'meta' => array( '_feast_tag' => 'Most popular', '_feast_audience' => 'Ideal for 20–50 guests', '_feast_features' => "A generous mix of mains and favourites\nSalads, dips, sides and finger food\nDesigned for weddings and big occasions\nCustom quote built for your guest count", '_feast_cta_label' => 'Plan my celebration', '_feast_featured' => '1' ) ),
+			array( 'title' => 'Office Lunch', 'meta' => array( '_feast_tag' => 'Easy crowd-pleaser', '_feast_audience' => 'Ideal for 10–50 guests', '_feast_features' => "Easy-to-serve hot mains or wraps\nFresh salads, dips and sides\nFlexible options for team preferences\nCustom quote for pickup or delivery", '_feast_cta_label' => 'Feed the team', '_feast_featured' => '0' ) ),
 		)
 	);
 

@@ -570,7 +570,7 @@ function feast_meta_fields() {
 		),
 		'feast_bundle' => array(
 			'_feast_tag'            => array( 'label' => 'Package badge', 'type' => 'text', 'placeholder' => 'Most popular' ),
-			'_feast_audience'       => array( 'label' => 'Best for', 'type' => 'text', 'placeholder' => 'Ideal for 25–100+ guests' ),
+			'_feast_audience'       => array( 'label' => 'Guest range', 'type' => 'text', 'placeholder' => 'Ideal for 20–50 guests' ),
 			'_feast_features'       => array( 'label' => 'Package inclusions', 'type' => 'textarea', 'placeholder' => "One inclusion per line\nFresh salads and traditional sides" ),
 			'_feast_cta_label'      => array( 'label' => 'Link text', 'type' => 'text', 'placeholder' => 'Plan my celebration' ),
 			'_feast_cta_link'       => array( 'label' => 'Link destination', 'type' => 'text', 'placeholder' => '/contact/' ),
@@ -634,7 +634,7 @@ function feast_render_help_box( $post ) {
 		'page'          => 'Edit the page title, introductory excerpt, main content and featured image. Dedicated Feast page layouts update automatically.',
 		'post'          => 'Edit the post normally. SEO fields override the search title, description, social image and indexing only when needed.',
 		'feast_offer'   => 'Add the large headline as the title, supporting sentence as the excerpt, and the background photo as the featured image.',
-		'feast_bundle'  => 'Add the package name as the title, choose a strong event or food photo as the Package image, and put each inclusion on its own line. Use Order to control its position.',
+		'feast_bundle'  => 'Add the package name as the title, set its guest range, choose a strong event or food photo, and put each inclusion on its own line. The CMS card and Elementor collection update automatically.',
 		'feast_dish'    => 'Add the dish name, a short description and a featured image. Use Order to control its position.',
 		'feast_gallery' => 'Add a descriptive title and choose a featured image. The title is used as accessible image text.',
 		'feast_faq'     => 'Add the customer question as the title and the answer in the main content editor. Use Order to control its position.',
