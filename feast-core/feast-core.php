@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Feast Core
  * Description: Feast CMS integrations, Elementor widgets, and editable global layout locations.
- * Version: 0.1.0
+ * Version: 0.2.5
  * Author: Feast in the Middle East
  * Requires at least: 6.0
  * Requires PHP: 7.4
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'FEAST_CORE_VERSION', '0.2.4' );
+define( 'FEAST_CORE_VERSION', '0.2.5' );
 define( 'FEAST_CORE_FILE', __FILE__ );
 if ( defined( 'FEAST_CORE_EMBEDDED' ) && FEAST_CORE_EMBEDDED ) {
 	define( 'FEAST_CORE_DIR', trailingslashit( get_template_directory() ) . 'feast-core/' );
@@ -144,4 +144,3 @@ function feast_core_reviews_shortcode() {
 	return do_shortcode( '[trustindex no-registration=google]' );
 }
 add_shortcode( 'feast_google_reviews', 'feast_core_reviews_shortcode' );
-
