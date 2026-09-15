@@ -36,6 +36,17 @@ function feast_enable_search_indexing_for_launch() {
 }
 add_action( 'init', 'feast_enable_search_indexing_for_launch', 5 );
 
+/** Purge the pre-launch no-index pages from LiteSpeed after indexing is enabled. */
+function feast_purge_launch_cache() {
+	if ( ! get_option( 'feast_search_indexing_launched_v1' ) || ! add_option( 'feast_search_indexing_cache_purged_v1', 'running', '', false ) ) {
+		return;
+	}
+
+	do_action( 'litespeed_purge_all', 'Site launched for search indexing' );
+	update_option( 'feast_search_indexing_cache_purged_v1', '1', false );
+}
+add_action( 'litespeed_init', 'feast_purge_launch_cache' );
+
 function feast_seo_defaults() {
 	return array(
 		'home_title'          => 'Middle Eastern Catering Sydney | Feast in the Middle East',
