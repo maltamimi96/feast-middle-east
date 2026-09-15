@@ -9,6 +9,33 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Launch the site for search engines once, without overriding future admin choices.
+ */
+function feast_enable_search_indexing_for_launch() {
+	if ( ! add_option( 'feast_search_indexing_launched_v1', 'running', '', false ) ) {
+		return;
+	}
+
+	update_option( 'blog_public', '1' );
+
+	$public_content = get_posts(
+		array(
+			'post_type'      => array( 'page', 'post' ),
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+			'no_found_rows'  => true,
+		)
+	);
+	foreach ( $public_content as $post_id ) {
+		delete_post_meta( $post_id, '_feast_noindex' );
+	}
+
+	update_option( 'feast_search_indexing_launched_v1', '1', false );
+}
+add_action( 'init', 'feast_enable_search_indexing_for_launch', 5 );
+
 function feast_seo_defaults() {
 	return array(
 		'home_title'          => 'Middle Eastern Catering Sydney | Feast in the Middle East',
