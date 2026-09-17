@@ -100,13 +100,20 @@ function feast_cms_menu() {
 }
 add_action( 'admin_menu', 'feast_cms_menu' );
 
+/** Sanitize a comma- or line-separated list of notification email addresses. */
+function feast_sanitize_email_list( $value ) {
+	$emails = preg_split( '/[\s,;]+/', (string) $value, -1, PREG_SPLIT_NO_EMPTY );
+	$emails = array_values( array_unique( array_filter( array_map( 'sanitize_email', $emails ), 'is_email' ) ) );
+	return implode( ', ', $emails );
+}
+
 function feast_business_defaults() {
 	return array(
 		'phone_display' => '0407 495 908',
 		'phone_link'    => '+61407495908',
 		'address'       => "Inside HAWA Food Spot\n43 South St, Granville NSW",
 		'instagram'     => 'https://www.instagram.com/feast_in_the_middle_east/',
-		'enquiry_email' => get_option( 'admin_email' ),
+		'enquiry_email' => 'Akanj5850@gmail.com, mohammad@connectedstudio.com.au',
 	);
 }
 
@@ -118,6 +125,25 @@ function feast_setting( $key ) {
 	$settings = feast_get_business_settings();
 	return isset( $settings[ $key ] ) ? $settings[ $key ] : '';
 }
+
+/** Return all valid addresses that should receive catering enquiries. */
+function feast_enquiry_recipients() {
+	$emails = preg_split( '/[\s,;]+/', feast_setting( 'enquiry_email' ), -1, PREG_SPLIT_NO_EMPTY );
+	return array_values( array_filter( array_map( 'sanitize_email', $emails ), 'is_email' ) );
+}
+
+/** Update the live site to the requested notification recipients once. */
+function feast_update_enquiry_recipients() {
+	if ( ! add_option( 'feast_enquiry_recipients_v1', 'running', '', false ) ) {
+		return;
+	}
+
+	$settings                  = feast_get_business_settings();
+	$settings['enquiry_email'] = 'Akanj5850@gmail.com, mohammad@connectedstudio.com.au';
+	update_option( 'feast_business', $settings );
+	update_option( 'feast_enquiry_recipients_v1', '1', false );
+}
+add_action( 'init', 'feast_update_enquiry_recipients', 6 );
 
 function feast_register_settings() {
 	register_setting( 'feast_settings_group', 'feast_business', 'feast_sanitize_business_settings' );
@@ -502,7 +528,10 @@ function feast_sanitize_business_settings( $input ) {
 	$output['phone_link']    = isset( $input['phone_link'] ) ? preg_replace( '/[^0-9+]/', '', $input['phone_link'] ) : $defaults['phone_link'];
 	$output['address']       = isset( $input['address'] ) ? sanitize_textarea_field( $input['address'] ) : $defaults['address'];
 	$output['instagram']     = isset( $input['instagram'] ) ? esc_url_raw( $input['instagram'] ) : $defaults['instagram'];
-	$output['enquiry_email'] = isset( $input['enquiry_email'] ) && is_email( $input['enquiry_email'] ) ? sanitize_email( $input['enquiry_email'] ) : $defaults['enquiry_email'];
+	$output['enquiry_email'] = isset( $input['enquiry_email'] ) ? feast_sanitize_email_list( $input['enquiry_email'] ) : $defaults['enquiry_email'];
+	if ( ! $output['enquiry_email'] ) {
+		$output['enquiry_email'] = $defaults['enquiry_email'];
+	}
 	return $output;
 }
 
@@ -524,7 +553,7 @@ function feast_settings_page() {
 					<tr><th scope="row"><label for="feast-phone-link">Phone link</label></th><td><input class="regular-text" id="feast-phone-link" name="feast_business[phone_link]" value="<?php echo esc_attr( $settings['phone_link'] ); ?>"><p class="description">Use international format, for example +61407495908.</p></td></tr>
 					<tr><th scope="row"><label for="feast-address">Address</label></th><td><textarea class="large-text" rows="3" id="feast-address" name="feast_business[address]"><?php echo esc_textarea( $settings['address'] ); ?></textarea></td></tr>
 					<tr><th scope="row"><label for="feast-instagram">Instagram URL</label></th><td><input class="large-text" type="url" id="feast-instagram" name="feast_business[instagram]" value="<?php echo esc_attr( $settings['instagram'] ); ?>"></td></tr>
-					<tr><th scope="row"><label for="feast-email">Catering enquiry email</label></th><td><input class="regular-text" type="email" id="feast-email" name="feast_business[enquiry_email]" value="<?php echo esc_attr( $settings['enquiry_email'] ); ?>"><p class="description">Quote requests from the website are sent here.</p></td></tr>
+					<tr><th scope="row"><label for="feast-email">Catering enquiry recipients</label></th><td><input class="large-text" type="text" id="feast-email" name="feast_business[enquiry_email]" value="<?php echo esc_attr( $settings['enquiry_email'] ); ?>"><p class="description">Quote requests are sent to every valid address in this comma-separated list.</p></td></tr>
 				</table>
 				<?php submit_button( 'Save business settings' ); ?>
 			</form>

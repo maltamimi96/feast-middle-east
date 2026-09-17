@@ -165,7 +165,7 @@ function feast_handle_enquiry() {
 			'source'     => $redirect,
 		)
 	);
-	$sent = wp_mail( feast_setting( 'enquiry_email' ), $subject, $body, $headers );
+	$sent = wp_mail( feast_enquiry_recipients(), $subject, $body, $headers );
 
 	if ( $enquiry_id ) {
 		update_post_meta( $enquiry_id, '_feast_email_status', $sent ? 'sent' : 'failed' );
