@@ -9,6 +9,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/** Restore the original Elementor homepage after an accidental theme switch. */
+function feast_restore_original_homepage() {
+	if ( ! add_option( 'feast_restored_original_homepage_v1', 'running', '', false ) ) {
+		return;
+	}
+
+	$homepage = get_post( 287 );
+	if ( $homepage && 'page' === $homepage->post_type && 'publish' === $homepage->post_status ) {
+		update_option( 'show_on_front', 'page' );
+		update_option( 'page_on_front', 287 );
+	}
+
+	update_option( 'feast_restored_original_homepage_v1', '1', false );
+}
+add_action( 'init', 'feast_restore_original_homepage', 4 );
+
 function feast_import_theme_image( $filename, $title ) {
 	$existing = get_posts(
 		array(
